@@ -143,6 +143,19 @@ def _normalize_target(target: str, source: Path, bundle: Path) -> str | None:
         cand = (bundle / t.lstrip("/")).resolve()
     else:
         cand = (source.parent / t).resolve()
+    # Directory links (e.g. /companies/ or companies) → index.md when present
+    if cand.is_dir():
+        idx = cand / "index.md"
+        if idx.is_file():
+            cand = idx
+    elif not cand.suffix and not cand.exists():
+        # path without .md that isn't a file yet — try as dir/index or .md
+        as_md = Path(str(cand) + ".md")
+        as_idx = cand / "index.md"
+        if as_idx.is_file():
+            cand = as_idx
+        elif as_md.is_file():
+            cand = as_md
     try:
         rel = cand.relative_to(bundle.resolve()).as_posix()
     except ValueError:
@@ -220,6 +233,11 @@ def load_bundle(bundle: Path) -> dict[str, Concept]:
             edges=edges,
         )
         concepts[rel] = c
+    # Drop outbound edges that do not resolve to loaded concepts (broken links
+    # remain detectable via validate, which re-reads edges from disk metadata).
+    # Keep edge objects for validate; filter adjacency for graph traversal only.
+    for c in concepts.values():
+        c.outbound = [t for t in c.outbound if t in concepts]
     return concepts
 
 
@@ -276,7 +294,9 @@ def criticality_of(c: Concept) -> str:
 def enrich_nodes(concepts: dict[str, Concept], items: list[dict[str, Any]]) -> list[dict[str, Any]]:
     result = []
     for item in items:
-        c = concepts[item["id"]]
+        c = concepts.get(item["id"])
+        if c is None:
+            continue
         result.append(
             {
                 **item,
@@ -430,11 +450,15 @@ def cmd_pack(bundle: Path, concept: str, hops: int, max_nodes: int) -> int:
         for o in outs:
             undirected[k].append(o)
             undirected[o].append(k)
-    undirected = {k: sorted(set(v)) for k, v in undirected.items()}
-    neighborhood = [target] + [x["id"] for x in bfs_closure(target, undirected, hops=hops)]
+    undirected = {k: sorted(set(v)) for k, v in undirected.items() if k in concepts}
+    neighborhood = [target] + [
+        x["id"] for x in bfs_closure(target, undirected, hops=hops) if x["id"] in concepts
+    ]
 
     def score(nid: str) -> tuple:
-        c = concepts[nid]
+        c = concepts.get(nid)
+        if c is None:
+            return (9, 9, 9, nid)
         # prefer verified high-impact, keep root first
         return (
             0 if nid == target else 1,
@@ -443,7 +467,7 @@ def cmd_pack(bundle: Path, concept: str, hops: int, max_nodes: int) -> int:
             c.title.lower(),
         )
 
-    ranked = sorted(neighborhood, key=score)
+    ranked = sorted((n for n in neighborhood if n in concepts), key=score)
     included = ranked[: max(1, max_nodes)]
     excluded = [n for n in ranked if n not in included]
     node_set = set(included)

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "okf-plugin-marketplace",
+  "owner": { "name": "Rick Hightower", "url": "https://github.com/RichardHightower" },
+  "plugins": [
+    {
+      "name": "okf-graph-eng",
+      "source": "./",
+      "description": "Graph engineering for OKF repos",
+      "version": "0.2.0"
+    }
+  ]
+}
