@@ -1,0 +1,22 @@
+{
+  "name": "okf-graph-eng",
+  "version": "0.1.0",
+  "description": "Graph engineering for OKF repos — impact analysis, agent/harness graphs, progressive disclosure, and curation. Works in Claude Code and Grok Build.",
+  "author": {
+    "name": "Rick Hightower",
+    "url": "https://github.com/RichardHightower"
+  },
+  "homepage": "https://github.com/RichardHightower/okf-plugin",
+  "repository": "https://github.com/RichardHightower/okf-plugin",
+  "license": "MIT",
+  "keywords": [
+    "okf",
+    "graph-engineering",
+    "knowledge-graph",
+    "agent-graph",
+    "harness",
+    "impact-analysis",
+    "claude-code",
+    "grok-build"
+  ]
+}
