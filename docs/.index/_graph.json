@@ -161,6 +161,11 @@
    "type": "targets"
   },
   {
+   "from": "item/01KYR201M64QHFBVGV3FZ1GS4F",
+   "to": "release/v0.2.1",
+   "type": "targets"
+  },
+  {
    "from": "plan/2026-07-29-wiki-ticket-adoption",
    "to": "item/01KYQZ4PAMK1ND4XKH8A1VHMFN",
    "type": "produces"
@@ -296,6 +301,11 @@
    "doc_type": "item",
    "status": "done",
    "title": "Move okf-plugin to SpillwaveSolutions org"
+  },
+  "item/01KYR201M64QHFBVGV3FZ1GS4F": {
+   "doc_type": "item",
+   "status": "done",
+   "title": "Publish docs to SpillwaveSolutions GitHub wiki"
   },
   "plan/2026-07-29-wiki-ticket-adoption": {
    "doc_type": "plan",

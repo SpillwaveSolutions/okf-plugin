@@ -2,6 +2,10 @@
 
 _The evidence chain: plan → item → ticket → code → release, forward and backward. Generated from `docs/.index/_graph.json`; do not edit._
 
+### Publish docs to SpillwaveSolutions GitHub wiki
+`01KYR201M64QHFBVGV3FZ1GS4F` · status: done
+- targets: release/v0.2.1
+
 ### Move okf-plugin to SpillwaveSolutions org
 `01KYR1W31GBAGDJEMY077HFM0J` · status: done
 - targets: release/v0.2.1
