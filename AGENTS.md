@@ -69,3 +69,34 @@ Treat broken links as errors; orphans and unverified high-impact nodes as warnin
 - Human overview: [README.md](./README.md)
 - Claude Code detail: [CLAUDE.md](./CLAUDE.md)
 - Design sample graph: [sample-okf/index.md](./sample-okf/index.md)
+
+<!-- worklog:policy:start -->
+## Work tracking policy
+
+This project is managed with **WikiTicket SDD** ([SpillwaveSolutions/wiki_ticket_sdd](https://github.com/SpillwaveSolutions/wiki_ticket_sdd)) — local-first worklog, generated roadmap, optional GitHub Issues + wiki sync.
+
+- Every plan MUST end by running `bin/worklog plan-capture` — it writes
+  `docs/plans/<date>-<slug>.md` and appends the plan's steps as work items.
+- Work discovered mid-flight that wasn't in the plan: run
+  `bin/worklog add --unplanned --discovered-during <item>` BEFORE doing the work.
+- Never hand-edit `.work/*.jsonl` (use `bin/worklog`) or `docs/roadmap.md`
+  (it is generated; change the work items instead).
+- After changing work items, run `bin/worklog roadmap-render` and commit the log
+  and roadmap together.
+- Commits must reference a worklog ULID or ticket (`#123`). Prefer feature branches — hooks reject direct commits on `main`.
+<!-- worklog:policy:end -->
+
+<!-- worklog:taxonomy:start -->
+## Work taxonomy
+
+Every work item sits on four independent axes:
+
+| Axis | Field | Values | Answers |
+|---|---|---|---|
+| Level | `level` | epic / story / task / subtask | size & place in the parent tree |
+| Kind | `kind` | feature / bug / ops / triage | nature of the work |
+| Milestone | `milestone` | free string (e.g. v0.2.0) or null | what ships together |
+| Planned | `unplanned` + `discovered_during` | bool + ULID | deliberate vs discovered |
+
+Rules: epics are `feature` or `ops` only; unclassified defaults to `triage`; propose items inline and create only on assent via `bin/worklog`.
+<!-- worklog:taxonomy:end -->

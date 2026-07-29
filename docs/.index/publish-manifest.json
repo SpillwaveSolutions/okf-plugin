@@ -1,0 +1,271 @@
+{
+ "pages": [
+  {
+   "frozen": false,
+   "page_name": "Home",
+   "render": "as-is",
+   "render_hash": "6329f4e94209",
+   "source": "docs/.index/rendered/home.md",
+   "title": "Home",
+   "truth_state": "current",
+   "wiki_key": "home"
+  },
+  {
+   "frozen": false,
+   "page_name": "Index-Decisions",
+   "render": "as-is",
+   "render_hash": "d2b3d4146cf8",
+   "source": "docs/.index/rendered/decisions.md",
+   "title": "Decisions Index",
+   "truth_state": "current",
+   "wiki_key": "index/decisions"
+  },
+  {
+   "frozen": false,
+   "page_name": "Index-Releases",
+   "render": "as-is",
+   "render_hash": "f45668ba0034",
+   "source": "docs/.index/rendered/releases.md",
+   "title": "Releases Index",
+   "truth_state": "current",
+   "wiki_key": "index/releases"
+  },
+  {
+   "frozen": false,
+   "page_name": "Index-Status",
+   "render": "as-is",
+   "render_hash": "b8bcebbbbe23",
+   "source": "docs/.index/rendered/status.md",
+   "title": "Status Archive",
+   "truth_state": "current",
+   "wiki_key": "index/status"
+  },
+  {
+   "frozen": false,
+   "page_name": "Index-Traceability",
+   "render": "as-is",
+   "render_hash": "1f1b1d18f406",
+   "source": "docs/.index/rendered/traceability.md",
+   "title": "Traceability Index",
+   "truth_state": "current",
+   "wiki_key": "index/traceability"
+  },
+  {
+   "frozen": false,
+   "page_name": "Release-v0.1.0",
+   "render": "as-is",
+   "render_hash": "f509598b4cbf",
+   "source": "docs/.index/rendered/releases/v0.1.0.md",
+   "title": "Release v0.1.0",
+   "truth_state": "shipped",
+   "wiki_key": "release/v0.1.0"
+  },
+  {
+   "frozen": false,
+   "page_name": "Release-v0.1.1",
+   "render": "as-is",
+   "render_hash": "6d876794ec35",
+   "source": "docs/.index/rendered/releases/v0.1.1.md",
+   "title": "Release v0.1.1",
+   "truth_state": "shipped",
+   "wiki_key": "release/v0.1.1"
+  },
+  {
+   "frozen": false,
+   "page_name": "Release-v0.2.0",
+   "render": "as-is",
+   "render_hash": "541f1a28ae41",
+   "source": "docs/.index/rendered/releases/v0.2.0.md",
+   "title": "Release v0.2.0",
+   "truth_state": "shipped",
+   "wiki_key": "release/v0.2.0"
+  },
+  {
+   "frozen": false,
+   "page_name": "Ticket-01KYQZ4PAMK1ND4XKH8A1VHMFN",
+   "render": "as-is",
+   "render_hash": "4a74bd8c0c58",
+   "source": "docs/.index/rendered/tickets/01KYQZ4PAMK1ND4XKH8A1VHMFN.md",
+   "title": "Scaffold worklog tooling in okf-plugin",
+   "truth_state": "done",
+   "wiki_key": "item/01KYQZ4PAMK1ND4XKH8A1VHMFN"
+  },
+  {
+   "frozen": false,
+   "page_name": "Ticket-01KYQZ4PAMZCM9N56K8F3034F2",
+   "render": "as-is",
+   "render_hash": "c5f84bd9c3ce",
+   "source": "docs/.index/rendered/tickets/01KYQZ4PAMZCM9N56K8F3034F2.md",
+   "title": "Adopt WikiTicket SDD for okf-plugin",
+   "truth_state": "in-progress",
+   "wiki_key": "item/01KYQZ4PAMZCM9N56K8F3034F2"
+  },
+  {
+   "frozen": false,
+   "page_name": "Ticket-01KYQZ4PAN1WHT2YGX667F3EX6",
+   "render": "as-is",
+   "render_hash": "7cad27dc4cf9",
+   "source": "docs/.index/rendered/tickets/01KYQZ4PAN1WHT2YGX667F3EX6.md",
+   "title": "Configure GitHub Issues and GitHub wiki in .work/config.yml",
+   "truth_state": "done",
+   "wiki_key": "item/01KYQZ4PAN1WHT2YGX667F3EX6"
+  },
+  {
+   "frozen": false,
+   "page_name": "Ticket-01KYQZ4PAN551JXFMH2GF82BXF",
+   "render": "as-is",
+   "render_hash": "e8e201238ebd",
+   "source": "docs/.index/rendered/tickets/01KYQZ4PAN551JXFMH2GF82BXF.md",
+   "title": "Sync open work items to GitHub Issues",
+   "truth_state": "done",
+   "wiki_key": "item/01KYQZ4PAN551JXFMH2GF82BXF"
+  },
+  {
+   "frozen": false,
+   "page_name": "Ticket-01KYQZ4PAN6A8EX36M2ZRWMDAZ",
+   "render": "as-is",
+   "render_hash": "d11cb399eb54",
+   "source": "docs/.index/rendered/tickets/01KYQZ4PAN6A8EX36M2ZRWMDAZ.md",
+   "title": "Publish initial roadmap and plan to GitHub wiki",
+   "truth_state": "in-progress",
+   "wiki_key": "item/01KYQZ4PAN6A8EX36M2ZRWMDAZ"
+  },
+  {
+   "frozen": false,
+   "page_name": "Ticket-01KYQZ4PAN71X19C6ZZVM42ZS2",
+   "render": "as-is",
+   "render_hash": "68a5573d6ef9",
+   "source": "docs/.index/rendered/tickets/01KYQZ4PAN71X19C6ZZVM42ZS2.md",
+   "title": "v0.2 \u2014 GraphEngineer polish and progressive-disclosure defaults",
+   "truth_state": "open",
+   "wiki_key": "item/01KYQZ4PAN71X19C6ZZVM42ZS2"
+  },
+  {
+   "frozen": false,
+   "page_name": "Ticket-01KYQZ4PANG2JE670X42GCZY6S",
+   "render": "as-is",
+   "render_hash": "22a4d3855992",
+   "source": "docs/.index/rendered/tickets/01KYQZ4PANG2JE670X42GCZY6S.md",
+   "title": "v0.2 \u2014 richer typed-edge conventions and TicketLink SLDC helpers",
+   "truth_state": "open",
+   "wiki_key": "item/01KYQZ4PANG2JE670X42GCZY6S"
+  },
+  {
+   "frozen": false,
+   "page_name": "Ticket-01KYQZ4PANQFYAMMEBBHYPPG6P",
+   "render": "as-is",
+   "render_hash": "1449457a8bfc",
+   "source": "docs/.index/rendered/tickets/01KYQZ4PANQFYAMMEBBHYPPG6P.md",
+   "title": "Optional Claude marketplace listing for okf-graph-eng",
+   "truth_state": "open",
+   "wiki_key": "item/01KYQZ4PANQFYAMMEBBHYPPG6P"
+  },
+  {
+   "frozen": false,
+   "page_name": "Ticket-01KYQZ4PANS9D55RG19VMXGQ1V",
+   "render": "as-is",
+   "render_hash": "997f04050360",
+   "source": "docs/.index/rendered/tickets/01KYQZ4PANS9D55RG19VMXGQ1V.md",
+   "title": "Link sample-okf TicketLink concepts to real worklog ULIDs",
+   "truth_state": "done",
+   "wiki_key": "item/01KYQZ4PANS9D55RG19VMXGQ1V"
+  },
+  {
+   "frozen": false,
+   "page_name": "Ticket-01KYQZ4PANSHKME2QNA8FZVVGC",
+   "render": "as-is",
+   "render_hash": "85d896b37127",
+   "source": "docs/.index/rendered/tickets/01KYQZ4PANSHKME2QNA8FZVVGC.md",
+   "title": "Capture MVP v0.1 delivery as closed worklog history",
+   "truth_state": "done",
+   "wiki_key": "item/01KYQZ4PANSHKME2QNA8FZVVGC"
+  },
+  {
+   "frozen": false,
+   "page_name": "Ticket-01KYQZ5E4X4XZ1XZ39FC4SKWBN",
+   "render": "as-is",
+   "render_hash": "a12b1a1a393f",
+   "source": "docs/.index/rendered/tickets/01KYQZ5E4X4XZ1XZ39FC4SKWBN.md",
+   "title": "OKF graph-eng plugin MVP v0.1",
+   "truth_state": "done",
+   "wiki_key": "item/01KYQZ5E4X4XZ1XZ39FC4SKWBN"
+  },
+  {
+   "frozen": false,
+   "page_name": "Ticket-01KYQZ5E9M9DDN8N84V2CZ5Q2Z",
+   "render": "as-is",
+   "render_hash": "b0b4df3bf289",
+   "source": "docs/.index/rendered/tickets/01KYQZ5E9M9DDN8N84V2CZ5Q2Z.md",
+   "title": "Ship seven OKF graph-eng skills",
+   "truth_state": "done",
+   "wiki_key": "item/01KYQZ5E9M9DDN8N84V2CZ5Q2Z"
+  },
+  {
+   "frozen": false,
+   "page_name": "Ticket-01KYQZ5EJJJQNPT07017JQQWMM",
+   "render": "as-is",
+   "render_hash": "b6a6cba434b5",
+   "source": "docs/.index/rendered/tickets/01KYQZ5EJJJQNPT07017JQQWMM.md",
+   "title": "Ship GraphEngineer agent and slash commands",
+   "truth_state": "done",
+   "wiki_key": "item/01KYQZ5EJJJQNPT07017JQQWMM"
+  },
+  {
+   "frozen": false,
+   "page_name": "Ticket-01KYQZ5EVN14SMZW8KW60K42G8",
+   "render": "as-is",
+   "render_hash": "b951a0ecd1a0",
+   "source": "docs/.index/rendered/tickets/01KYQZ5EVN14SMZW8KW60K42G8.md",
+   "title": "Ship sample-okf self-describing dual graph",
+   "truth_state": "done",
+   "wiki_key": "item/01KYQZ5EVN14SMZW8KW60K42G8"
+  },
+  {
+   "frozen": false,
+   "page_name": "Ticket-01KYQZ5F4W0P0GWM6JHQBWFKGY",
+   "render": "as-is",
+   "render_hash": "0acecc0f33c6",
+   "source": "docs/.index/rendered/tickets/01KYQZ5F4W0P0GWM6JHQBWFKGY.md",
+   "title": "Ship dual-host README, CLAUDE.md, AGENTS.md",
+   "truth_state": "done",
+   "wiki_key": "item/01KYQZ5F4W0P0GWM6JHQBWFKGY"
+  },
+  {
+   "frozen": false,
+   "page_name": "Ticket-01KYQZ5FE1NZM2VB2E43MJMNCQ",
+   "render": "as-is",
+   "render_hash": "8bb27442aab6",
+   "source": "docs/.index/rendered/tickets/01KYQZ5FE1NZM2VB2E43MJMNCQ.md",
+   "title": "Publish public GitHub repo okf-plugin",
+   "truth_state": "done",
+   "wiki_key": "item/01KYQZ5FE1NZM2VB2E43MJMNCQ"
+  },
+  {
+   "banner": "> **Current** \u2014 the latest status report. Reports freeze once published; corrections appear in later reports.",
+   "frozen": true,
+   "page_name": "Plan-wiki-ticket-adoption",
+   "render": "doc+banner",
+   "render_hash": "9bc8fe7e35a2",
+   "source": "docs/plans/2026-07-29-wiki-ticket-adoption.md",
+   "title": "Adopt WikiTicket SDD for okf-plugin",
+   "truth_state": "current",
+   "wiki_key": "plan/2026-07-29-wiki-ticket-adoption"
+  },
+  {
+   "banner": "> **Current** \u2014 this is the living version; regenerated at 2026-07-29T22:16:50Z. Historical snapshots are linked from [[Index-Releases]].",
+   "frozen": false,
+   "page_name": "Roadmap",
+   "render": "doc+banner",
+   "render_hash": "641503564947",
+   "source": "docs/roadmap.md",
+   "title": "Roadmap",
+   "truth_state": "current",
+   "wiki_key": "roadmap"
+  }
+ ],
+ "sidebar": {
+  "render_hash": "12e8d0929da3",
+  "source": "docs/.index/rendered/_Sidebar.md"
+ },
+ "version": 1
+}

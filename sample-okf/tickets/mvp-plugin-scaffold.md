@@ -2,11 +2,11 @@
 type: TicketLink
 title: MVP plugin scaffold
 description: Track delivery of okf-graph-eng v0.1 skills, hooks, sample OKF, and dual-host docs.
-tags: [ticket, mvp]
+tags: [ticket, mvp, worklog]
 timestamp: 2026-07-29T00:00:00Z
 status: done
-external_id: OKF-001
-external_system: local
+external_id: 01KYQZ5E4X4XZ1XZ39FC4SKWBN
+external_system: worklog
 verified: true
 ---
 
@@ -14,8 +14,10 @@ verified: true
 
 ## External reference
 
-- System: local
-- ID: OKF-001
+- System: [WikiTicket SDD / worklog](https://github.com/SpillwaveSolutions/wiki_ticket_sdd)
+- Worklog epic ULID: `01KYQZ5E4X4XZ1XZ39FC4SKWBN`
+- Plan (adoption follow-on): `docs/plans/2026-07-29-wiki-ticket-adoption.md`
+- GitHub project: https://github.com/RichardHightower/okf-plugin
 
 ## Maps to OKF concepts
 
@@ -28,3 +30,4 @@ verified: true
 - Skills: init, author, impact, query, maintain, validate, visualize
 - Sample self-describing OKF validates with okf-graph.py
 - README / CLAUDE.md / AGENTS.md document Claude Code + Grok Build
+- Project work tracked in `.work/` via WikiTicket SDD

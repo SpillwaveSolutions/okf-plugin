@@ -1,0 +1,39 @@
+{
+ "docs": [
+  {
+   "canonical_key": "plan/2026-07-29-wiki-ticket-adoption",
+   "date": "2026-07-29",
+   "doc_type": "plan",
+   "epic": "01KYQZ4PAMZCM9N56K8F3034F2",
+   "items": [
+    "01KYQZ4PAMK1ND4XKH8A1VHMFN",
+    "01KYQZ4PAN1WHT2YGX667F3EX6",
+    "01KYQZ4PANSHKME2QNA8FZVVGC",
+    "01KYQZ4PAN6A8EX36M2ZRWMDAZ",
+    "01KYQZ4PAN551JXFMH2GF82BXF",
+    "01KYQZ4PANS9D55RG19VMXGQ1V",
+    "01KYQZ4PANG2JE670X42GCZY6S",
+    "01KYQZ4PAN71X19C6ZZVM42ZS2",
+    "01KYQZ4PANQFYAMMEBBHYPPG6P"
+   ],
+   "slug": "wiki-ticket-adoption",
+   "source": "docs/plans/2026-07-29-wiki-ticket-adoption.md",
+   "status": "active",
+   "title": "Adopt WikiTicket SDD for okf-plugin",
+   "truth_state": "current",
+   "wiki_key": "plan/2026-07-29-wiki-ticket-adoption"
+  },
+  {
+   "canonical_key": "roadmap",
+   "doc_type": "roadmap",
+   "generated_at": "2026-07-29T22:16:50Z",
+   "slug": "roadmap",
+   "source": "docs/roadmap.md",
+   "source_hash": "a8783249",
+   "title": "Roadmap",
+   "truth_state": "current",
+   "wiki_key": "roadmap"
+  }
+ ],
+ "version": 1
+}
