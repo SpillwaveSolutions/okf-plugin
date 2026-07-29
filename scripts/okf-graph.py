@@ -434,25 +434,33 @@ def cmd_subgraph(bundle: Path, concept: str, hops: int) -> int:
     return 0
 
 
-def cmd_pack(bundle: Path, concept: str, hops: int, max_nodes: int) -> int:
-    """Progressive disclosure context pack — default 2 hops, trust-aware trim."""
+def cmd_pack(bundle: Path, concept: str, hops: int, max_nodes: int, undirected: bool = False) -> int:
+    """Progressive disclosure context pack — default 2 hops, outbound-only BFS.
+
+    Outbound-only keeps packs inside a theme (e.g. group → members) instead of
+    flooding through hub catalogs that link everything. Pass undirected=True
+    for neighborhood exploration.
+    """
     concepts = load_bundle(bundle)
-    # reuse subgraph logic via internal call pattern
-    inbound_map = build_inbound(concepts)
-    outbound_map = {k: v.outbound for k, v in concepts.items()}
+    outbound_map = {k: list(v.outbound) for k, v in concepts.items()}
     target = resolve_concept(concepts, concept)
     if not target:
         print(json.dumps({"error": f"concept not found: {concept}"}))
         return 1
 
-    undirected: dict[str, list[str]] = defaultdict(list)
-    for k, outs in outbound_map.items():
-        for o in outs:
-            undirected[k].append(o)
-            undirected[o].append(k)
-    undirected = {k: sorted(set(v)) for k, v in undirected.items() if k in concepts}
+    if undirected:
+        graph: dict[str, list[str]] = defaultdict(list)
+        for k, outs in outbound_map.items():
+            for o in outs:
+                if o in concepts:
+                    graph[k].append(o)
+                    graph[o].append(k)
+        graph = {k: sorted(set(v)) for k, v in graph.items()}
+    else:
+        graph = {k: [o for o in outs if o in concepts] for k, outs in outbound_map.items()}
+
     neighborhood = [target] + [
-        x["id"] for x in bfs_closure(target, undirected, hops=hops) if x["id"] in concepts
+        x["id"] for x in bfs_closure(target, graph, hops=hops) if x["id"] in concepts
     ]
 
     def score(nid: str) -> tuple:
@@ -649,11 +657,16 @@ def main() -> int:
     s.add_argument("concept")
     s.add_argument("--hops", type=int, default=2)
 
-    s = sub.add_parser("pack", help="Progressive disclosure context pack (default 2 hops)")
+    s = sub.add_parser("pack", help="Progressive disclosure context pack (default 2 hops, outbound)")
     s.add_argument("bundle")
     s.add_argument("concept")
     s.add_argument("--hops", type=int, default=2)
     s.add_argument("--max-nodes", type=int, default=20)
+    s.add_argument(
+        "--undirected",
+        action="store_true",
+        help="Explore both inbound and outbound neighbors (can flood via hub indexes)",
+    )
 
     s = sub.add_parser("edges", help="List edges (optional typed rel filter)")
     s.add_argument("bundle")
@@ -677,7 +690,7 @@ def main() -> int:
     if args.cmd == "subgraph":
         return cmd_subgraph(bundle, args.concept, args.hops)
     if args.cmd == "pack":
-        return cmd_pack(bundle, args.concept, args.hops, args.max_nodes)
+        return cmd_pack(bundle, args.concept, args.hops, args.max_nodes, undirected=args.undirected)
     if args.cmd == "edges":
         return cmd_edges(bundle, args.from_path, args.rel_filter)
     if args.cmd == "validate":
