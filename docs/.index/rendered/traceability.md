@@ -68,7 +68,7 @@ _The evidence chain: plan → item → ticket → code → release, forward and 
 - produced-by: [[Plan-wiki-ticket-adoption]]
 
 ### Publish initial roadmap and plan to GitHub wiki
-`01KYQZ4PAN6A8EX36M2ZRWMDAZ` · status: in_progress
+`01KYQZ4PAN6A8EX36M2ZRWMDAZ` · status: done
 - belongs-to: Adopt WikiTicket SDD for okf-plugin
 - references: [github#3](https://github.com/RichardHightower/okf-plugin/issues/3)
 - targets: release/v0.1.1

@@ -1,0 +1,253 @@
+{
+  "home": {
+    "page_id": "Home",
+    "render_hash": "6329f4e94209",
+    "rev": "80f2ac9bb9c810a3c13681c4a1ad6a402924898d",
+    "source": "docs/.index/rendered/home.md",
+    "source_hash": "6329f4e94209",
+    "title": "Home",
+    "url": "https://github.com/RichardHightower/okf-plugin/wiki/Home"
+  },
+  "index/decisions": {
+    "page_id": "Index-Decisions",
+    "render_hash": "d2b3d4146cf8",
+    "rev": "80f2ac9bb9c810a3c13681c4a1ad6a402924898d",
+    "source": "docs/.index/rendered/decisions.md",
+    "source_hash": "d2b3d4146cf8",
+    "title": "Decisions Index",
+    "url": "https://github.com/RichardHightower/okf-plugin/wiki/Index-Decisions"
+  },
+  "index/releases": {
+    "page_id": "Index-Releases",
+    "render_hash": "f45668ba0034",
+    "rev": "80f2ac9bb9c810a3c13681c4a1ad6a402924898d",
+    "source": "docs/.index/rendered/releases.md",
+    "source_hash": "f45668ba0034",
+    "title": "Releases Index",
+    "url": "https://github.com/RichardHightower/okf-plugin/wiki/Index-Releases"
+  },
+  "index/status": {
+    "page_id": "Index-Status",
+    "render_hash": "b8bcebbbbe23",
+    "rev": "80f2ac9bb9c810a3c13681c4a1ad6a402924898d",
+    "source": "docs/.index/rendered/status.md",
+    "source_hash": "b8bcebbbbe23",
+    "title": "Status Archive",
+    "url": "https://github.com/RichardHightower/okf-plugin/wiki/Index-Status"
+  },
+  "index/traceability": {
+    "page_id": "Index-Traceability",
+    "render_hash": "1f1b1d18f406",
+    "rev": "80f2ac9bb9c810a3c13681c4a1ad6a402924898d",
+    "source": "docs/.index/rendered/traceability.md",
+    "source_hash": "1f1b1d18f406",
+    "title": "Traceability Index",
+    "url": "https://github.com/RichardHightower/okf-plugin/wiki/Index-Traceability"
+  },
+  "item/01KYQZ4PAMK1ND4XKH8A1VHMFN": {
+    "page_id": "Ticket-01KYQZ4PAMK1ND4XKH8A1VHMFN",
+    "render_hash": "4a74bd8c0c58",
+    "rev": "80f2ac9bb9c810a3c13681c4a1ad6a402924898d",
+    "source": "docs/.index/rendered/tickets/01KYQZ4PAMK1ND4XKH8A1VHMFN.md",
+    "source_hash": "4a74bd8c0c58",
+    "title": "Scaffold worklog tooling in okf-plugin",
+    "url": "https://github.com/RichardHightower/okf-plugin/wiki/Ticket-01KYQZ4PAMK1ND4XKH8A1VHMFN"
+  },
+  "item/01KYQZ4PAMZCM9N56K8F3034F2": {
+    "page_id": "Ticket-01KYQZ4PAMZCM9N56K8F3034F2",
+    "render_hash": "c5f84bd9c3ce",
+    "rev": "80f2ac9bb9c810a3c13681c4a1ad6a402924898d",
+    "source": "docs/.index/rendered/tickets/01KYQZ4PAMZCM9N56K8F3034F2.md",
+    "source_hash": "c5f84bd9c3ce",
+    "title": "Adopt WikiTicket SDD for okf-plugin",
+    "url": "https://github.com/RichardHightower/okf-plugin/wiki/Ticket-01KYQZ4PAMZCM9N56K8F3034F2"
+  },
+  "item/01KYQZ4PAN1WHT2YGX667F3EX6": {
+    "page_id": "Ticket-01KYQZ4PAN1WHT2YGX667F3EX6",
+    "render_hash": "7cad27dc4cf9",
+    "rev": "80f2ac9bb9c810a3c13681c4a1ad6a402924898d",
+    "source": "docs/.index/rendered/tickets/01KYQZ4PAN1WHT2YGX667F3EX6.md",
+    "source_hash": "7cad27dc4cf9",
+    "title": "Configure GitHub Issues and GitHub wiki in .work/config.yml",
+    "url": "https://github.com/RichardHightower/okf-plugin/wiki/Ticket-01KYQZ4PAN1WHT2YGX667F3EX6"
+  },
+  "item/01KYQZ4PAN551JXFMH2GF82BXF": {
+    "page_id": "Ticket-01KYQZ4PAN551JXFMH2GF82BXF",
+    "render_hash": "e8e201238ebd",
+    "rev": "80f2ac9bb9c810a3c13681c4a1ad6a402924898d",
+    "source": "docs/.index/rendered/tickets/01KYQZ4PAN551JXFMH2GF82BXF.md",
+    "source_hash": "e8e201238ebd",
+    "title": "Sync open work items to GitHub Issues",
+    "url": "https://github.com/RichardHightower/okf-plugin/wiki/Ticket-01KYQZ4PAN551JXFMH2GF82BXF"
+  },
+  "item/01KYQZ4PAN6A8EX36M2ZRWMDAZ": {
+    "page_id": "Ticket-01KYQZ4PAN6A8EX36M2ZRWMDAZ",
+    "render_hash": "d11cb399eb54",
+    "rev": "80f2ac9bb9c810a3c13681c4a1ad6a402924898d",
+    "source": "docs/.index/rendered/tickets/01KYQZ4PAN6A8EX36M2ZRWMDAZ.md",
+    "source_hash": "d11cb399eb54",
+    "title": "Publish initial roadmap and plan to GitHub wiki",
+    "url": "https://github.com/RichardHightower/okf-plugin/wiki/Ticket-01KYQZ4PAN6A8EX36M2ZRWMDAZ"
+  },
+  "item/01KYQZ4PAN71X19C6ZZVM42ZS2": {
+    "page_id": "Ticket-01KYQZ4PAN71X19C6ZZVM42ZS2",
+    "render_hash": "68a5573d6ef9",
+    "rev": "80f2ac9bb9c810a3c13681c4a1ad6a402924898d",
+    "source": "docs/.index/rendered/tickets/01KYQZ4PAN71X19C6ZZVM42ZS2.md",
+    "source_hash": "68a5573d6ef9",
+    "title": "v0.2 \u2014 GraphEngineer polish and progressive-disclosure defaults",
+    "url": "https://github.com/RichardHightower/okf-plugin/wiki/Ticket-01KYQZ4PAN71X19C6ZZVM42ZS2"
+  },
+  "item/01KYQZ4PANG2JE670X42GCZY6S": {
+    "page_id": "Ticket-01KYQZ4PANG2JE670X42GCZY6S",
+    "render_hash": "22a4d3855992",
+    "rev": "80f2ac9bb9c810a3c13681c4a1ad6a402924898d",
+    "source": "docs/.index/rendered/tickets/01KYQZ4PANG2JE670X42GCZY6S.md",
+    "source_hash": "22a4d3855992",
+    "title": "v0.2 \u2014 richer typed-edge conventions and TicketLink SLDC helpers",
+    "url": "https://github.com/RichardHightower/okf-plugin/wiki/Ticket-01KYQZ4PANG2JE670X42GCZY6S"
+  },
+  "item/01KYQZ4PANQFYAMMEBBHYPPG6P": {
+    "page_id": "Ticket-01KYQZ4PANQFYAMMEBBHYPPG6P",
+    "render_hash": "1449457a8bfc",
+    "rev": "80f2ac9bb9c810a3c13681c4a1ad6a402924898d",
+    "source": "docs/.index/rendered/tickets/01KYQZ4PANQFYAMMEBBHYPPG6P.md",
+    "source_hash": "1449457a8bfc",
+    "title": "Optional Claude marketplace listing for okf-graph-eng",
+    "url": "https://github.com/RichardHightower/okf-plugin/wiki/Ticket-01KYQZ4PANQFYAMMEBBHYPPG6P"
+  },
+  "item/01KYQZ4PANS9D55RG19VMXGQ1V": {
+    "page_id": "Ticket-01KYQZ4PANS9D55RG19VMXGQ1V",
+    "render_hash": "997f04050360",
+    "rev": "80f2ac9bb9c810a3c13681c4a1ad6a402924898d",
+    "source": "docs/.index/rendered/tickets/01KYQZ4PANS9D55RG19VMXGQ1V.md",
+    "source_hash": "997f04050360",
+    "title": "Link sample-okf TicketLink concepts to real worklog ULIDs",
+    "url": "https://github.com/RichardHightower/okf-plugin/wiki/Ticket-01KYQZ4PANS9D55RG19VMXGQ1V"
+  },
+  "item/01KYQZ4PANSHKME2QNA8FZVVGC": {
+    "page_id": "Ticket-01KYQZ4PANSHKME2QNA8FZVVGC",
+    "render_hash": "85d896b37127",
+    "rev": "80f2ac9bb9c810a3c13681c4a1ad6a402924898d",
+    "source": "docs/.index/rendered/tickets/01KYQZ4PANSHKME2QNA8FZVVGC.md",
+    "source_hash": "85d896b37127",
+    "title": "Capture MVP v0.1 delivery as closed worklog history",
+    "url": "https://github.com/RichardHightower/okf-plugin/wiki/Ticket-01KYQZ4PANSHKME2QNA8FZVVGC"
+  },
+  "item/01KYQZ5E4X4XZ1XZ39FC4SKWBN": {
+    "page_id": "Ticket-01KYQZ5E4X4XZ1XZ39FC4SKWBN",
+    "render_hash": "a12b1a1a393f",
+    "rev": "80f2ac9bb9c810a3c13681c4a1ad6a402924898d",
+    "source": "docs/.index/rendered/tickets/01KYQZ5E4X4XZ1XZ39FC4SKWBN.md",
+    "source_hash": "a12b1a1a393f",
+    "title": "OKF graph-eng plugin MVP v0.1",
+    "url": "https://github.com/RichardHightower/okf-plugin/wiki/Ticket-01KYQZ5E4X4XZ1XZ39FC4SKWBN"
+  },
+  "item/01KYQZ5E9M9DDN8N84V2CZ5Q2Z": {
+    "page_id": "Ticket-01KYQZ5E9M9DDN8N84V2CZ5Q2Z",
+    "render_hash": "b0b4df3bf289",
+    "rev": "80f2ac9bb9c810a3c13681c4a1ad6a402924898d",
+    "source": "docs/.index/rendered/tickets/01KYQZ5E9M9DDN8N84V2CZ5Q2Z.md",
+    "source_hash": "b0b4df3bf289",
+    "title": "Ship seven OKF graph-eng skills",
+    "url": "https://github.com/RichardHightower/okf-plugin/wiki/Ticket-01KYQZ5E9M9DDN8N84V2CZ5Q2Z"
+  },
+  "item/01KYQZ5EJJJQNPT07017JQQWMM": {
+    "page_id": "Ticket-01KYQZ5EJJJQNPT07017JQQWMM",
+    "render_hash": "b6a6cba434b5",
+    "rev": "80f2ac9bb9c810a3c13681c4a1ad6a402924898d",
+    "source": "docs/.index/rendered/tickets/01KYQZ5EJJJQNPT07017JQQWMM.md",
+    "source_hash": "b6a6cba434b5",
+    "title": "Ship GraphEngineer agent and slash commands",
+    "url": "https://github.com/RichardHightower/okf-plugin/wiki/Ticket-01KYQZ5EJJJQNPT07017JQQWMM"
+  },
+  "item/01KYQZ5EVN14SMZW8KW60K42G8": {
+    "page_id": "Ticket-01KYQZ5EVN14SMZW8KW60K42G8",
+    "render_hash": "b951a0ecd1a0",
+    "rev": "80f2ac9bb9c810a3c13681c4a1ad6a402924898d",
+    "source": "docs/.index/rendered/tickets/01KYQZ5EVN14SMZW8KW60K42G8.md",
+    "source_hash": "b951a0ecd1a0",
+    "title": "Ship sample-okf self-describing dual graph",
+    "url": "https://github.com/RichardHightower/okf-plugin/wiki/Ticket-01KYQZ5EVN14SMZW8KW60K42G8"
+  },
+  "item/01KYQZ5F4W0P0GWM6JHQBWFKGY": {
+    "page_id": "Ticket-01KYQZ5F4W0P0GWM6JHQBWFKGY",
+    "render_hash": "0acecc0f33c6",
+    "rev": "80f2ac9bb9c810a3c13681c4a1ad6a402924898d",
+    "source": "docs/.index/rendered/tickets/01KYQZ5F4W0P0GWM6JHQBWFKGY.md",
+    "source_hash": "0acecc0f33c6",
+    "title": "Ship dual-host README, CLAUDE.md, AGENTS.md",
+    "url": "https://github.com/RichardHightower/okf-plugin/wiki/Ticket-01KYQZ5F4W0P0GWM6JHQBWFKGY"
+  },
+  "item/01KYQZ5FE1NZM2VB2E43MJMNCQ": {
+    "page_id": "Ticket-01KYQZ5FE1NZM2VB2E43MJMNCQ",
+    "render_hash": "8bb27442aab6",
+    "rev": "80f2ac9bb9c810a3c13681c4a1ad6a402924898d",
+    "source": "docs/.index/rendered/tickets/01KYQZ5FE1NZM2VB2E43MJMNCQ.md",
+    "source_hash": "8bb27442aab6",
+    "title": "Publish public GitHub repo okf-plugin",
+    "url": "https://github.com/RichardHightower/okf-plugin/wiki/Ticket-01KYQZ5FE1NZM2VB2E43MJMNCQ"
+  },
+  "plan/2026-07-29-wiki-ticket-adoption": {
+    "canonical_key": "plan/2026-07-29-wiki-ticket-adoption",
+    "doc_type": "plan",
+    "page_id": "Plan-wiki-ticket-adoption",
+    "render_hash": "e2bcd4c67a3d",
+    "rev": "80f2ac9bb9c810a3c13681c4a1ad6a402924898d",
+    "source": "docs/plans/2026-07-29-wiki-ticket-adoption.md",
+    "source_hash": "5fafdee6aa28",
+    "title": "Adopt WikiTicket SDD for okf-plugin",
+    "truth_state": "current",
+    "url": "https://github.com/RichardHightower/okf-plugin/wiki/Plan-wiki-ticket-adoption",
+    "wiki_key": "plan/2026-07-29-wiki-ticket-adoption"
+  },
+  "release/v0.1.0": {
+    "page_id": "Release-v0.1.0",
+    "render_hash": "f509598b4cbf",
+    "rev": "80f2ac9bb9c810a3c13681c4a1ad6a402924898d",
+    "source": "docs/.index/rendered/releases/v0.1.0.md",
+    "source_hash": "f509598b4cbf",
+    "title": "Release v0.1.0",
+    "url": "https://github.com/RichardHightower/okf-plugin/wiki/Release-v0.1.0"
+  },
+  "release/v0.1.1": {
+    "page_id": "Release-v0.1.1",
+    "render_hash": "6d876794ec35",
+    "rev": "80f2ac9bb9c810a3c13681c4a1ad6a402924898d",
+    "source": "docs/.index/rendered/releases/v0.1.1.md",
+    "source_hash": "6d876794ec35",
+    "title": "Release v0.1.1",
+    "url": "https://github.com/RichardHightower/okf-plugin/wiki/Release-v0.1.1"
+  },
+  "release/v0.2.0": {
+    "page_id": "Release-v0.2.0",
+    "render_hash": "541f1a28ae41",
+    "rev": "80f2ac9bb9c810a3c13681c4a1ad6a402924898d",
+    "source": "docs/.index/rendered/releases/v0.2.0.md",
+    "source_hash": "541f1a28ae41",
+    "title": "Release v0.2.0",
+    "url": "https://github.com/RichardHightower/okf-plugin/wiki/Release-v0.2.0"
+  },
+  "roadmap": {
+    "canonical_key": "roadmap",
+    "doc_type": "roadmap",
+    "page_id": "Roadmap",
+    "render_hash": "c9a743bb2eb6",
+    "rev": "80f2ac9bb9c810a3c13681c4a1ad6a402924898d",
+    "source": "docs/roadmap.md",
+    "source_hash": "8150ff6ab9d7",
+    "title": "Roadmap",
+    "truth_state": "current",
+    "url": "https://github.com/RichardHightower/okf-plugin/wiki/Roadmap",
+    "wiki_key": "roadmap"
+  },
+  "sidebar": {
+    "page_id": "_Sidebar",
+    "render_hash": "12e8d0929da3",
+    "rev": "80f2ac9bb9c810a3c13681c4a1ad6a402924898d",
+    "source": "docs/.index/rendered/_Sidebar.md",
+    "source_hash": "12e8d0929da3",
+    "title": "Sidebar",
+    "url": "https://github.com/RichardHightower/okf-plugin/wiki/_Sidebar"
+  }
+}

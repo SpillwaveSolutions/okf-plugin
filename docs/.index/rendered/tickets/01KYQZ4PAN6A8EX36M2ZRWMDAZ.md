@@ -1,6 +1,6 @@
 # Publish initial roadmap and plan to GitHub wiki
 
-`01KYQZ4PAN6A8EX36M2ZRWMDAZ` · task/feature · **in-progress**
+`01KYQZ4PAN6A8EX36M2ZRWMDAZ` · task/feature · **done**
 
 Run ia-index and wiki-publish so Home/roadmap/plan pages are visible outside
 the repo for collaborators.

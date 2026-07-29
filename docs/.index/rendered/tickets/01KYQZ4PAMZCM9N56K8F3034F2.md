@@ -12,7 +12,7 @@ commit and plan is tracked the same way as other Spillwave projects. (done)
 and wiki-publish have a real target. (done)
 - [[Ticket-01KYQZ4PAN551JXFMH2GF82BXF]] Sync open work items to GitHub Issues — Push active roadmap items to Issues so non-CLI stakeholders can track work. (done)
 - [[Ticket-01KYQZ4PAN6A8EX36M2ZRWMDAZ]] Publish initial roadmap and plan to GitHub wiki — Run ia-index and wiki-publish so Home/roadmap/plan pages are visible outside
-the repo for collaborators. (in-progress)
+the repo for collaborators. (done)
 - [[Ticket-01KYQZ4PAN71X19C6ZZVM42ZS2]] v0.2 — GraphEngineer polish and progressive-disclosure defaults — Tighten the specialist agent prompts and default 2-hop pack behavior based on
 real usage of impact and query skills. (open)
 - [[Ticket-01KYQZ4PANG2JE670X42GCZY6S]] v0.2 — richer typed-edge conventions and TicketLink SLDC helpers — Teach skills optional YAML links.rel and helpers that map Wicked Ticket /
@@ -23,7 +23,7 @@ so the dual graph points at real managed work. (done)
 - [[Ticket-01KYQZ4PANSHKME2QNA8FZVVGC]] Capture MVP v0.1 delivery as closed worklog history — Record the completed plugin scaffold (skills, agent, hooks, sample-okf, docs)
 as done items so the roadmap reflects what already shipped. (done)
 
-Progress: 5/9 done
+Progress: 6/9 done
 
 ## Related tickets
 
