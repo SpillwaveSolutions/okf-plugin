@@ -1,6 +1,6 @@
 # Optional Claude marketplace listing for okf-graph-eng
 
-`01KYQZ4PANQFYAMMEBBHYPPG6P` · task/feature · **open**
+`01KYQZ4PANQFYAMMEBBHYPPG6P` · task/feature · **done**
 
 Package and publish the plugin for one-command install once MVP is stable.
 

@@ -1,0 +1,35 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "okf-plugin-marketplace",
+  "description": "OKF graph engineering plugins for Claude Code (Grok Build compatible via Claude plugin zero-config)",
+  "owner": {
+    "name": "Rick Hightower",
+    "url": "https://github.com/RichardHightower"
+  },
+  "plugins": [
+    {
+      "name": "okf-graph-eng",
+      "source": "..",
+      "description": "Graph engineering for OKF repos — impact analysis, agent/harness graphs, progressive disclosure, typed edges, TicketLink/worklog bridges. Works in Claude Code and Grok Build.",
+      "version": "0.2.0",
+      "author": {
+        "name": "Rick Hightower"
+      },
+      "homepage": "https://github.com/RichardHightower/okf-plugin",
+      "repository": "https://github.com/RichardHightower/okf-plugin",
+      "license": "MIT",
+      "keywords": [
+        "okf",
+        "graph-engineering",
+        "knowledge-graph",
+        "agent-graph",
+        "harness",
+        "impact-analysis",
+        "worklog",
+        "claude-code",
+        "grok-build"
+      ],
+      "category": "productivity"
+    }
+  ]
+}

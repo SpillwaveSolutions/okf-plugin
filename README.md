@@ -8,7 +8,7 @@ Works in **Claude Code** and **Grok Build** (zero-config: Grok Build reads Claud
 |---|---|
 | **Plugin name** | `okf-graph-eng` |
 | **Repo** | [RichardHightower/okf-plugin](https://github.com/RichardHightower/okf-plugin) |
-| **Version** | 0.1.0 |
+| **Version** | 0.2.0 |
 | **License** | MIT |
 
 ## Why this plugin
@@ -28,16 +28,20 @@ This plugin specializes OKF workflows for:
 ### Claude Code
 
 ```bash
-# From marketplace (when published) or local path:
-claude plugin install /path/to/okf-plugin
-# or add as a local marketplace / project plugin per Claude Code docs
+# Marketplace (from this repo)
+claude plugin marketplace add RichardHightower/okf-plugin
+claude plugin install okf-graph-eng@okf-plugin-marketplace
+
+# Or local path
+claude plugin marketplace add /path/to/okf-plugin
+claude plugin install okf-graph-eng@okf-plugin-marketplace
 ```
 
-Project-local option: clone into your tools path and enable the plugin, or reference the repo as a marketplace source.
+Marketplace metadata: `.claude-plugin/marketplace.json`.
 
 ### Grok Build
 
-Grok Build discovers Claude-compatible plugins automatically. Point it at this repo (or install via Claude marketplace metadata) — **no separate Grok-only config required**.
+Grok Build discovers Claude-compatible plugins automatically — **no separate Grok-only config required**. Optional identity pin: `.grok-plugin/marketplace.json`.
 
 Skills, agents, commands, and hooks under this tree load the same way as in Claude Code.
 
@@ -59,7 +63,10 @@ Try the included self-describing sample:
 ```bash
 python3 scripts/okf-graph.py validate sample-okf
 python3 scripts/okf-graph.py impact sample-okf knowledge/skill-okf-impact.md
-python3 scripts/okf-graph.py subgraph sample-okf agents/graph-engineer.md --hops 2
+python3 scripts/okf-graph.py pack sample-okf agents/graph-engineer.md --hops 2
+python3 scripts/okf-graph.py edges sample-okf --rel routes_to
+# TicketLink from worklog:
+bin/worklog fold | python3 scripts/okf-ticket-link.py emit --bundle sample-okf --open-only --dry-run
 ```
 
 ## What’s included
@@ -109,9 +116,11 @@ Prefer absolute Markdown links: `[Graph Engineer](/agents/graph-engineer.md)`.
 
 ## Roadmap
 
+Generated live from WikiTicket worklog: [`docs/roadmap.md`](./docs/roadmap.md) · [wiki Roadmap](https://github.com/RichardHightower/okf-plugin/wiki/Roadmap)
+
 - **v0.1 (MVP)** — skills, packaging, hooks, sample OKF, okfcli/Python wrappers  
-- **v0.2** — richer typed edges, TicketLink SLDC helpers, GraphEngineer polish  
-- **Later** — MCP server, CI action, enhanced visualization overlays  
+- **v0.2** — typed edges, TicketLink ↔ worklog helpers, GraphEngineer progressive-disclosure defaults, marketplace metadata  
+- **Later** — MCP server, enhanced visualization overlays  
 
 ## Related ecosystem
 

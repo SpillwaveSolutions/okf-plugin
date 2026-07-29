@@ -4,7 +4,7 @@
    "frozen": false,
    "page_name": "Home",
    "render": "as-is",
-   "render_hash": "6329f4e94209",
+   "render_hash": "7a6e118df66d",
    "source": "docs/.index/rendered/home.md",
    "title": "Home",
    "truth_state": "current",
@@ -14,7 +14,7 @@
    "frozen": false,
    "page_name": "Index-Decisions",
    "render": "as-is",
-   "render_hash": "d2b3d4146cf8",
+   "render_hash": "a5eefae3f29c",
    "source": "docs/.index/rendered/decisions.md",
    "title": "Decisions Index",
    "truth_state": "current",
@@ -44,7 +44,7 @@
    "frozen": false,
    "page_name": "Index-Traceability",
    "render": "as-is",
-   "render_hash": "ce9cd078fefe",
+   "render_hash": "f9c013a5ce64",
    "source": "docs/.index/rendered/traceability.md",
    "title": "Traceability Index",
    "truth_state": "current",
@@ -74,7 +74,7 @@
    "frozen": false,
    "page_name": "Release-v0.2.0",
    "render": "as-is",
-   "render_hash": "541f1a28ae41",
+   "render_hash": "34512147898e",
    "source": "docs/.index/rendered/releases/v0.2.0.md",
    "title": "Release v0.2.0",
    "truth_state": "shipped",
@@ -94,10 +94,10 @@
    "frozen": false,
    "page_name": "Ticket-01KYQZ4PAMZCM9N56K8F3034F2",
    "render": "as-is",
-   "render_hash": "ba44f3b4314e",
+   "render_hash": "22ca587c359d",
    "source": "docs/.index/rendered/tickets/01KYQZ4PAMZCM9N56K8F3034F2.md",
    "title": "Adopt WikiTicket SDD for okf-plugin",
-   "truth_state": "in-progress",
+   "truth_state": "done",
    "wiki_key": "item/01KYQZ4PAMZCM9N56K8F3034F2"
   },
   {
@@ -134,30 +134,30 @@
    "frozen": false,
    "page_name": "Ticket-01KYQZ4PAN71X19C6ZZVM42ZS2",
    "render": "as-is",
-   "render_hash": "68a5573d6ef9",
+   "render_hash": "9c1dfb01fd43",
    "source": "docs/.index/rendered/tickets/01KYQZ4PAN71X19C6ZZVM42ZS2.md",
    "title": "v0.2 \u2014 GraphEngineer polish and progressive-disclosure defaults",
-   "truth_state": "open",
+   "truth_state": "done",
    "wiki_key": "item/01KYQZ4PAN71X19C6ZZVM42ZS2"
   },
   {
    "frozen": false,
    "page_name": "Ticket-01KYQZ4PANG2JE670X42GCZY6S",
    "render": "as-is",
-   "render_hash": "22a4d3855992",
+   "render_hash": "8027f597b54e",
    "source": "docs/.index/rendered/tickets/01KYQZ4PANG2JE670X42GCZY6S.md",
    "title": "v0.2 \u2014 richer typed-edge conventions and TicketLink SLDC helpers",
-   "truth_state": "open",
+   "truth_state": "done",
    "wiki_key": "item/01KYQZ4PANG2JE670X42GCZY6S"
   },
   {
    "frozen": false,
    "page_name": "Ticket-01KYQZ4PANQFYAMMEBBHYPPG6P",
    "render": "as-is",
-   "render_hash": "1449457a8bfc",
+   "render_hash": "6a260706789f",
    "source": "docs/.index/rendered/tickets/01KYQZ4PANQFYAMMEBBHYPPG6P.md",
    "title": "Optional Claude marketplace listing for okf-graph-eng",
-   "truth_state": "open",
+   "truth_state": "done",
    "wiki_key": "item/01KYQZ4PANQFYAMMEBBHYPPG6P"
   },
   {
@@ -252,11 +252,11 @@
    "wiki_key": "plan/2026-07-29-wiki-ticket-adoption"
   },
   {
-   "banner": "> **Current** \u2014 this is the living version; regenerated at 2026-07-29T22:55:25Z. Historical snapshots are linked from [[Index-Releases]].",
+   "banner": "> **Current** \u2014 this is the living version; regenerated at 2026-07-29T23:00:28Z. Historical snapshots are linked from [[Index-Releases]].",
    "frozen": false,
    "page_name": "Roadmap",
    "render": "doc+banner",
-   "render_hash": "26d5af646942",
+   "render_hash": "0a5ea7846f03",
    "source": "docs/roadmap.md",
    "title": "Roadmap",
    "truth_state": "current",
@@ -264,7 +264,7 @@
   }
  ],
  "sidebar": {
-  "render_hash": "12e8d0929da3",
+  "render_hash": "bf90917cf238",
   "source": "docs/.index/rendered/_Sidebar.md"
  },
  "version": 1

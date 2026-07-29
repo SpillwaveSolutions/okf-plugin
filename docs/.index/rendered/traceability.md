@@ -47,21 +47,21 @@ _The evidence chain: plan → item → ticket → code → release, forward and 
 - produced-by: [[Plan-wiki-ticket-adoption]]
 
 ### Optional Claude marketplace listing for okf-graph-eng
-`01KYQZ4PANQFYAMMEBBHYPPG6P` · status: todo
+`01KYQZ4PANQFYAMMEBBHYPPG6P` · status: done
 - belongs-to: Adopt WikiTicket SDD for okf-plugin
 - references: [github#6](https://github.com/RichardHightower/okf-plugin/issues/6)
 - targets: release/v0.2.0
 - produced-by: [[Plan-wiki-ticket-adoption]]
 
 ### v0.2 — richer typed-edge conventions and TicketLink SLDC helpers
-`01KYQZ4PANG2JE670X42GCZY6S` · status: todo
+`01KYQZ4PANG2JE670X42GCZY6S` · status: done
 - belongs-to: Adopt WikiTicket SDD for okf-plugin
 - references: [github#5](https://github.com/RichardHightower/okf-plugin/issues/5)
 - targets: release/v0.2.0
 - produced-by: [[Plan-wiki-ticket-adoption]]
 
 ### v0.2 — GraphEngineer polish and progressive-disclosure defaults
-`01KYQZ4PAN71X19C6ZZVM42ZS2` · status: todo
+`01KYQZ4PAN71X19C6ZZVM42ZS2` · status: done
 - belongs-to: Adopt WikiTicket SDD for okf-plugin
 - references: [github#4](https://github.com/RichardHightower/okf-plugin/issues/4)
 - targets: release/v0.2.0
@@ -87,7 +87,7 @@ _The evidence chain: plan → item → ticket → code → release, forward and 
 - produced-by: [[Plan-wiki-ticket-adoption]]
 
 ### Adopt WikiTicket SDD for okf-plugin
-`01KYQZ4PAMZCM9N56K8F3034F2` · status: in_progress
+`01KYQZ4PAMZCM9N56K8F3034F2` · status: done
 - references: [github#1](https://github.com/RichardHightower/okf-plugin/issues/1)
 - contains: Scaffold worklog tooling in okf-plugin
 - contains: Configure GitHub Issues and GitHub wiki in .work/config.yml

@@ -7,6 +7,19 @@ tags: [agent, graph-engineering]
 timestamp: 2026-07-29T00:00:00Z
 status: active
 verified: true
+links:
+  - target: /agents/skill-runner.md
+    rel: routes_to
+  - target: /knowledge/skill-okf-impact.md
+    rel: uses
+  - target: /knowledge/skill-okf-query.md
+    rel: uses
+  - target: /knowledge/skill-okf-validate.md
+    rel: uses
+  - target: /shared/harness-session.md
+    rel: uses
+  - target: /workflows/plugin-maintenance.md
+    rel: implements
 ---
 
 # Graph Engineer

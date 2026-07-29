@@ -7,7 +7,15 @@ timestamp: 2026-07-29T00:00:00Z
 status: done
 external_id: 01KYQZ5E4X4XZ1XZ39FC4SKWBN
 external_system: worklog
+worklog_id: 01KYQZ5E4X4XZ1XZ39FC4SKWBN
 verified: true
+links:
+  - target: /knowledge/plugin-architecture.md
+    rel: tracks
+  - target: /workflows/plugin-maintenance.md
+    rel: tracks
+  - target: /decisions/single-claude-plugin.md
+    rel: documents
 ---
 
 # MVP plugin scaffold

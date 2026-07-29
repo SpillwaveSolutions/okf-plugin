@@ -214,7 +214,7 @@
   },
   "item/01KYQZ4PAMZCM9N56K8F3034F2": {
    "doc_type": "item",
-   "status": "in_progress",
+   "status": "done",
    "title": "Adopt WikiTicket SDD for okf-plugin"
   },
   "item/01KYQZ4PAN1WHT2YGX667F3EX6": {
@@ -234,17 +234,17 @@
   },
   "item/01KYQZ4PAN71X19C6ZZVM42ZS2": {
    "doc_type": "item",
-   "status": "todo",
+   "status": "done",
    "title": "v0.2 \u2014 GraphEngineer polish and progressive-disclosure defaults"
   },
   "item/01KYQZ4PANG2JE670X42GCZY6S": {
    "doc_type": "item",
-   "status": "todo",
+   "status": "done",
    "title": "v0.2 \u2014 richer typed-edge conventions and TicketLink SLDC helpers"
   },
   "item/01KYQZ4PANQFYAMMEBBHYPPG6P": {
    "doc_type": "item",
-   "status": "todo",
+   "status": "done",
    "title": "Optional Claude marketplace listing for okf-graph-eng"
   },
   "item/01KYQZ4PANS9D55RG19VMXGQ1V": {
