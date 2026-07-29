@@ -12,7 +12,7 @@
         "claude_plugin": true,
         "zero_config": true
       },
-      "repository": "https://github.com/RichardHightower/okf-plugin",
+      "repository": "https://github.com/SpillwaveSolutions/okf-plugin",
       "sha_pinning": "optional — pin to a release tag when publishing"
     }
   ]

@@ -25,7 +25,7 @@ links:
 - System: [WikiTicket SDD / worklog](https://github.com/SpillwaveSolutions/wiki_ticket_sdd)
 - Worklog epic ULID: `01KYQZ5E4X4XZ1XZ39FC4SKWBN`
 - Plan (adoption follow-on): `docs/plans/2026-07-29-wiki-ticket-adoption.md`
-- GitHub project: https://github.com/RichardHightower/okf-plugin
+- GitHub project: https://github.com/SpillwaveSolutions/okf-plugin
 
 ## Maps to OKF concepts
 
