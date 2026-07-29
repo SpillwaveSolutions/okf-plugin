@@ -21,19 +21,19 @@
    "status": "completed",
    "title": "Adopt WikiTicket SDD for okf-plugin",
    "truth_state": "current",
-   "wiki": "https://github.com/RichardHightower/okf-plugin/wiki/Plan-wiki-ticket-adoption",
+   "wiki": "https://github.com/SpillwaveSolutions/okf-plugin/wiki/Plan-wiki-ticket-adoption",
    "wiki_key": "plan/2026-07-29-wiki-ticket-adoption"
   },
   {
    "canonical_key": "roadmap",
    "doc_type": "roadmap",
-   "generated_at": "2026-07-29T23:00:28Z",
+   "generated_at": "2026-07-29T23:03:30Z",
    "slug": "roadmap",
    "source": "docs/roadmap.md",
-   "source_hash": "cf79a250",
+   "source_hash": "2991b9b2",
    "title": "Roadmap",
    "truth_state": "current",
-   "wiki": "https://github.com/RichardHightower/okf-plugin/wiki/Roadmap",
+   "wiki": "https://github.com/SpillwaveSolutions/okf-plugin/wiki/Roadmap",
    "wiki_key": "roadmap"
   }
  ],

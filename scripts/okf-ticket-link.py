@@ -141,7 +141,7 @@ def emit(args: argparse.Namespace) -> int:
         if ext_system == "github" and ext_key:
             # key may be "12" or full
             if str(ext_key).isdigit():
-                project = args.github_project or "RichardHightower/okf-plugin"
+                project = args.github_project or "SpillwaveSolutions/okf-plugin"
                 gh_url = f"https://github.com/{project}/issues/{ext_key}"
                 ext_key = str(ext_key)
         slug = slugify(title)
@@ -206,7 +206,7 @@ def main() -> int:
     s.add_argument("--body")
     s.add_argument("--status", default="todo")
     s.add_argument("--github-issue", help="GitHub issue number")
-    s.add_argument("--github-project", default="RichardHightower/okf-plugin")
+    s.add_argument("--github-project", default="SpillwaveSolutions/okf-plugin")
     s.add_argument("--maps-to", action="append", default=[], help="OKF concept path to link")
     s.add_argument("--open-only", action="store_true", help="Skip done/cancelled items")
     s.add_argument("--dry-run", action="store_true")

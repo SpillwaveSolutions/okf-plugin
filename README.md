@@ -7,7 +7,7 @@ Works in **Claude Code** and **Grok Build** (zero-config: Grok Build reads Claud
 | | |
 |---|---|
 | **Plugin name** | `okf-graph-eng` |
-| **Repo** | [RichardHightower/okf-plugin](https://github.com/RichardHightower/okf-plugin) |
+| **Repo** | [SpillwaveSolutions/okf-plugin](https://github.com/SpillwaveSolutions/okf-plugin) |
 | **Version** | 0.2.0 |
 | **License** | MIT |
 
@@ -29,7 +29,7 @@ This plugin specializes OKF workflows for:
 
 ```bash
 # Marketplace (from this repo)
-claude plugin marketplace add RichardHightower/okf-plugin
+claude plugin marketplace add SpillwaveSolutions/okf-plugin
 claude plugin install okf-graph-eng@okf-plugin-marketplace
 
 # Or local path
@@ -116,7 +116,7 @@ Prefer absolute Markdown links: `[Graph Engineer](/agents/graph-engineer.md)`.
 
 ## Roadmap
 
-Generated live from WikiTicket worklog: [`docs/roadmap.md`](./docs/roadmap.md) · [wiki Roadmap](https://github.com/RichardHightower/okf-plugin/wiki/Roadmap)
+Generated live from WikiTicket worklog: [`docs/roadmap.md`](./docs/roadmap.md) · [wiki Roadmap](https://github.com/SpillwaveSolutions/okf-plugin/wiki/Roadmap)
 
 - **v0.1 (MVP)** — skills, packaging, hooks, sample OKF, okfcli/Python wrappers  
 - **v0.2** — typed edges, TicketLink ↔ worklog helpers, GraphEngineer progressive-disclosure defaults, marketplace metadata  

@@ -44,7 +44,7 @@
    "frozen": false,
    "page_name": "Index-Traceability",
    "render": "as-is",
-   "render_hash": "f9c013a5ce64",
+   "render_hash": "735bc9da1c1a",
    "source": "docs/.index/rendered/traceability.md",
    "title": "Traceability Index",
    "truth_state": "current",
@@ -79,6 +79,16 @@
    "title": "Release v0.2.0",
    "truth_state": "shipped",
    "wiki_key": "release/v0.2.0"
+  },
+  {
+   "frozen": false,
+   "page_name": "Release-v0.2.1",
+   "render": "as-is",
+   "render_hash": "b4eb9614b50e",
+   "source": "docs/.index/rendered/releases/v0.2.1.md",
+   "title": "Release v0.2.1",
+   "truth_state": "shipped",
+   "wiki_key": "release/v0.2.1"
   },
   {
    "frozen": false,
@@ -241,6 +251,16 @@
    "wiki_key": "item/01KYQZ5FE1NZM2VB2E43MJMNCQ"
   },
   {
+   "frozen": false,
+   "page_name": "Ticket-01KYR1W31GBAGDJEMY077HFM0J",
+   "render": "as-is",
+   "render_hash": "2becabea2c52",
+   "source": "docs/.index/rendered/tickets/01KYR1W31GBAGDJEMY077HFM0J.md",
+   "title": "Move okf-plugin to SpillwaveSolutions org",
+   "truth_state": "done",
+   "wiki_key": "item/01KYR1W31GBAGDJEMY077HFM0J"
+  },
+  {
    "banner": "> **Current** \u2014 the latest status report. Reports freeze once published; corrections appear in later reports.",
    "frozen": true,
    "page_name": "Plan-wiki-ticket-adoption",
@@ -252,11 +272,11 @@
    "wiki_key": "plan/2026-07-29-wiki-ticket-adoption"
   },
   {
-   "banner": "> **Current** \u2014 this is the living version; regenerated at 2026-07-29T23:00:28Z. Historical snapshots are linked from [[Index-Releases]].",
+   "banner": "> **Current** \u2014 this is the living version; regenerated at 2026-07-29T23:03:30Z. Historical snapshots are linked from [[Index-Releases]].",
    "frozen": false,
    "page_name": "Roadmap",
    "render": "doc+banner",
-   "render_hash": "0a5ea7846f03",
+   "render_hash": "c5878340ad77",
    "source": "docs/roadmap.md",
    "title": "Roadmap",
    "truth_state": "current",
