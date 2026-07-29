@@ -44,7 +44,7 @@
    "frozen": false,
    "page_name": "Index-Traceability",
    "render": "as-is",
-   "render_hash": "738e382cf2d6",
+   "render_hash": "50b0f831af48",
    "source": "docs/.index/rendered/traceability.md",
    "title": "Traceability Index",
    "truth_state": "current",
@@ -84,7 +84,7 @@
    "frozen": false,
    "page_name": "Release-v0.2.1",
    "render": "as-is",
-   "render_hash": "6121ab12785c",
+   "render_hash": "c6e1ef3a81d2",
    "source": "docs/.index/rendered/releases/v0.2.1.md",
    "title": "Release v0.2.1",
    "truth_state": "shipped",
@@ -281,6 +281,26 @@
    "wiki_key": "item/01KYR36M2K9CB3ZMAMG0NFNKV1"
   },
   {
+   "frozen": false,
+   "page_name": "Ticket-01KYR4792FJKSZW81SJ4F45HAC",
+   "render": "as-is",
+   "render_hash": "7edf565800ec",
+   "source": "docs/.index/rendered/tickets/01KYR4792FJKSZW81SJ4F45HAC.md",
+   "title": "Fix okf-graph pack/impact on large OKF bundles with dir links",
+   "truth_state": "done",
+   "wiki_key": "item/01KYR4792FJKSZW81SJ4F45HAC"
+  },
+  {
+   "frozen": false,
+   "page_name": "Ticket-01KYR4G11VPKJBWGJV1QD0H184",
+   "render": "as-is",
+   "render_hash": "04879ffeadc2",
+   "source": "docs/.index/rendered/tickets/01KYR4G11VPKJBWGJV1QD0H184.md",
+   "title": "Pack progressive disclosure should be outbound-only by default",
+   "truth_state": "done",
+   "wiki_key": "item/01KYR4G11VPKJBWGJV1QD0H184"
+  },
+  {
    "banner": "> **Current** \u2014 this is the living version. Historical snapshots are linked from [[Index-Releases]].",
    "frozen": false,
    "page_name": "Code-Walkthrough",
@@ -347,11 +367,11 @@
    "wiki_key": "plan/2026-07-29-wiki-ticket-adoption"
   },
   {
-   "banner": "> **Current** \u2014 this is the living version; regenerated at 2026-07-29T23:26:39Z. Historical snapshots are linked from [[Index-Releases]].",
+   "banner": "> **Current** \u2014 this is the living version; regenerated at 2026-07-29T23:48:57Z. Historical snapshots are linked from [[Index-Releases]].",
    "frozen": false,
    "page_name": "Roadmap",
    "render": "doc+banner",
-   "render_hash": "a59a174e324e",
+   "render_hash": "8d229cde12db",
    "source": "docs/roadmap.md",
    "title": "Roadmap",
    "truth_state": "current",

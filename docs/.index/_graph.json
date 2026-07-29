@@ -171,6 +171,16 @@
    "type": "targets"
   },
   {
+   "from": "item/01KYR4792FJKSZW81SJ4F45HAC",
+   "to": "release/v0.2.1",
+   "type": "targets"
+  },
+  {
+   "from": "item/01KYR4G11VPKJBWGJV1QD0H184",
+   "to": "release/v0.2.1",
+   "type": "targets"
+  },
+  {
    "from": "plan/2026-07-29-wiki-ticket-adoption",
    "to": "item/01KYQZ4PAMK1ND4XKH8A1VHMFN",
    "type": "produces"
@@ -352,6 +362,16 @@
    "doc_type": "item",
    "status": "done",
    "title": "Fix red wiki Home links with missing guide and design docs"
+  },
+  "item/01KYR4792FJKSZW81SJ4F45HAC": {
+   "doc_type": "item",
+   "status": "done",
+   "title": "Fix okf-graph pack/impact on large OKF bundles with dir links"
+  },
+  "item/01KYR4G11VPKJBWGJV1QD0H184": {
+   "doc_type": "item",
+   "status": "done",
+   "title": "Pack progressive disclosure should be outbound-only by default"
   },
   "plan/2026-07-29-wiki-ticket-adoption": {
    "doc_type": "plan",
