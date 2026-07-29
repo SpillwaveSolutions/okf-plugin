@@ -44,9 +44,23 @@ links:
     rel: routes_to
   - target: /knowledge/orders.md
     rel: depends_on
+  - target: /tickets/mvp-plugin-scaffold.md
+    rel: tracks
 ```
 
-Common `rel` values: `depends_on`, `routes_to`, `implements`, `documents`, `uses`, `owns`, `supersedes`.
+Common `rel` values: `depends_on`, `routes_to`, `implements`, `documents`, `uses`, `owns`, `supersedes`, `related_to`, `tracks`, `maps_to`.
+
+Deep reference: `references/typed-edges.md`.
+
+## TicketLink (WikiTicket / worklog)
+
+When bridging to SLDC systems, use `type: TicketLink` with `worklog_id` and optional `external_id` / `external_system`.
+
+```bash
+bin/worklog fold | python3 "${CLAUDE_PLUGIN_ROOT}/scripts/okf-ticket-link.py" emit --bundle <bundle> --open-only
+```
+
+Deep reference: `references/ticketlink-sldc.md`. Template: `templates/ticket-link.md`.
 
 ## Provenance & trust
 

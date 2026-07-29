@@ -17,14 +17,16 @@ Given a concept ID/path (or a proposed change), return the full affected subgrap
    - Fallback:
      ```bash
      python3 "${CLAUDE_PLUGIN_ROOT}/scripts/okf-graph.py" impact <bundle> <concept>
+     python3 "${CLAUDE_PLUGIN_ROOT}/scripts/okf-graph.py" edges <bundle> --from <concept>
      ```
 3. Build both:
    - **Outbound** closure — what the concept depends on / routes to
    - **Inbound** closure — who cites / depends on / routes through it
+   - **Direct typed edges** — `direct_edges` in impact JSON (`routes_to`, `depends_on`, …)
 4. **Classify** nodes by type and trust/lifecycle (`verified`, `status`, `stale_after`).
 5. **Produce two outputs:**
    - **Human report** — ranked list (critical → low), with reasons and suggested actions
-   - **Structured JSON** (optional): `{ target, inbound, outbound, critical_path, suggested_order }`
+   - **Structured JSON** (optional): `{ target, inbound, outbound, direct_edges, suggested_order }`
 
 ## Ranking heuristics
 

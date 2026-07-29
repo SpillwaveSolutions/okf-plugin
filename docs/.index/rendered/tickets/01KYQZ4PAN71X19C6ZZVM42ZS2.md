@@ -1,6 +1,6 @@
 # v0.2 — GraphEngineer polish and progressive-disclosure defaults
 
-`01KYQZ4PAN71X19C6ZZVM42ZS2` · task/feature · **open**
+`01KYQZ4PAN71X19C6ZZVM42ZS2` · task/feature · **done**
 
 Tighten the specialist agent prompts and default 2-hop pack behavior based on
 real usage of impact and query skills.

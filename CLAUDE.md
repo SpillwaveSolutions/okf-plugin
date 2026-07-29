@@ -49,8 +49,10 @@ Use `${CLAUDE_PLUGIN_ROOT}` for all intra-plugin paths in hooks and skill instru
 ```bash
 python3 scripts/okf-graph.py validate sample-okf
 python3 scripts/okf-graph.py impact sample-okf agents/graph-engineer.md
-python3 scripts/okf-graph.py subgraph sample-okf knowledge/plugin-architecture.md --hops 2
+python3 scripts/okf-graph.py pack sample-okf agents/graph-engineer.md --hops 2
+python3 scripts/okf-graph.py edges sample-okf --rel routes_to
 python3 scripts/okf-graph.py orphans sample-okf
+bin/worklog fold | python3 scripts/okf-ticket-link.py emit --bundle sample-okf --open-only --dry-run
 ```
 
 ## When editing the plugin itself

@@ -6,6 +6,15 @@ tags: [workflow, harness, impact]
 timestamp: 2026-07-29T00:00:00Z
 status: active
 verified: true
+links:
+  - target: /knowledge/skill-okf-impact.md
+    rel: uses
+  - target: /knowledge/skill-okf-query.md
+    rel: uses
+  - target: /agents/graph-engineer.md
+    rel: routes_to
+  - target: /shared/harness-session.md
+    rel: uses
 ---
 
 # Impact-first change

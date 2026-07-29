@@ -1,6 +1,6 @@
 # v0.2 — richer typed-edge conventions and TicketLink SLDC helpers
 
-`01KYQZ4PANG2JE670X42GCZY6S` · task/feature · **open**
+`01KYQZ4PANG2JE670X42GCZY6S` · task/feature · **done**
 
 Teach skills optional YAML links.rel and helpers that map Wicked Ticket /
 worklog items into TicketLink concepts without breaking plain Markdown links.

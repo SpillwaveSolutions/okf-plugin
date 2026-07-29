@@ -25,17 +25,20 @@ Answer graph questions and emit **minimal context packs** (subgraphs) instead of
 1. Resolve bundle root and query target(s).
 2. Prefer deterministic tools:
    - `okf graph`, search, or list commands if available
-   - Fallback:
+   - Fallback (defaults: **2 hops**, **20 nodes**):
      ```bash
+     python3 "${CLAUDE_PLUGIN_ROOT}/scripts/okf-graph.py" pack <bundle> <concept> --hops 2 --max-nodes 20
      python3 "${CLAUDE_PLUGIN_ROOT}/scripts/okf-graph.py" subgraph <bundle> <concept> --hops 2
      python3 "${CLAUDE_PLUGIN_ROOT}/scripts/okf-graph.py" backlinks <bundle> <concept>
+     python3 "${CLAUDE_PLUGIN_ROOT}/scripts/okf-graph.py" edges <bundle> --rel routes_to
      ```
 3. Shape results for the consumer:
-   - **Human**: short narrative + bullet list of nodes/edges
-   - **Agent pack**: ordered file list + optional mermaid
-   - **JSON**: nodes + edges for downstream steps
-4. Cap pack size. Default hops = 2. Increase only if the user needs deeper context.
+   - **Human / agent pack**: use `pack` → `markdown` field (preferred)
+   - **JSON**: nodes + typed edges for downstream steps
+4. Cap pack size. Default hops = 2, max-nodes = 20. Increase only if the user needs deeper context.
 5. Annotate trust: mark unverified or draft nodes so consumers can deprioritize them.
+
+Deep reference: `references/progressive-disclosure.md`.
 
 ## Progressive disclosure pack format
 
