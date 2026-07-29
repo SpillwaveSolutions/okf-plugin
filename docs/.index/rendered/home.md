@@ -1,4 +1,6 @@
+# OKF Graph Engineering Plugin
 
+**okf-graph-eng** is a Claude Code plugin (zero-config compatible with Grok Build) for **graph engineering** on OKF repositories: knowledge graphs and agent/harness graphs in portable Markdown + YAML, with first-class impact analysis, progressive disclosure packs, and TicketLink bridges to WikiTicket SDD / worklog.
 
 ---
 

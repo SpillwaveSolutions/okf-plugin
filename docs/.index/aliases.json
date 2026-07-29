@@ -1,1 +1,5 @@
-{}
+{
+ "cli-reference": "guide/cli-reference",
+ "plugin-guide": "guide/plugin-guide",
+ "user-guide": "guide/user-guide"
+}

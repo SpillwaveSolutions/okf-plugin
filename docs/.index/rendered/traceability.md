@@ -2,6 +2,10 @@
 
 _The evidence chain: plan → item → ticket → code → release, forward and backward. Generated from `docs/.index/_graph.json`; do not edit._
 
+### Fix red wiki Home links with missing guide and design docs
+`01KYR36M2K9CB3ZMAMG0NFNKV1` · status: done
+- targets: release/v0.2.1
+
 ### Publish docs to SpillwaveSolutions GitHub wiki
 `01KYR201M64QHFBVGV3FZ1GS4F` · status: done
 - targets: release/v0.2.1
