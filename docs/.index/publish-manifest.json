@@ -4,7 +4,7 @@
    "frozen": false,
    "page_name": "Home",
    "render": "as-is",
-   "render_hash": "7a6e118df66d",
+   "render_hash": "6606cabdb615",
    "source": "docs/.index/rendered/home.md",
    "title": "Home",
    "truth_state": "current",
@@ -44,7 +44,7 @@
    "frozen": false,
    "page_name": "Index-Traceability",
    "render": "as-is",
-   "render_hash": "c02daaf4627d",
+   "render_hash": "738e382cf2d6",
    "source": "docs/.index/rendered/traceability.md",
    "title": "Traceability Index",
    "truth_state": "current",
@@ -84,7 +84,7 @@
    "frozen": false,
    "page_name": "Release-v0.2.1",
    "render": "as-is",
-   "render_hash": "1102307e05e5",
+   "render_hash": "6121ab12785c",
    "source": "docs/.index/rendered/releases/v0.2.1.md",
    "title": "Release v0.2.1",
    "truth_state": "shipped",
@@ -271,6 +271,71 @@
    "wiki_key": "item/01KYR201M64QHFBVGV3FZ1GS4F"
   },
   {
+   "frozen": false,
+   "page_name": "Ticket-01KYR36M2K9CB3ZMAMG0NFNKV1",
+   "render": "as-is",
+   "render_hash": "fdeb7412ea11",
+   "source": "docs/.index/rendered/tickets/01KYR36M2K9CB3ZMAMG0NFNKV1.md",
+   "title": "Fix red wiki Home links with missing guide and design docs",
+   "truth_state": "done",
+   "wiki_key": "item/01KYR36M2K9CB3ZMAMG0NFNKV1"
+  },
+  {
+   "banner": "> **Current** \u2014 this is the living version. Historical snapshots are linked from [[Index-Releases]].",
+   "frozen": false,
+   "page_name": "Code-Walkthrough",
+   "render": "doc+banner",
+   "render_hash": "0b05d9071f39",
+   "source": "docs/designs/current_code_walkthrough.md",
+   "title": "Code Walkthrough",
+   "truth_state": "current",
+   "wiki_key": "design/current-code-walkthrough"
+  },
+  {
+   "banner": "> **Current** \u2014 this is the living version. Historical snapshots are linked from [[Index-Releases]].",
+   "frozen": false,
+   "page_name": "Design-Doc",
+   "render": "doc+banner",
+   "render_hash": "8ff7a3abc47e",
+   "source": "docs/designs/current_design_doc.md",
+   "title": "Design Doc",
+   "truth_state": "current",
+   "wiki_key": "design/current-design-doc"
+  },
+  {
+   "banner": "> **Current** \u2014 this is the living version. Historical snapshots are linked from [[Index-Releases]].",
+   "frozen": false,
+   "page_name": "CLI-Reference",
+   "render": "doc+banner",
+   "render_hash": "12ba457a7375",
+   "source": "docs/user_guide/cli-reference.md",
+   "title": "CLI Reference",
+   "truth_state": "current",
+   "wiki_key": "guide/cli-reference"
+  },
+  {
+   "banner": "> **Current** \u2014 this is the living version. Historical snapshots are linked from [[Index-Releases]].",
+   "frozen": false,
+   "page_name": "Plugin-Guide",
+   "render": "doc+banner",
+   "render_hash": "e01c3db15f03",
+   "source": "docs/user_guide/plugin-guide.md",
+   "title": "Plugin Guide",
+   "truth_state": "current",
+   "wiki_key": "guide/plugin-guide"
+  },
+  {
+   "banner": "> **Current** \u2014 this is the living version. Historical snapshots are linked from [[Index-Releases]].",
+   "frozen": false,
+   "page_name": "User-Guide",
+   "render": "doc+banner",
+   "render_hash": "8f61dcf9a38b",
+   "source": "docs/user_guide/user-guide.md",
+   "title": "User Guide",
+   "truth_state": "current",
+   "wiki_key": "guide/user-guide"
+  },
+  {
    "banner": "> **Current** \u2014 the latest status report. Reports freeze once published; corrections appear in later reports.",
    "frozen": true,
    "page_name": "Plan-wiki-ticket-adoption",
@@ -282,15 +347,26 @@
    "wiki_key": "plan/2026-07-29-wiki-ticket-adoption"
   },
   {
-   "banner": "> **Current** \u2014 this is the living version; regenerated at 2026-07-29T23:05:26Z. Historical snapshots are linked from [[Index-Releases]].",
+   "banner": "> **Current** \u2014 this is the living version; regenerated at 2026-07-29T23:26:39Z. Historical snapshots are linked from [[Index-Releases]].",
    "frozen": false,
    "page_name": "Roadmap",
    "render": "doc+banner",
-   "render_hash": "694e1c484297",
+   "render_hash": "a59a174e324e",
    "source": "docs/roadmap.md",
    "title": "Roadmap",
    "truth_state": "current",
    "wiki_key": "roadmap"
+  },
+  {
+   "banner": "> **Current** \u2014 this is the living version. Historical snapshots are linked from [[Index-Releases]].",
+   "frozen": false,
+   "page_name": "Worklog-Spec",
+   "render": "doc+banner",
+   "render_hash": "77ec8db0b161",
+   "source": "docs/worklog-spec.md",
+   "title": "Worklog Spec",
+   "truth_state": "current",
+   "wiki_key": "spec"
   }
  ],
  "sidebar": {

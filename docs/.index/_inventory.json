@@ -1,6 +1,68 @@
 {
  "docs": [
   {
+   "canonical_key": "design/current-code-walkthrough",
+   "doc_type": "design",
+   "git_hash": "main",
+   "slug": "current_code_walkthrough",
+   "source": "docs/designs/current_code_walkthrough.md",
+   "title": "Code Walkthrough",
+   "truth_state": "current",
+   "wiki": "https://github.com/SpillwaveSolutions/okf-plugin/wiki/Code-Walkthrough",
+   "wiki_key": "design/current-code-walkthrough"
+  },
+  {
+   "canonical_key": "design/current-design-doc",
+   "doc_type": "design",
+   "git_hash": "main",
+   "slug": "current_design_doc",
+   "source": "docs/designs/current_design_doc.md",
+   "title": "Design Doc",
+   "truth_state": "current",
+   "wiki": "https://github.com/SpillwaveSolutions/okf-plugin/wiki/Design-Doc",
+   "wiki_key": "design/current-design-doc"
+  },
+  {
+   "canonical_key": "guide/cli-reference",
+   "doc_type": "guide",
+   "slug": "cli-reference",
+   "source": "docs/user_guide/cli-reference.md",
+   "title": "CLI Reference",
+   "truth_state": "current",
+   "wiki": "https://github.com/SpillwaveSolutions/okf-plugin/wiki/CLI-Reference",
+   "wiki_key": "cli-reference"
+  },
+  {
+   "canonical_key": "guide/plugin-guide",
+   "doc_type": "guide",
+   "slug": "plugin-guide",
+   "source": "docs/user_guide/plugin-guide.md",
+   "title": "Plugin Guide",
+   "truth_state": "current",
+   "wiki": "https://github.com/SpillwaveSolutions/okf-plugin/wiki/Plugin-Guide",
+   "wiki_key": "plugin-guide"
+  },
+  {
+   "canonical_key": "guide/user-guide",
+   "doc_type": "guide",
+   "slug": "user-guide",
+   "source": "docs/user_guide/user-guide.md",
+   "title": "User Guide",
+   "truth_state": "current",
+   "wiki": "https://github.com/SpillwaveSolutions/okf-plugin/wiki/User-Guide",
+   "wiki_key": "user-guide"
+  },
+  {
+   "canonical_key": "home",
+   "doc_type": "guide",
+   "slug": "wiki-home",
+   "source": "docs/wiki-home.md",
+   "title": "OKF Graph Engineering Plugin",
+   "truth_state": "current",
+   "wiki": "https://github.com/SpillwaveSolutions/okf-plugin/wiki/Home",
+   "wiki_key": "home"
+  },
+  {
    "canonical_key": "plan/2026-07-29-wiki-ticket-adoption",
    "date": "2026-07-29",
    "doc_type": "plan",
@@ -27,14 +89,24 @@
   {
    "canonical_key": "roadmap",
    "doc_type": "roadmap",
-   "generated_at": "2026-07-29T23:05:26Z",
+   "generated_at": "2026-07-29T23:26:39Z",
    "slug": "roadmap",
    "source": "docs/roadmap.md",
-   "source_hash": "f40975df",
+   "source_hash": "aad95332",
    "title": "Roadmap",
    "truth_state": "current",
    "wiki": "https://github.com/SpillwaveSolutions/okf-plugin/wiki/Roadmap",
    "wiki_key": "roadmap"
+  },
+  {
+   "canonical_key": "spec",
+   "doc_type": "guide",
+   "slug": "worklog-spec",
+   "source": "docs/worklog-spec.md",
+   "title": "Worklog Spec",
+   "truth_state": "current",
+   "wiki": "https://github.com/SpillwaveSolutions/okf-plugin/wiki/Worklog-Spec",
+   "wiki_key": "spec"
   }
  ],
  "version": 1

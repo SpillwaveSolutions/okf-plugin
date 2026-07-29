@@ -1,17 +1,86 @@
 {
+  "design/current-code-walkthrough": {
+    "canonical_key": "design/current-code-walkthrough",
+    "doc_type": "design",
+    "page_id": "Code-Walkthrough",
+    "render_hash": "663958aeded4",
+    "rev": "99600cbb1fcf512205a116455f5c6c261dc4eaa1",
+    "source": "docs/designs/current_code_walkthrough.md",
+    "source_hash": "6c2df8daf4b0",
+    "title": "Code Walkthrough",
+    "truth_state": "current",
+    "url": "https://github.com/SpillwaveSolutions/okf-plugin/wiki/Code-Walkthrough",
+    "wiki_key": "design/current-code-walkthrough"
+  },
+  "design/current-design-doc": {
+    "canonical_key": "design/current-design-doc",
+    "doc_type": "design",
+    "page_id": "Design-Doc",
+    "render_hash": "2b052da4ccfe",
+    "rev": "99600cbb1fcf512205a116455f5c6c261dc4eaa1",
+    "source": "docs/designs/current_design_doc.md",
+    "source_hash": "2054967d42d4",
+    "title": "Design Doc",
+    "truth_state": "current",
+    "url": "https://github.com/SpillwaveSolutions/okf-plugin/wiki/Design-Doc",
+    "wiki_key": "design/current-design-doc"
+  },
+  "guide/cli-reference": {
+    "canonical_key": "guide/cli-reference",
+    "doc_type": "guide",
+    "page_id": "CLI-Reference",
+    "render_hash": "b7d068a6ed7a",
+    "rev": "99600cbb1fcf512205a116455f5c6c261dc4eaa1",
+    "source": "docs/user_guide/cli-reference.md",
+    "source_hash": "c9cfbf357175",
+    "title": "CLI Reference",
+    "truth_state": "current",
+    "url": "https://github.com/SpillwaveSolutions/okf-plugin/wiki/CLI-Reference",
+    "wiki_key": "guide/cli-reference"
+  },
+  "guide/plugin-guide": {
+    "canonical_key": "guide/plugin-guide",
+    "doc_type": "guide",
+    "page_id": "Plugin-Guide",
+    "render_hash": "0af7e4029a08",
+    "rev": "99600cbb1fcf512205a116455f5c6c261dc4eaa1",
+    "source": "docs/user_guide/plugin-guide.md",
+    "source_hash": "880151a434ca",
+    "title": "Plugin Guide",
+    "truth_state": "current",
+    "url": "https://github.com/SpillwaveSolutions/okf-plugin/wiki/Plugin-Guide",
+    "wiki_key": "guide/plugin-guide"
+  },
+  "guide/user-guide": {
+    "canonical_key": "guide/user-guide",
+    "doc_type": "guide",
+    "page_id": "User-Guide",
+    "render_hash": "37eca2a2bcf9",
+    "rev": "99600cbb1fcf512205a116455f5c6c261dc4eaa1",
+    "source": "docs/user_guide/user-guide.md",
+    "source_hash": "08c6ced30751",
+    "title": "User Guide",
+    "truth_state": "current",
+    "url": "https://github.com/SpillwaveSolutions/okf-plugin/wiki/User-Guide",
+    "wiki_key": "guide/user-guide"
+  },
   "home": {
+    "canonical_key": "home",
+    "doc_type": "guide",
     "page_id": "Home",
-    "render_hash": "7a6e118df66d",
-    "rev": "2196938903fcbd30529fb431b8a81df46f2a3ed6",
+    "render_hash": "6606cabdb615",
+    "rev": "99600cbb1fcf512205a116455f5c6c261dc4eaa1",
     "source": "docs/.index/rendered/home.md",
-    "source_hash": "7a6e118df66d",
+    "source_hash": "6606cabdb615",
     "title": "Home",
-    "url": "https://github.com/SpillwaveSolutions/okf-plugin/wiki/Home"
+    "truth_state": "current",
+    "url": "https://github.com/SpillwaveSolutions/okf-plugin/wiki/Home",
+    "wiki_key": "home"
   },
   "index/decisions": {
     "page_id": "Index-Decisions",
     "render_hash": "a5eefae3f29c",
-    "rev": "2196938903fcbd30529fb431b8a81df46f2a3ed6",
+    "rev": "99600cbb1fcf512205a116455f5c6c261dc4eaa1",
     "source": "docs/.index/rendered/decisions.md",
     "source_hash": "a5eefae3f29c",
     "title": "Decisions Index",
@@ -20,7 +89,7 @@
   "index/releases": {
     "page_id": "Index-Releases",
     "render_hash": "f45668ba0034",
-    "rev": "2196938903fcbd30529fb431b8a81df46f2a3ed6",
+    "rev": "99600cbb1fcf512205a116455f5c6c261dc4eaa1",
     "source": "docs/.index/rendered/releases.md",
     "source_hash": "f45668ba0034",
     "title": "Releases Index",
@@ -29,7 +98,7 @@
   "index/status": {
     "page_id": "Index-Status",
     "render_hash": "b8bcebbbbe23",
-    "rev": "2196938903fcbd30529fb431b8a81df46f2a3ed6",
+    "rev": "99600cbb1fcf512205a116455f5c6c261dc4eaa1",
     "source": "docs/.index/rendered/status.md",
     "source_hash": "b8bcebbbbe23",
     "title": "Status Archive",
@@ -37,17 +106,17 @@
   },
   "index/traceability": {
     "page_id": "Index-Traceability",
-    "render_hash": "735bc9da1c1a",
-    "rev": "2196938903fcbd30529fb431b8a81df46f2a3ed6",
+    "render_hash": "abfa195457c3",
+    "rev": "99600cbb1fcf512205a116455f5c6c261dc4eaa1",
     "source": "docs/.index/rendered/traceability.md",
-    "source_hash": "735bc9da1c1a",
+    "source_hash": "abfa195457c3",
     "title": "Traceability Index",
     "url": "https://github.com/SpillwaveSolutions/okf-plugin/wiki/Index-Traceability"
   },
   "item/01KYQZ4PAMK1ND4XKH8A1VHMFN": {
     "page_id": "Ticket-01KYQZ4PAMK1ND4XKH8A1VHMFN",
     "render_hash": "4a74bd8c0c58",
-    "rev": "2196938903fcbd30529fb431b8a81df46f2a3ed6",
+    "rev": "99600cbb1fcf512205a116455f5c6c261dc4eaa1",
     "source": "docs/.index/rendered/tickets/01KYQZ4PAMK1ND4XKH8A1VHMFN.md",
     "source_hash": "4a74bd8c0c58",
     "title": "Scaffold worklog tooling in okf-plugin",
@@ -56,7 +125,7 @@
   "item/01KYQZ4PAMZCM9N56K8F3034F2": {
     "page_id": "Ticket-01KYQZ4PAMZCM9N56K8F3034F2",
     "render_hash": "22ca587c359d",
-    "rev": "2196938903fcbd30529fb431b8a81df46f2a3ed6",
+    "rev": "99600cbb1fcf512205a116455f5c6c261dc4eaa1",
     "source": "docs/.index/rendered/tickets/01KYQZ4PAMZCM9N56K8F3034F2.md",
     "source_hash": "22ca587c359d",
     "title": "Adopt WikiTicket SDD for okf-plugin",
@@ -65,7 +134,7 @@
   "item/01KYQZ4PAN1WHT2YGX667F3EX6": {
     "page_id": "Ticket-01KYQZ4PAN1WHT2YGX667F3EX6",
     "render_hash": "7cad27dc4cf9",
-    "rev": "2196938903fcbd30529fb431b8a81df46f2a3ed6",
+    "rev": "99600cbb1fcf512205a116455f5c6c261dc4eaa1",
     "source": "docs/.index/rendered/tickets/01KYQZ4PAN1WHT2YGX667F3EX6.md",
     "source_hash": "7cad27dc4cf9",
     "title": "Configure GitHub Issues and GitHub wiki in .work/config.yml",
@@ -74,7 +143,7 @@
   "item/01KYQZ4PAN551JXFMH2GF82BXF": {
     "page_id": "Ticket-01KYQZ4PAN551JXFMH2GF82BXF",
     "render_hash": "e8e201238ebd",
-    "rev": "2196938903fcbd30529fb431b8a81df46f2a3ed6",
+    "rev": "99600cbb1fcf512205a116455f5c6c261dc4eaa1",
     "source": "docs/.index/rendered/tickets/01KYQZ4PAN551JXFMH2GF82BXF.md",
     "source_hash": "e8e201238ebd",
     "title": "Sync open work items to GitHub Issues",
@@ -83,7 +152,7 @@
   "item/01KYQZ4PAN6A8EX36M2ZRWMDAZ": {
     "page_id": "Ticket-01KYQZ4PAN6A8EX36M2ZRWMDAZ",
     "render_hash": "2658a00c42d9",
-    "rev": "2196938903fcbd30529fb431b8a81df46f2a3ed6",
+    "rev": "99600cbb1fcf512205a116455f5c6c261dc4eaa1",
     "source": "docs/.index/rendered/tickets/01KYQZ4PAN6A8EX36M2ZRWMDAZ.md",
     "source_hash": "2658a00c42d9",
     "title": "Publish initial roadmap and plan to GitHub wiki",
@@ -92,7 +161,7 @@
   "item/01KYQZ4PAN71X19C6ZZVM42ZS2": {
     "page_id": "Ticket-01KYQZ4PAN71X19C6ZZVM42ZS2",
     "render_hash": "9c1dfb01fd43",
-    "rev": "2196938903fcbd30529fb431b8a81df46f2a3ed6",
+    "rev": "99600cbb1fcf512205a116455f5c6c261dc4eaa1",
     "source": "docs/.index/rendered/tickets/01KYQZ4PAN71X19C6ZZVM42ZS2.md",
     "source_hash": "9c1dfb01fd43",
     "title": "v0.2 \u2014 GraphEngineer polish and progressive-disclosure defaults",
@@ -101,7 +170,7 @@
   "item/01KYQZ4PANG2JE670X42GCZY6S": {
     "page_id": "Ticket-01KYQZ4PANG2JE670X42GCZY6S",
     "render_hash": "8027f597b54e",
-    "rev": "2196938903fcbd30529fb431b8a81df46f2a3ed6",
+    "rev": "99600cbb1fcf512205a116455f5c6c261dc4eaa1",
     "source": "docs/.index/rendered/tickets/01KYQZ4PANG2JE670X42GCZY6S.md",
     "source_hash": "8027f597b54e",
     "title": "v0.2 \u2014 richer typed-edge conventions and TicketLink SLDC helpers",
@@ -110,7 +179,7 @@
   "item/01KYQZ4PANQFYAMMEBBHYPPG6P": {
     "page_id": "Ticket-01KYQZ4PANQFYAMMEBBHYPPG6P",
     "render_hash": "6a260706789f",
-    "rev": "2196938903fcbd30529fb431b8a81df46f2a3ed6",
+    "rev": "99600cbb1fcf512205a116455f5c6c261dc4eaa1",
     "source": "docs/.index/rendered/tickets/01KYQZ4PANQFYAMMEBBHYPPG6P.md",
     "source_hash": "6a260706789f",
     "title": "Optional Claude marketplace listing for okf-graph-eng",
@@ -119,7 +188,7 @@
   "item/01KYQZ4PANS9D55RG19VMXGQ1V": {
     "page_id": "Ticket-01KYQZ4PANS9D55RG19VMXGQ1V",
     "render_hash": "997f04050360",
-    "rev": "2196938903fcbd30529fb431b8a81df46f2a3ed6",
+    "rev": "99600cbb1fcf512205a116455f5c6c261dc4eaa1",
     "source": "docs/.index/rendered/tickets/01KYQZ4PANS9D55RG19VMXGQ1V.md",
     "source_hash": "997f04050360",
     "title": "Link sample-okf TicketLink concepts to real worklog ULIDs",
@@ -128,7 +197,7 @@
   "item/01KYQZ4PANSHKME2QNA8FZVVGC": {
     "page_id": "Ticket-01KYQZ4PANSHKME2QNA8FZVVGC",
     "render_hash": "85d896b37127",
-    "rev": "2196938903fcbd30529fb431b8a81df46f2a3ed6",
+    "rev": "99600cbb1fcf512205a116455f5c6c261dc4eaa1",
     "source": "docs/.index/rendered/tickets/01KYQZ4PANSHKME2QNA8FZVVGC.md",
     "source_hash": "85d896b37127",
     "title": "Capture MVP v0.1 delivery as closed worklog history",
@@ -137,7 +206,7 @@
   "item/01KYQZ5E4X4XZ1XZ39FC4SKWBN": {
     "page_id": "Ticket-01KYQZ5E4X4XZ1XZ39FC4SKWBN",
     "render_hash": "a12b1a1a393f",
-    "rev": "2196938903fcbd30529fb431b8a81df46f2a3ed6",
+    "rev": "99600cbb1fcf512205a116455f5c6c261dc4eaa1",
     "source": "docs/.index/rendered/tickets/01KYQZ5E4X4XZ1XZ39FC4SKWBN.md",
     "source_hash": "a12b1a1a393f",
     "title": "OKF graph-eng plugin MVP v0.1",
@@ -146,7 +215,7 @@
   "item/01KYQZ5E9M9DDN8N84V2CZ5Q2Z": {
     "page_id": "Ticket-01KYQZ5E9M9DDN8N84V2CZ5Q2Z",
     "render_hash": "b0b4df3bf289",
-    "rev": "2196938903fcbd30529fb431b8a81df46f2a3ed6",
+    "rev": "99600cbb1fcf512205a116455f5c6c261dc4eaa1",
     "source": "docs/.index/rendered/tickets/01KYQZ5E9M9DDN8N84V2CZ5Q2Z.md",
     "source_hash": "b0b4df3bf289",
     "title": "Ship seven OKF graph-eng skills",
@@ -155,7 +224,7 @@
   "item/01KYQZ5EJJJQNPT07017JQQWMM": {
     "page_id": "Ticket-01KYQZ5EJJJQNPT07017JQQWMM",
     "render_hash": "b6a6cba434b5",
-    "rev": "2196938903fcbd30529fb431b8a81df46f2a3ed6",
+    "rev": "99600cbb1fcf512205a116455f5c6c261dc4eaa1",
     "source": "docs/.index/rendered/tickets/01KYQZ5EJJJQNPT07017JQQWMM.md",
     "source_hash": "b6a6cba434b5",
     "title": "Ship GraphEngineer agent and slash commands",
@@ -164,7 +233,7 @@
   "item/01KYQZ5EVN14SMZW8KW60K42G8": {
     "page_id": "Ticket-01KYQZ5EVN14SMZW8KW60K42G8",
     "render_hash": "b951a0ecd1a0",
-    "rev": "2196938903fcbd30529fb431b8a81df46f2a3ed6",
+    "rev": "99600cbb1fcf512205a116455f5c6c261dc4eaa1",
     "source": "docs/.index/rendered/tickets/01KYQZ5EVN14SMZW8KW60K42G8.md",
     "source_hash": "b951a0ecd1a0",
     "title": "Ship sample-okf self-describing dual graph",
@@ -173,7 +242,7 @@
   "item/01KYQZ5F4W0P0GWM6JHQBWFKGY": {
     "page_id": "Ticket-01KYQZ5F4W0P0GWM6JHQBWFKGY",
     "render_hash": "0acecc0f33c6",
-    "rev": "2196938903fcbd30529fb431b8a81df46f2a3ed6",
+    "rev": "99600cbb1fcf512205a116455f5c6c261dc4eaa1",
     "source": "docs/.index/rendered/tickets/01KYQZ5F4W0P0GWM6JHQBWFKGY.md",
     "source_hash": "0acecc0f33c6",
     "title": "Ship dual-host README, CLAUDE.md, AGENTS.md",
@@ -182,7 +251,7 @@
   "item/01KYQZ5FE1NZM2VB2E43MJMNCQ": {
     "page_id": "Ticket-01KYQZ5FE1NZM2VB2E43MJMNCQ",
     "render_hash": "8bb27442aab6",
-    "rev": "2196938903fcbd30529fb431b8a81df46f2a3ed6",
+    "rev": "99600cbb1fcf512205a116455f5c6c261dc4eaa1",
     "source": "docs/.index/rendered/tickets/01KYQZ5FE1NZM2VB2E43MJMNCQ.md",
     "source_hash": "8bb27442aab6",
     "title": "Publish public GitHub repo okf-plugin",
@@ -191,18 +260,36 @@
   "item/01KYR1W31GBAGDJEMY077HFM0J": {
     "page_id": "Ticket-01KYR1W31GBAGDJEMY077HFM0J",
     "render_hash": "2becabea2c52",
-    "rev": "2196938903fcbd30529fb431b8a81df46f2a3ed6",
+    "rev": "99600cbb1fcf512205a116455f5c6c261dc4eaa1",
     "source": "docs/.index/rendered/tickets/01KYR1W31GBAGDJEMY077HFM0J.md",
     "source_hash": "2becabea2c52",
     "title": "Move okf-plugin to SpillwaveSolutions org",
     "url": "https://github.com/SpillwaveSolutions/okf-plugin/wiki/Ticket-01KYR1W31GBAGDJEMY077HFM0J"
+  },
+  "item/01KYR201M64QHFBVGV3FZ1GS4F": {
+    "page_id": "Ticket-01KYR201M64QHFBVGV3FZ1GS4F",
+    "render_hash": "bed66fa2f376",
+    "rev": "99600cbb1fcf512205a116455f5c6c261dc4eaa1",
+    "source": "docs/.index/rendered/tickets/01KYR201M64QHFBVGV3FZ1GS4F.md",
+    "source_hash": "bed66fa2f376",
+    "title": "Publish docs to SpillwaveSolutions GitHub wiki",
+    "url": "https://github.com/SpillwaveSolutions/okf-plugin/wiki/Ticket-01KYR201M64QHFBVGV3FZ1GS4F"
+  },
+  "item/01KYR36M2K9CB3ZMAMG0NFNKV1": {
+    "page_id": "Ticket-01KYR36M2K9CB3ZMAMG0NFNKV1",
+    "render_hash": "50660f8f9400",
+    "rev": "99600cbb1fcf512205a116455f5c6c261dc4eaa1",
+    "source": "docs/.index/rendered/tickets/01KYR36M2K9CB3ZMAMG0NFNKV1.md",
+    "source_hash": "50660f8f9400",
+    "title": "Fix red wiki Home links with missing guide and design docs",
+    "url": "https://github.com/SpillwaveSolutions/okf-plugin/wiki/Ticket-01KYR36M2K9CB3ZMAMG0NFNKV1"
   },
   "plan/2026-07-29-wiki-ticket-adoption": {
     "canonical_key": "plan/2026-07-29-wiki-ticket-adoption",
     "doc_type": "plan",
     "page_id": "Plan-wiki-ticket-adoption",
     "render_hash": "e2bcd4c67a3d",
-    "rev": "2196938903fcbd30529fb431b8a81df46f2a3ed6",
+    "rev": "99600cbb1fcf512205a116455f5c6c261dc4eaa1",
     "source": "docs/plans/2026-07-29-wiki-ticket-adoption.md",
     "source_hash": "5fafdee6aa28",
     "title": "Adopt WikiTicket SDD for okf-plugin",
@@ -213,7 +300,7 @@
   "release/v0.1.0": {
     "page_id": "Release-v0.1.0",
     "render_hash": "f509598b4cbf",
-    "rev": "2196938903fcbd30529fb431b8a81df46f2a3ed6",
+    "rev": "99600cbb1fcf512205a116455f5c6c261dc4eaa1",
     "source": "docs/.index/rendered/releases/v0.1.0.md",
     "source_hash": "f509598b4cbf",
     "title": "Release v0.1.0",
@@ -222,7 +309,7 @@
   "release/v0.1.1": {
     "page_id": "Release-v0.1.1",
     "render_hash": "70a1c66232bf",
-    "rev": "2196938903fcbd30529fb431b8a81df46f2a3ed6",
+    "rev": "99600cbb1fcf512205a116455f5c6c261dc4eaa1",
     "source": "docs/.index/rendered/releases/v0.1.1.md",
     "source_hash": "70a1c66232bf",
     "title": "Release v0.1.1",
@@ -231,7 +318,7 @@
   "release/v0.2.0": {
     "page_id": "Release-v0.2.0",
     "render_hash": "34512147898e",
-    "rev": "2196938903fcbd30529fb431b8a81df46f2a3ed6",
+    "rev": "99600cbb1fcf512205a116455f5c6c261dc4eaa1",
     "source": "docs/.index/rendered/releases/v0.2.0.md",
     "source_hash": "34512147898e",
     "title": "Release v0.2.0",
@@ -239,10 +326,10 @@
   },
   "release/v0.2.1": {
     "page_id": "Release-v0.2.1",
-    "render_hash": "b4eb9614b50e",
-    "rev": "2196938903fcbd30529fb431b8a81df46f2a3ed6",
+    "render_hash": "1102307e05e5",
+    "rev": "99600cbb1fcf512205a116455f5c6c261dc4eaa1",
     "source": "docs/.index/rendered/releases/v0.2.1.md",
-    "source_hash": "b4eb9614b50e",
+    "source_hash": "1102307e05e5",
     "title": "Release v0.2.1",
     "url": "https://github.com/SpillwaveSolutions/okf-plugin/wiki/Release-v0.2.1"
   },
@@ -250,10 +337,10 @@
     "canonical_key": "roadmap",
     "doc_type": "roadmap",
     "page_id": "Roadmap",
-    "render_hash": "2cc05189e29d",
-    "rev": "2196938903fcbd30529fb431b8a81df46f2a3ed6",
+    "render_hash": "81e3f033bcd9",
+    "rev": "99600cbb1fcf512205a116455f5c6c261dc4eaa1",
     "source": "docs/roadmap.md",
-    "source_hash": "18cec4c4f6a5",
+    "source_hash": "a47b76d6fadc",
     "title": "Roadmap",
     "truth_state": "current",
     "url": "https://github.com/SpillwaveSolutions/okf-plugin/wiki/Roadmap",
@@ -262,10 +349,23 @@
   "sidebar": {
     "page_id": "_Sidebar",
     "render_hash": "bf90917cf238",
-    "rev": "2196938903fcbd30529fb431b8a81df46f2a3ed6",
+    "rev": "99600cbb1fcf512205a116455f5c6c261dc4eaa1",
     "source": "docs/.index/rendered/_Sidebar.md",
     "source_hash": "bf90917cf238",
     "title": "Sidebar",
     "url": "https://github.com/SpillwaveSolutions/okf-plugin/wiki/_Sidebar"
+  },
+  "spec": {
+    "canonical_key": "spec",
+    "doc_type": "guide",
+    "page_id": "Worklog-Spec",
+    "render_hash": "6ed48c2c6147",
+    "rev": "99600cbb1fcf512205a116455f5c6c261dc4eaa1",
+    "source": "docs/worklog-spec.md",
+    "source_hash": "eac6b9e213f1",
+    "title": "Worklog Spec",
+    "truth_state": "current",
+    "url": "https://github.com/SpillwaveSolutions/okf-plugin/wiki/Worklog-Spec",
+    "wiki_key": "spec"
   }
 }
