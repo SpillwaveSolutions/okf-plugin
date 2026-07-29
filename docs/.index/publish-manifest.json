@@ -44,7 +44,7 @@
    "frozen": false,
    "page_name": "Index-Traceability",
    "render": "as-is",
-   "render_hash": "735bc9da1c1a",
+   "render_hash": "c02daaf4627d",
    "source": "docs/.index/rendered/traceability.md",
    "title": "Traceability Index",
    "truth_state": "current",
@@ -84,7 +84,7 @@
    "frozen": false,
    "page_name": "Release-v0.2.1",
    "render": "as-is",
-   "render_hash": "b4eb9614b50e",
+   "render_hash": "1102307e05e5",
    "source": "docs/.index/rendered/releases/v0.2.1.md",
    "title": "Release v0.2.1",
    "truth_state": "shipped",
@@ -261,6 +261,16 @@
    "wiki_key": "item/01KYR1W31GBAGDJEMY077HFM0J"
   },
   {
+   "frozen": false,
+   "page_name": "Ticket-01KYR201M64QHFBVGV3FZ1GS4F",
+   "render": "as-is",
+   "render_hash": "bed66fa2f376",
+   "source": "docs/.index/rendered/tickets/01KYR201M64QHFBVGV3FZ1GS4F.md",
+   "title": "Publish docs to SpillwaveSolutions GitHub wiki",
+   "truth_state": "done",
+   "wiki_key": "item/01KYR201M64QHFBVGV3FZ1GS4F"
+  },
+  {
    "banner": "> **Current** \u2014 the latest status report. Reports freeze once published; corrections appear in later reports.",
    "frozen": true,
    "page_name": "Plan-wiki-ticket-adoption",
@@ -272,11 +282,11 @@
    "wiki_key": "plan/2026-07-29-wiki-ticket-adoption"
   },
   {
-   "banner": "> **Current** \u2014 this is the living version; regenerated at 2026-07-29T23:03:30Z. Historical snapshots are linked from [[Index-Releases]].",
+   "banner": "> **Current** \u2014 this is the living version; regenerated at 2026-07-29T23:05:26Z. Historical snapshots are linked from [[Index-Releases]].",
    "frozen": false,
    "page_name": "Roadmap",
    "render": "doc+banner",
-   "render_hash": "c5878340ad77",
+   "render_hash": "694e1c484297",
    "source": "docs/roadmap.md",
    "title": "Roadmap",
    "truth_state": "current",
