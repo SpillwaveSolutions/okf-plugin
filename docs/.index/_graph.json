@@ -1,0 +1,337 @@
+{
+ "edges": [
+  {
+   "from": "item/01KYQZ4PAMK1ND4XKH8A1VHMFN",
+   "to": "item/01KYQZ4PAMZCM9N56K8F3034F2",
+   "type": "belongs-to"
+  },
+  {
+   "from": "item/01KYQZ4PAMZCM9N56K8F3034F2",
+   "to": "ticket/github#1",
+   "type": "references"
+  },
+  {
+   "from": "item/01KYQZ4PAN1WHT2YGX667F3EX6",
+   "to": "item/01KYQZ4PAMZCM9N56K8F3034F2",
+   "type": "belongs-to"
+  },
+  {
+   "from": "item/01KYQZ4PAN551JXFMH2GF82BXF",
+   "to": "item/01KYQZ4PAMZCM9N56K8F3034F2",
+   "type": "belongs-to"
+  },
+  {
+   "from": "item/01KYQZ4PAN551JXFMH2GF82BXF",
+   "to": "ticket/github#2",
+   "type": "references"
+  },
+  {
+   "from": "item/01KYQZ4PAN551JXFMH2GF82BXF",
+   "to": "release/v0.1.1",
+   "type": "targets"
+  },
+  {
+   "from": "item/01KYQZ4PAN6A8EX36M2ZRWMDAZ",
+   "to": "item/01KYQZ4PAMZCM9N56K8F3034F2",
+   "type": "belongs-to"
+  },
+  {
+   "from": "item/01KYQZ4PAN6A8EX36M2ZRWMDAZ",
+   "to": "ticket/github#3",
+   "type": "references"
+  },
+  {
+   "from": "item/01KYQZ4PAN6A8EX36M2ZRWMDAZ",
+   "to": "release/v0.1.1",
+   "type": "targets"
+  },
+  {
+   "from": "item/01KYQZ4PAN71X19C6ZZVM42ZS2",
+   "to": "item/01KYQZ4PAMZCM9N56K8F3034F2",
+   "type": "belongs-to"
+  },
+  {
+   "from": "item/01KYQZ4PAN71X19C6ZZVM42ZS2",
+   "to": "ticket/github#4",
+   "type": "references"
+  },
+  {
+   "from": "item/01KYQZ4PAN71X19C6ZZVM42ZS2",
+   "to": "release/v0.2.0",
+   "type": "targets"
+  },
+  {
+   "from": "item/01KYQZ4PANG2JE670X42GCZY6S",
+   "to": "item/01KYQZ4PAMZCM9N56K8F3034F2",
+   "type": "belongs-to"
+  },
+  {
+   "from": "item/01KYQZ4PANG2JE670X42GCZY6S",
+   "to": "ticket/github#5",
+   "type": "references"
+  },
+  {
+   "from": "item/01KYQZ4PANG2JE670X42GCZY6S",
+   "to": "release/v0.2.0",
+   "type": "targets"
+  },
+  {
+   "from": "item/01KYQZ4PANQFYAMMEBBHYPPG6P",
+   "to": "item/01KYQZ4PAMZCM9N56K8F3034F2",
+   "type": "belongs-to"
+  },
+  {
+   "from": "item/01KYQZ4PANQFYAMMEBBHYPPG6P",
+   "to": "ticket/github#6",
+   "type": "references"
+  },
+  {
+   "from": "item/01KYQZ4PANQFYAMMEBBHYPPG6P",
+   "to": "release/v0.2.0",
+   "type": "targets"
+  },
+  {
+   "from": "item/01KYQZ4PANS9D55RG19VMXGQ1V",
+   "to": "item/01KYQZ4PAMZCM9N56K8F3034F2",
+   "type": "belongs-to"
+  },
+  {
+   "from": "item/01KYQZ4PANS9D55RG19VMXGQ1V",
+   "to": "release/v0.2.0",
+   "type": "targets"
+  },
+  {
+   "from": "item/01KYQZ4PANSHKME2QNA8FZVVGC",
+   "to": "item/01KYQZ4PAMZCM9N56K8F3034F2",
+   "type": "belongs-to"
+  },
+  {
+   "from": "item/01KYQZ5E9M9DDN8N84V2CZ5Q2Z",
+   "to": "item/01KYQZ5E4X4XZ1XZ39FC4SKWBN",
+   "type": "belongs-to"
+  },
+  {
+   "from": "item/01KYQZ5E9M9DDN8N84V2CZ5Q2Z",
+   "to": "release/v0.1.0",
+   "type": "targets"
+  },
+  {
+   "from": "item/01KYQZ5EJJJQNPT07017JQQWMM",
+   "to": "item/01KYQZ5E4X4XZ1XZ39FC4SKWBN",
+   "type": "belongs-to"
+  },
+  {
+   "from": "item/01KYQZ5EJJJQNPT07017JQQWMM",
+   "to": "release/v0.1.0",
+   "type": "targets"
+  },
+  {
+   "from": "item/01KYQZ5EVN14SMZW8KW60K42G8",
+   "to": "item/01KYQZ5E4X4XZ1XZ39FC4SKWBN",
+   "type": "belongs-to"
+  },
+  {
+   "from": "item/01KYQZ5EVN14SMZW8KW60K42G8",
+   "to": "release/v0.1.0",
+   "type": "targets"
+  },
+  {
+   "from": "item/01KYQZ5F4W0P0GWM6JHQBWFKGY",
+   "to": "item/01KYQZ5E4X4XZ1XZ39FC4SKWBN",
+   "type": "belongs-to"
+  },
+  {
+   "from": "item/01KYQZ5F4W0P0GWM6JHQBWFKGY",
+   "to": "release/v0.1.0",
+   "type": "targets"
+  },
+  {
+   "from": "item/01KYQZ5FE1NZM2VB2E43MJMNCQ",
+   "to": "item/01KYQZ5E4X4XZ1XZ39FC4SKWBN",
+   "type": "belongs-to"
+  },
+  {
+   "from": "item/01KYQZ5FE1NZM2VB2E43MJMNCQ",
+   "to": "release/v0.1.0",
+   "type": "targets"
+  },
+  {
+   "from": "plan/2026-07-29-wiki-ticket-adoption",
+   "to": "item/01KYQZ4PAMK1ND4XKH8A1VHMFN",
+   "type": "produces"
+  },
+  {
+   "from": "plan/2026-07-29-wiki-ticket-adoption",
+   "to": "item/01KYQZ4PAMZCM9N56K8F3034F2",
+   "type": "produces"
+  },
+  {
+   "from": "plan/2026-07-29-wiki-ticket-adoption",
+   "to": "item/01KYQZ4PAN1WHT2YGX667F3EX6",
+   "type": "produces"
+  },
+  {
+   "from": "plan/2026-07-29-wiki-ticket-adoption",
+   "to": "item/01KYQZ4PAN551JXFMH2GF82BXF",
+   "type": "produces"
+  },
+  {
+   "from": "plan/2026-07-29-wiki-ticket-adoption",
+   "to": "item/01KYQZ4PAN6A8EX36M2ZRWMDAZ",
+   "type": "produces"
+  },
+  {
+   "from": "plan/2026-07-29-wiki-ticket-adoption",
+   "to": "item/01KYQZ4PAN71X19C6ZZVM42ZS2",
+   "type": "produces"
+  },
+  {
+   "from": "plan/2026-07-29-wiki-ticket-adoption",
+   "to": "item/01KYQZ4PANG2JE670X42GCZY6S",
+   "type": "produces"
+  },
+  {
+   "from": "plan/2026-07-29-wiki-ticket-adoption",
+   "to": "item/01KYQZ4PANQFYAMMEBBHYPPG6P",
+   "type": "produces"
+  },
+  {
+   "from": "plan/2026-07-29-wiki-ticket-adoption",
+   "to": "item/01KYQZ4PANS9D55RG19VMXGQ1V",
+   "type": "produces"
+  },
+  {
+   "from": "plan/2026-07-29-wiki-ticket-adoption",
+   "to": "item/01KYQZ4PANSHKME2QNA8FZVVGC",
+   "type": "produces"
+  }
+ ],
+ "nodes": {
+  "item/01KYQZ4PAMK1ND4XKH8A1VHMFN": {
+   "doc_type": "item",
+   "status": "done",
+   "title": "Scaffold worklog tooling in okf-plugin"
+  },
+  "item/01KYQZ4PAMZCM9N56K8F3034F2": {
+   "doc_type": "item",
+   "status": "in_progress",
+   "title": "Adopt WikiTicket SDD for okf-plugin"
+  },
+  "item/01KYQZ4PAN1WHT2YGX667F3EX6": {
+   "doc_type": "item",
+   "status": "done",
+   "title": "Configure GitHub Issues and GitHub wiki in .work/config.yml"
+  },
+  "item/01KYQZ4PAN551JXFMH2GF82BXF": {
+   "doc_type": "item",
+   "status": "done",
+   "title": "Sync open work items to GitHub Issues"
+  },
+  "item/01KYQZ4PAN6A8EX36M2ZRWMDAZ": {
+   "doc_type": "item",
+   "status": "done",
+   "title": "Publish initial roadmap and plan to GitHub wiki"
+  },
+  "item/01KYQZ4PAN71X19C6ZZVM42ZS2": {
+   "doc_type": "item",
+   "status": "todo",
+   "title": "v0.2 \u2014 GraphEngineer polish and progressive-disclosure defaults"
+  },
+  "item/01KYQZ4PANG2JE670X42GCZY6S": {
+   "doc_type": "item",
+   "status": "todo",
+   "title": "v0.2 \u2014 richer typed-edge conventions and TicketLink SLDC helpers"
+  },
+  "item/01KYQZ4PANQFYAMMEBBHYPPG6P": {
+   "doc_type": "item",
+   "status": "todo",
+   "title": "Optional Claude marketplace listing for okf-graph-eng"
+  },
+  "item/01KYQZ4PANS9D55RG19VMXGQ1V": {
+   "doc_type": "item",
+   "status": "done",
+   "title": "Link sample-okf TicketLink concepts to real worklog ULIDs"
+  },
+  "item/01KYQZ4PANSHKME2QNA8FZVVGC": {
+   "doc_type": "item",
+   "status": "done",
+   "title": "Capture MVP v0.1 delivery as closed worklog history"
+  },
+  "item/01KYQZ5E4X4XZ1XZ39FC4SKWBN": {
+   "doc_type": "item",
+   "status": "done",
+   "title": "OKF graph-eng plugin MVP v0.1"
+  },
+  "item/01KYQZ5E9M9DDN8N84V2CZ5Q2Z": {
+   "doc_type": "item",
+   "status": "done",
+   "title": "Ship seven OKF graph-eng skills"
+  },
+  "item/01KYQZ5EJJJQNPT07017JQQWMM": {
+   "doc_type": "item",
+   "status": "done",
+   "title": "Ship GraphEngineer agent and slash commands"
+  },
+  "item/01KYQZ5EVN14SMZW8KW60K42G8": {
+   "doc_type": "item",
+   "status": "done",
+   "title": "Ship sample-okf self-describing dual graph"
+  },
+  "item/01KYQZ5F4W0P0GWM6JHQBWFKGY": {
+   "doc_type": "item",
+   "status": "done",
+   "title": "Ship dual-host README, CLAUDE.md, AGENTS.md"
+  },
+  "item/01KYQZ5FE1NZM2VB2E43MJMNCQ": {
+   "doc_type": "item",
+   "status": "done",
+   "title": "Publish public GitHub repo okf-plugin"
+  },
+  "plan/2026-07-29-wiki-ticket-adoption": {
+   "doc_type": "plan",
+   "source": "docs/plans/2026-07-29-wiki-ticket-adoption.md",
+   "title": "Adopt WikiTicket SDD for okf-plugin",
+   "truth_state": "current"
+  },
+  "release/v0.1.0": {
+   "doc_type": "release"
+  },
+  "release/v0.1.1": {
+   "doc_type": "release"
+  },
+  "release/v0.2.0": {
+   "doc_type": "release"
+  },
+  "roadmap": {
+   "doc_type": "roadmap",
+   "source": "docs/roadmap.md",
+   "title": "Roadmap",
+   "truth_state": "current"
+  },
+  "ticket/github#1": {
+   "doc_type": "ticket",
+   "url": "https://github.com/RichardHightower/okf-plugin/issues/1"
+  },
+  "ticket/github#2": {
+   "doc_type": "ticket",
+   "url": "https://github.com/RichardHightower/okf-plugin/issues/2"
+  },
+  "ticket/github#3": {
+   "doc_type": "ticket",
+   "url": "https://github.com/RichardHightower/okf-plugin/issues/3"
+  },
+  "ticket/github#4": {
+   "doc_type": "ticket",
+   "url": "https://github.com/RichardHightower/okf-plugin/issues/4"
+  },
+  "ticket/github#5": {
+   "doc_type": "ticket",
+   "url": "https://github.com/RichardHightower/okf-plugin/issues/5"
+  },
+  "ticket/github#6": {
+   "doc_type": "ticket",
+   "url": "https://github.com/RichardHightower/okf-plugin/issues/6"
+  }
+ },
+ "version": 1
+}

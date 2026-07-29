@@ -63,3 +63,46 @@ python3 scripts/okf-graph.py orphans sample-okf
 ## Dual-host note
 
 Grok Build loads this same tree. Prefer Claude plugin conventions so both hosts stay aligned. See [AGENTS.md](./AGENTS.md) for Grok/Codex-oriented wording of the same rules.
+
+<!-- worklog:policy:start -->
+## Work tracking policy
+
+- Every plan MUST end by running `worklog plan-capture` — it writes
+  `docs/plans/<date>-<slug>.md` and appends the plan's steps as work items.
+- Work discovered mid-flight that wasn't in the plan: run
+  `worklog add --unplanned --discovered-during <item>` BEFORE doing the work.
+- Never hand-edit `.work/*.jsonl` (use `worklog`) or `docs/roadmap.md`
+  (it is generated; change the work items instead).
+- After changing work items, run `worklog roadmap-render` and commit the log
+  and roadmap together.
+<!-- worklog:policy:end -->
+
+<!-- worklog:taxonomy:start -->
+## Work taxonomy
+
+Every work item sits on four independent axes:
+
+| Axis | Field | Values | Answers |
+|---|---|---|---|
+| Level | `level` | epic / story / task / subtask | size & place in the parent tree |
+| Kind | `kind` | feature / bug / ops / triage | nature of the work |
+| Milestone | `milestone` | free string (e.g. v0.6.0) or null | what ships together |
+| Planned | `unplanned` + `discovered_during` | bool + ULID | deliberate vs discovered |
+
+Rules (the validator enforces these; apply them when proposing items):
+1. Kind is free at story/task/subtask.
+2. Epics are `feature` or `ops` only — a bug is never epic-sized.
+3. `kind` defaults to `triage` when omitted — never silently default to feature.
+4. `bug.parent` is optional; bugs may float free of any epic.
+5. `milestone` lives on leaves (story and below); an epic's milestone derives from its children.
+6. `triage` and `ops` both trend down: triage shrinks by classifying, ops by automating.
+
+When trackable work surfaces in conversation, propose an item inline as part of
+the normal response — "want me to file this? `level:story kind:feature
+parent:<ulid> milestone:v0.6.0`" — and create it only on assent, via the
+work-track or plan-capture skill. When unsure of the kind, propose `kind:triage`
+with the open question stated — triage is the honest default, never a confident
+guess. This inline path is the default; the flag-gated classifier (`classifier:`
+in `.work/config.yml`, off by default) is the escape hatch for teams where work
+keeps escaping the log.
+<!-- worklog:taxonomy:end -->

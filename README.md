@@ -117,6 +117,28 @@ Prefer absolute Markdown links: `[Graph Engineer](/agents/graph-engineer.md)`.
 
 Complements general OKF tooling (okf-gem, okfcli, community skills) by focusing on impact analysis, harness graphs, and progressive disclosure — without replacing existing CLIs or visualizers.
 
+
+## Project management (WikiTicket SDD)
+
+This repo is managed with [WikiTicket SDD / worklog](https://github.com/SpillwaveSolutions/wiki_ticket_sdd):
+
+| Artifact | Path |
+|----------|------|
+| Event log | `.work/todo.jsonl`, `.work/done.jsonl` |
+| Config | `.work/config.yml` |
+| Roadmap (generated) | `docs/roadmap.md` |
+| Plans | `docs/plans/` |
+| Status reports | `docs/status/` |
+| CLI | `bin/worklog` |
+
+```bash
+bin/worklog list
+bin/worklog roadmap-render
+bin/worklog plan-capture --slug my-plan --title "My plan" --file draft.md
+```
+
+GitHub Issues + GitHub wiki are configured as the ticket/wiki systems. Commit messages must reference a worklog ULID or `#issue`. Prefer feature branches (hooks block direct commits on `main`).
+
 ## License
 
 MIT — see [LICENSE](./LICENSE).
