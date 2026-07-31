@@ -11,6 +11,11 @@ venv/
 *.swp
 .okf-local/
 
+# Local integration-test workspace (generated Substack→OKF bundle, etc.)
+# Never commit this tree — rebuild with scripts/substack_okf.py (or CI temp dir).
+integration/
+integration-okf/
+
 # worklog: keep event logs & config; ignore local-only caches
 .work/wiki-checkout/
 .work/suggestions.jsonl
