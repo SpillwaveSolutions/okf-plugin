@@ -43,6 +43,13 @@ Use `${CLAUDE_PLUGIN_ROOT}` for all intra-plugin paths in hooks and skill instru
 5. **Progressive disclosure** — ship subgraphs / packs, not whole trees.
 6. **Never invent edges** — only report links that exist (or clearly mark proposed new links).
 7. Keep each `SKILL.md` focused; put deep reference material in skill `templates/` or `references/`.
+8. **Check your base before building in a worktree.** An isolated worktree may be
+   cut from the repo default branch, not from the branch you are working on, so
+   the commits you are building against can simply be absent. Run
+   `git log --oneline -3` first and confirm you see the parent commit you expect.
+   If not, `git reset --hard <intended-branch>` before writing code — a working
+   tree with no commits of its own is safe to move. Skipping this check silently
+   rebuilds work that already exists, or conflicts at merge time.
 
 ## Common commands
 

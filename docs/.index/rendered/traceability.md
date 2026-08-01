@@ -2,6 +2,69 @@
 
 _The evidence chain: plan → item → ticket → code → release, forward and backward. Generated from `docs/.index/_graph.json`; do not edit._
 
+### Tell agents to verify their worktree base before building
+`01KYZNNMWG2ZHJV4YRKPJX0DZE` · status: done
+- targets: release/v0.3.0
+
+### Clear ticket sync keys left pointing at the old repository
+`01KYZNNMGDBGN01Z83896Q4J8H` · status: done
+- targets: release/v0.3.0
+
+### Regenerate stale IA index so the doc gates stop warning
+`01KYZNNM1XEWFFN01EE60THRXK` · status: done
+- targets: release/v0.3.0
+
+### Release chore — bump to 0.3.0 across the four manifests and README
+`01KYZFDBAZW0F3RCN8P9J1R29A` · status: done
+- belongs-to: v0.3.0 — fix the plumbing, add the net
+- lands-in: pr/8
+- produced-by: [[Plan-v030-plumbing-and-tests]]
+
+### Add graph subcommand and the two missing slash commands
+`01KYZFDBAZ6G090EZ3FSS0FXS9` · status: done
+- belongs-to: v0.3.0 — fix the plumbing, add the net
+- lands-in: pr/8
+- produced-by: [[Plan-v030-plumbing-and-tests]]
+
+### Qualify intra-plugin paths with CLAUDE_PLUGIN_ROOT
+`01KYZFDBAZ62YTTMN7SRGD2QKC` · status: done
+- belongs-to: v0.3.0 — fix the plumbing, add the net
+- lands-in: pr/8
+- produced-by: [[Plan-v030-plumbing-and-tests]]
+
+### Add tests/test_okf_graph.py and wire it into CI and pre-commit
+`01KYZFDBAZ0T4W5TZYVXSBXADV` · status: done
+- belongs-to: v0.3.0 — fix the plumbing, add the net
+- lands-in: pr/8
+- produced-by: [[Plan-v030-plumbing-and-tests]]
+
+### v0.3.0 — fix the plumbing, add the net
+`01KYZFDBAYGEG2FKWRADN46Z9W` · status: done
+- lands-in: pr/8
+- contains: Fix the no-op post-edit hook and curate fallback
+- contains: Fix okf-graph.py block-sequence YAML, Mermaid IDs, and add validate --strict
+- contains: Add tests/test_okf_graph.py and wire it into CI and pre-commit
+- contains: Qualify intra-plugin paths with CLAUDE_PLUGIN_ROOT
+- contains: Add graph subcommand and the two missing slash commands
+- contains: Release chore — bump to 0.3.0 across the four manifests and README
+- produced-by: [[Plan-v030-plumbing-and-tests]]
+
+### Fix okf-graph.py block-sequence YAML, Mermaid IDs, and add validate --strict
+`01KYZFDBAY2VPBHBNXW7E4ZKHF` · status: done
+- belongs-to: v0.3.0 — fix the plumbing, add the net
+- lands-in: pr/8
+- produced-by: [[Plan-v030-plumbing-and-tests]]
+
+### Fix the no-op post-edit hook and curate fallback
+`01KYZFDBAY0AX03XQ6SAT6SXJW` · status: done
+- belongs-to: v0.3.0 — fix the plumbing, add the net
+- lands-in: pr/8
+- produced-by: [[Plan-v030-plumbing-and-tests]]
+
+### Local Substack→OKF integration test runner
+`01KYW8WH356FYJ3PM9EFKB8BCW` · status: done
+- targets: release/v0.3.0
+
 ### Pack progressive disclosure should be outbound-only by default
 `01KYR4G11VPKJBWGJV1QD0H184` · status: done
 - targets: release/v0.2.1

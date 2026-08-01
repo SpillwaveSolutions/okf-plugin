@@ -181,6 +181,91 @@
    "type": "targets"
   },
   {
+   "from": "item/01KYW8WH356FYJ3PM9EFKB8BCW",
+   "to": "release/v0.3.0",
+   "type": "targets"
+  },
+  {
+   "from": "item/01KYZFDBAY0AX03XQ6SAT6SXJW",
+   "to": "item/01KYZFDBAYGEG2FKWRADN46Z9W",
+   "type": "belongs-to"
+  },
+  {
+   "from": "item/01KYZFDBAY0AX03XQ6SAT6SXJW",
+   "to": "pr/8",
+   "type": "lands-in"
+  },
+  {
+   "from": "item/01KYZFDBAY2VPBHBNXW7E4ZKHF",
+   "to": "item/01KYZFDBAYGEG2FKWRADN46Z9W",
+   "type": "belongs-to"
+  },
+  {
+   "from": "item/01KYZFDBAY2VPBHBNXW7E4ZKHF",
+   "to": "pr/8",
+   "type": "lands-in"
+  },
+  {
+   "from": "item/01KYZFDBAYGEG2FKWRADN46Z9W",
+   "to": "pr/8",
+   "type": "lands-in"
+  },
+  {
+   "from": "item/01KYZFDBAZ0T4W5TZYVXSBXADV",
+   "to": "item/01KYZFDBAYGEG2FKWRADN46Z9W",
+   "type": "belongs-to"
+  },
+  {
+   "from": "item/01KYZFDBAZ0T4W5TZYVXSBXADV",
+   "to": "pr/8",
+   "type": "lands-in"
+  },
+  {
+   "from": "item/01KYZFDBAZ62YTTMN7SRGD2QKC",
+   "to": "item/01KYZFDBAYGEG2FKWRADN46Z9W",
+   "type": "belongs-to"
+  },
+  {
+   "from": "item/01KYZFDBAZ62YTTMN7SRGD2QKC",
+   "to": "pr/8",
+   "type": "lands-in"
+  },
+  {
+   "from": "item/01KYZFDBAZ6G090EZ3FSS0FXS9",
+   "to": "item/01KYZFDBAYGEG2FKWRADN46Z9W",
+   "type": "belongs-to"
+  },
+  {
+   "from": "item/01KYZFDBAZ6G090EZ3FSS0FXS9",
+   "to": "pr/8",
+   "type": "lands-in"
+  },
+  {
+   "from": "item/01KYZFDBAZW0F3RCN8P9J1R29A",
+   "to": "item/01KYZFDBAYGEG2FKWRADN46Z9W",
+   "type": "belongs-to"
+  },
+  {
+   "from": "item/01KYZFDBAZW0F3RCN8P9J1R29A",
+   "to": "pr/8",
+   "type": "lands-in"
+  },
+  {
+   "from": "item/01KYZNNM1XEWFFN01EE60THRXK",
+   "to": "release/v0.3.0",
+   "type": "targets"
+  },
+  {
+   "from": "item/01KYZNNMGDBGN01Z83896Q4J8H",
+   "to": "release/v0.3.0",
+   "type": "targets"
+  },
+  {
+   "from": "item/01KYZNNMWG2ZHJV4YRKPJX0DZE",
+   "to": "release/v0.3.0",
+   "type": "targets"
+  },
+  {
    "from": "plan/2026-07-29-wiki-ticket-adoption",
    "to": "item/01KYQZ4PAMK1ND4XKH8A1VHMFN",
    "type": "produces"
@@ -228,6 +313,41 @@
   {
    "from": "plan/2026-07-29-wiki-ticket-adoption",
    "to": "item/01KYQZ4PANSHKME2QNA8FZVVGC",
+   "type": "produces"
+  },
+  {
+   "from": "plan/2026-08-01-v030-plumbing-and-tests",
+   "to": "item/01KYZFDBAY0AX03XQ6SAT6SXJW",
+   "type": "produces"
+  },
+  {
+   "from": "plan/2026-08-01-v030-plumbing-and-tests",
+   "to": "item/01KYZFDBAY2VPBHBNXW7E4ZKHF",
+   "type": "produces"
+  },
+  {
+   "from": "plan/2026-08-01-v030-plumbing-and-tests",
+   "to": "item/01KYZFDBAYGEG2FKWRADN46Z9W",
+   "type": "produces"
+  },
+  {
+   "from": "plan/2026-08-01-v030-plumbing-and-tests",
+   "to": "item/01KYZFDBAZ0T4W5TZYVXSBXADV",
+   "type": "produces"
+  },
+  {
+   "from": "plan/2026-08-01-v030-plumbing-and-tests",
+   "to": "item/01KYZFDBAZ62YTTMN7SRGD2QKC",
+   "type": "produces"
+  },
+  {
+   "from": "plan/2026-08-01-v030-plumbing-and-tests",
+   "to": "item/01KYZFDBAZ6G090EZ3FSS0FXS9",
+   "type": "produces"
+  },
+  {
+   "from": "plan/2026-08-01-v030-plumbing-and-tests",
+   "to": "item/01KYZFDBAZW0F3RCN8P9J1R29A",
    "type": "produces"
   }
  ],
@@ -373,11 +493,75 @@
    "status": "done",
    "title": "Pack progressive disclosure should be outbound-only by default"
   },
+  "item/01KYW8WH356FYJ3PM9EFKB8BCW": {
+   "doc_type": "item",
+   "status": "done",
+   "title": "Local Substack\u2192OKF integration test runner"
+  },
+  "item/01KYZFDBAY0AX03XQ6SAT6SXJW": {
+   "doc_type": "item",
+   "status": "done",
+   "title": "Fix the no-op post-edit hook and curate fallback"
+  },
+  "item/01KYZFDBAY2VPBHBNXW7E4ZKHF": {
+   "doc_type": "item",
+   "status": "done",
+   "title": "Fix okf-graph.py block-sequence YAML, Mermaid IDs, and add validate --strict"
+  },
+  "item/01KYZFDBAYGEG2FKWRADN46Z9W": {
+   "doc_type": "item",
+   "status": "done",
+   "title": "v0.3.0 \u2014 fix the plumbing, add the net"
+  },
+  "item/01KYZFDBAZ0T4W5TZYVXSBXADV": {
+   "doc_type": "item",
+   "status": "done",
+   "title": "Add tests/test_okf_graph.py and wire it into CI and pre-commit"
+  },
+  "item/01KYZFDBAZ62YTTMN7SRGD2QKC": {
+   "doc_type": "item",
+   "status": "done",
+   "title": "Qualify intra-plugin paths with CLAUDE_PLUGIN_ROOT"
+  },
+  "item/01KYZFDBAZ6G090EZ3FSS0FXS9": {
+   "doc_type": "item",
+   "status": "done",
+   "title": "Add graph subcommand and the two missing slash commands"
+  },
+  "item/01KYZFDBAZW0F3RCN8P9J1R29A": {
+   "doc_type": "item",
+   "status": "done",
+   "title": "Release chore \u2014 bump to 0.3.0 across the four manifests and README"
+  },
+  "item/01KYZNNM1XEWFFN01EE60THRXK": {
+   "doc_type": "item",
+   "status": "done",
+   "title": "Regenerate stale IA index so the doc gates stop warning"
+  },
+  "item/01KYZNNMGDBGN01Z83896Q4J8H": {
+   "doc_type": "item",
+   "status": "done",
+   "title": "Clear ticket sync keys left pointing at the old repository"
+  },
+  "item/01KYZNNMWG2ZHJV4YRKPJX0DZE": {
+   "doc_type": "item",
+   "status": "done",
+   "title": "Tell agents to verify their worktree base before building"
+  },
   "plan/2026-07-29-wiki-ticket-adoption": {
    "doc_type": "plan",
    "source": "docs/plans/2026-07-29-wiki-ticket-adoption.md",
    "title": "Adopt WikiTicket SDD for okf-plugin",
    "truth_state": "current"
+  },
+  "plan/2026-08-01-v030-plumbing-and-tests": {
+   "doc_type": "plan",
+   "source": "docs/plans/2026-08-01-v030-plumbing-and-tests.md",
+   "title": "v0.3.0 \u2014 fix the plumbing, add the net",
+   "truth_state": "current"
+  },
+  "pr/8": {
+   "doc_type": "pr"
   },
   "release/v0.1.0": {
    "doc_type": "release"
@@ -389,6 +573,9 @@
    "doc_type": "release"
   },
   "release/v0.2.1": {
+   "doc_type": "release"
+  },
+  "release/v0.3.0": {
    "doc_type": "release"
   },
   "roadmap": {
