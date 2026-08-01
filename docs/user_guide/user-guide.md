@@ -49,18 +49,57 @@ Prefer this before renaming or splitting high-degree agents, workflows, or share
 
 ### Progressive disclosure packs
 
-Default: **2 hops**, ~**20 nodes**.
+Default: **2 hops**, ~**20 nodes**, following **outbound** edges only. Add
+`--undirected` to walk inbound edges too — useful for "what would break", but it
+floods easily through hub index pages.
 
 ```bash
 python3 scripts/okf-graph.py pack <bundle> <concept> --hops 2 --max-nodes 20
+python3 scripts/okf-graph.py subgraph <bundle> <concept> --hops 2
+# or /okf-query
 ```
+
+### Visualize
+
+```bash
+python3 scripts/okf-graph.py graph <bundle>                          # mermaid (default)
+python3 scripts/okf-graph.py graph <bundle> --focus <concept> --hops 2
+python3 scripts/okf-graph.py graph <bundle> --format html > graph.html
+python3 scripts/okf-graph.py graph <bundle> --format json
+# or /okf-visualize
+```
+
+Whole-bundle by default, including isolated concepts. `--focus` scopes to one
+concept's neighborhood. The `html` output is a single self-contained file — no
+CDN, no network fetches — so it opens straight from disk.
 
 ### Validate
 
 ```bash
 python3 scripts/okf-graph.py validate <bundle>
+python3 scripts/okf-graph.py validate <bundle> --strict   # warnings also exit non-zero
 # or /okf-validate
 ```
+
+Default is lenient. Only **errors** — a broken link, a missing root `index.md` —
+exit non-zero. **Warnings** (missing `type` or `title`, an unverified
+high-impact concept, a `TicketLink` with no `external_id`/`worklog_id`) print
+but still exit `0`. Use `--strict` to make warnings gate CI. Every skill and the
+post-edit hook call the lenient form.
+
+### Maintain
+
+```bash
+python3 scripts/okf-graph.py orphans <bundle>    # concepts with no edges either way
+python3 scripts/okf-graph.py edges <bundle> --rel routes_to
+# or /okf-maintain
+```
+
+### Curation on save
+
+The post-edit hook (`Write|Edit|MultiEdit`) runs `scripts/okf-curate.sh` on OKF
+paths and validates the surrounding bundle. It reports; it never blocks the
+edit.
 
 ### Tickets (WikiTicket / worklog)
 

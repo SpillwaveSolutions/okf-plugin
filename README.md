@@ -95,7 +95,15 @@ bin/worklog fold | python3 scripts/okf-ticket-link.py emit --bundle sample-okf -
 
 ### Hooks
 
-Post-edit (`Write|Edit`) on OKF paths runs `scripts/okf-curate.sh` (validate/lint when `okf` is present; lightweight checks otherwise).
+Post-edit (`Write|Edit|MultiEdit`) on OKF paths runs `scripts/okf-curate.sh`: `okf validate`/`okf lint` when the official CLI is present, otherwise this repo's own `okf-graph.py validate`. It reads the tool payload from stdin, so it fires on every matching edit.
+
+### Tests
+
+```bash
+python3 tests/test_okf_graph.py -q      # graph engine, plain asserts, no framework
+```
+
+Run in CI alongside `okf-graph.py validate sample-okf --strict`, and as a guarded pre-commit check.
 
 ### Sample OKF
 
@@ -122,7 +130,8 @@ Generated live from WikiTicket worklog: [`docs/roadmap.md`](./docs/roadmap.md) �
 
 - **v0.1 (MVP)** — skills, packaging, hooks, sample OKF, okfcli/Python wrappers  
 - **v0.2** — typed edges, TicketLink ↔ worklog helpers, GraphEngineer progressive-disclosure defaults, marketplace metadata  
-- **Later** — MCP server, enhanced visualization overlays  
+- **v0.3** — `graph` subcommand (mermaid/json/html), `validate --strict`, a slash command for every skill, first automated coverage of the graph engine, working post-edit hook  
+- **Later** — MCP server, richer agent-graph overlays  
 
 ## Related ecosystem
 
