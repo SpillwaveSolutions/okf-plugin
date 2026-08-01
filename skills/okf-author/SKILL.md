@@ -57,6 +57,7 @@ Deep reference: `references/typed-edges.md`.
 When bridging to SLDC systems, use `type: TicketLink` with `worklog_id` and optional `external_id` / `external_system`.
 
 ```bash
+# bin/worklog is repo-local (worklog-enabled repos only), not part of the plugin.
 bin/worklog fold | python3 "${CLAUDE_PLUGIN_ROOT}/scripts/okf-ticket-link.py" emit --bundle <bundle> --open-only
 ```
 

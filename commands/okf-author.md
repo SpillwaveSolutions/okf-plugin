@@ -7,4 +7,4 @@ Author an OKF concept using the **okf-author** skill.
 
 User request: `$ARGUMENTS`
 
-Follow `skills/okf-author/SKILL.md` — complete frontmatter, absolute links, update indexes/log, offer validation + impact.
+Follow `${CLAUDE_PLUGIN_ROOT}/skills/okf-author/SKILL.md` — complete frontmatter, absolute links, update indexes/log, offer validation + impact.

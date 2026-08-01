@@ -91,6 +91,9 @@ fi
 # Guarded: scaffolded repos have no tests/ (the suite lives in the source repo).
 [ ! -f tests/test_fold.py ] || python3 tests/test_fold.py -q >/dev/null 2>&1 || fail "fold tests failing"
 
+# Graph engine tests, same guarded pattern.
+[ ! -f tests/test_okf_graph.py ] || python3 tests/test_okf_graph.py -q >/dev/null 2>&1 || fail "graph tests failing — run: python3 tests/test_okf_graph.py"
+
 # ADRs: schema + cross-file invariants. Guarded like the fold tests.
 [ ! -d docs/adr ] || [ ! -x bin/worklog ] || python3 bin/worklog adr check >/dev/null || fail "ADR validation failed — run: worklog adr check"
 
