@@ -59,6 +59,8 @@ Do not add Grok-only features that break Claude Code.
 | `/okf-impact` | okf-impact |
 | `/okf-query` | okf-query |
 | `/okf-validate` | okf-validate |
+| `/okf-visualize` | okf-visualize |
+| `/okf-maintain` | okf-maintain |
 
 ## Specialist agent
 

@@ -20,13 +20,20 @@ Produce readable graph views of the OKF dual graph, with optional **agent-graph 
 ## Process
 
 1. Resolve bundle and optional focus concept / filter (type, tag, hops).
-2. Extract graph:
+2. Render the graph:
    ```bash
    okf graph <bundle>   # if available
-   # or focused extract:
-   python3 "${CLAUDE_PLUGIN_ROOT}/scripts/okf-graph.py" subgraph <bundle> <concept> --hops 2
+   # fallback — whole bundle, fenced Mermaid on stdout:
+   python3 "${CLAUDE_PLUGIN_ROOT}/scripts/okf-graph.py" graph <bundle>
+   # focused neighborhood:
+   python3 "${CLAUDE_PLUGIN_ROOT}/scripts/okf-graph.py" graph <bundle> --focus <concept> --hops 2
+   # other formats:
+   python3 "${CLAUDE_PLUGIN_ROOT}/scripts/okf-graph.py" graph <bundle> --format json
+   python3 "${CLAUDE_PLUGIN_ROOT}/scripts/okf-graph.py" graph <bundle> --format html > docs/okf-graph.html
    ```
-   For full-bundle views, crawl all concepts via `validate` load path or walk `*.md` with the Python helper patterns.
+   `--format json` prints JSON; `mermaid` (default) and `html` print the artifact
+   itself, so they pipe straight into a doc or a file. Node IDs come from the
+   full concept path, so the bundle's many `index.md` files stay distinct.
 3. Choose layout:
    - **Knowledge view** — hide pure harness types or style them differently
    - **Agent view** — emphasize `AgentNode`, `Workflow`, `SharedState`, route edges
@@ -52,16 +59,18 @@ graph LR
 - Edge labels optional (`routes_to`, `depends_on`).
 - Cap diagrams at ~40 nodes; otherwise filter or multi-diagram by subgraph.
 
-## HTML sketch
+## HTML
 
-Self-contained HTML with:
+`--format html` emits one self-contained page — no CDN, no scripts, no network
+fetches, so it opens from disk and survives a locked-down viewer. It carries:
 
-- Title + generated timestamp
-- Embedded Mermaid via CDN **or** static SVG if Mermaid unavailable offline
-- Legend for knowledge vs agent types
-- Optional table of concepts (title, type, verified)
+- Title, caption (focus + hops), generated timestamp, node/edge counts
+- Mermaid source in `<pre class="mermaid">` — drawn by renderers that
+  understand it, readable as text everywhere else
+- Concept table (title, path, type, verified) and edge table (from, rel, to)
 
-Prefer writing to something like `docs/okf-graph.html` only when the user wants a file.
+Write it to a file (e.g. `docs/okf-graph.html`) only when the user wants one;
+never re-add a CDN `<script>` to make it "render properly".
 
 ## JSON shape
 

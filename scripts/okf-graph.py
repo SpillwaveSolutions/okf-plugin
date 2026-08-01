@@ -7,13 +7,15 @@ Usage:
   okf-graph.py subgraph <bundle> <concept-path> [--hops N]
   okf-graph.py pack <bundle> <concept-path> [--hops N] [--max-nodes N]
   okf-graph.py edges <bundle> [--from PATH] [--rel REL]
-  okf-graph.py validate <bundle>
+  okf-graph.py graph <bundle> [--format mermaid|json|html] [--focus PATH] [--hops N]
+  okf-graph.py validate <bundle> [--strict]
   okf-graph.py orphans <bundle>
 """
 
 from __future__ import annotations
 
 import argparse
+import html
 import json
 import re
 import sys
@@ -604,6 +606,161 @@ def cmd_edges(bundle: Path, from_path: str | None, rel_filter: str | None) -> in
     return 0
 
 
+def render_html(
+    nodes: list[str],
+    edges: list[dict[str, str]],
+    concepts: dict[str, Concept],
+    caption: str,
+    mermaid: list[str],
+) -> str:
+    """Self-contained page: Mermaid source plus node/edge tables.
+
+    No CDN, no JS, no network fetches — the file must open from disk and from
+    a locked-down viewer. Renderers that understand `pre.mermaid` draw the
+    diagram; everywhere else the tables carry the same information.
+    """
+    e = html.escape
+    diagram = e("\n".join(mermaid))
+    stamp = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+    node_rows = "\n".join(
+        f"<tr><td>{e(concepts[n].title)}</td><td><code>{e(n)}</code></td>"
+        f"<td>{e(concepts[n].type)}</td><td>{'yes' if concepts[n].verified else 'no'}</td></tr>"
+        for n in nodes
+    )
+    edge_rows = "\n".join(
+        f"<tr><td><code>{e(x['from'])}</code></td><td>{e(x['rel'])}</td>"
+        f"<td><code>{e(x['to'])}</code></td></tr>"
+        for x in edges
+    )
+    return f"""<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OKF graph — {e(caption)}</title>
+<style>
+  body {{ font-family: system-ui, sans-serif; margin: 2rem auto; max-width: 60rem;
+         padding: 0 1rem; line-height: 1.5; }}
+  h1 {{ margin-bottom: 0.2rem; }}
+  .meta {{ color: #666; font-size: 0.9rem; margin-bottom: 1.5rem; }}
+  pre {{ background: #f6f6f6; padding: 1rem; overflow-x: auto; border-radius: 4px; }}
+  table {{ border-collapse: collapse; width: 100%; margin-bottom: 2rem; }}
+  th, td {{ border-bottom: 1px solid #ddd; padding: 0.4rem 0.6rem;
+            text-align: left; vertical-align: top; }}
+  th {{ background: #f0f0f0; }}
+  code {{ font-size: 0.85em; }}
+  @media (prefers-color-scheme: dark) {{
+    body {{ background: #16181c; color: #e6e6e6; }}
+    .meta {{ color: #9aa0a6; }}
+    pre {{ background: #22252a; }}
+    th {{ background: #22252a; }}
+    th, td {{ border-bottom-color: #383c42; }}
+  }}
+</style>
+</head>
+<body>
+<h1>OKF graph</h1>
+<p class="meta">{e(caption)} · {len(nodes)} concepts · {len(edges)} edges ·
+generated {stamp}</p>
+
+<h2>Diagram</h2>
+<pre class="mermaid">{diagram}</pre>
+
+<h2>Concepts</h2>
+<table>
+<thead><tr><th>Title</th><th>Path</th><th>Type</th><th>Verified</th></tr></thead>
+<tbody>
+{node_rows}
+</tbody>
+</table>
+
+<h2>Edges</h2>
+<table>
+<thead><tr><th>From</th><th>Rel</th><th>To</th></tr></thead>
+<tbody>
+{edge_rows}
+</tbody>
+</table>
+</body>
+</html>
+"""
+
+
+def cmd_graph(bundle: Path, fmt: str, focus: str | None, hops: int) -> int:
+    """Whole-bundle or focused graph view.
+
+    `json` prints JSON like every other subcommand; `mermaid` and `html` print
+    the raw artifact. Unlike `pack` — whose JSON envelope carries included /
+    excluded / edges *alongside* its `markdown` byproduct — a rendered graph is
+    the only product here, so wrapping it would force every caller through
+    `jq -r` before it could be pasted into a doc or written to a file. `--format
+    json` already covers the machine-readable case.
+    """
+    concepts = load_bundle(bundle)
+    root: str | None = None
+    nodes = sorted(concepts)
+
+    if focus:
+        root = resolve_concept(concepts, focus)
+        if not root:
+            print(json.dumps({"error": f"concept not found: {focus}"}))
+            return 1
+        undirected: dict[str, list[str]] = defaultdict(list)
+        for k, c in concepts.items():
+            for o in c.outbound:
+                undirected[k].append(o)
+                undirected[o].append(k)
+        neighbors = {k: sorted(set(v)) for k, v in undirected.items()}
+        nodes = [root] + [x["id"] for x in bfs_closure(root, neighbors, hops=hops)]
+
+    node_set = set(nodes)
+    edges = [e for e in edge_index(concepts) if e["from"] in node_set and e["to"] in node_set]
+
+    if fmt == "json":
+        print(
+            json.dumps(
+                {
+                    "bundle": str(bundle),
+                    "focus": root,
+                    "hops": hops if root else None,
+                    "nodes": [
+                        {
+                            "id": n,
+                            "title": concepts[n].title,
+                            "type": concepts[n].type,
+                            "verified": concepts[n].verified,
+                        }
+                        for n in nodes
+                    ],
+                    "edges": [
+                        {"from": e["from"], "to": e["to"], "rel": e["rel"]} for e in edges
+                    ],
+                },
+                indent=2,
+            )
+        )
+        return 0
+
+    lines = render_mermaid(edges, concepts)
+    # render_mermaid only declares nodes it sees on an edge; isolated concepts
+    # would otherwise disappear from the diagram but stay in the JSON view.
+    linked = {e["from"] for e in edges} | {e["to"] for e in edges}
+    for n in nodes:
+        if n not in linked:
+            label = concepts[n].title.replace('"', "'")
+            lines.append(f'  {mermaid_id(n)}["{label}"]')
+
+    caption = f"{root} @ {hops} hops" if root else f"{bundle.name} (whole bundle)"
+    if fmt == "html":
+        print(render_html(nodes, edges, concepts, caption, lines), end="")
+    else:
+        print("```mermaid")
+        print("\n".join(lines))
+        print("```")
+    return 0
+
+
 def cmd_validate(bundle: Path, strict: bool = False) -> int:
     concepts = load_bundle(bundle)
     issues: list[dict[str, str]] = []
@@ -721,6 +878,12 @@ def main() -> int:
     s.add_argument("--from", dest="from_path", default=None)
     s.add_argument("--rel", dest="rel_filter", default=None)
 
+    s = sub.add_parser("graph", help="Render the bundle (or a focused neighborhood)")
+    s.add_argument("bundle")
+    s.add_argument("--format", dest="fmt", choices=("mermaid", "json", "html"), default="mermaid")
+    s.add_argument("--focus", default=None, help="Scope to this concept's neighborhood")
+    s.add_argument("--hops", type=int, default=2, help="Neighborhood radius for --focus")
+
     s = sub.add_parser("validate")
     s.add_argument("bundle")
     s.add_argument(
@@ -748,6 +911,8 @@ def main() -> int:
         return cmd_pack(bundle, args.concept, args.hops, args.max_nodes, undirected=args.undirected)
     if args.cmd == "edges":
         return cmd_edges(bundle, args.from_path, args.rel_filter)
+    if args.cmd == "graph":
+        return cmd_graph(bundle, args.fmt, args.focus, args.hops)
     if args.cmd == "validate":
         return cmd_validate(bundle, strict=args.strict)
     if args.cmd == "orphans":

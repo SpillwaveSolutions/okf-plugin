@@ -65,6 +65,8 @@ python3 scripts/okf-graph.py validate sample-okf
 python3 scripts/okf-graph.py impact sample-okf knowledge/skill-okf-impact.md
 python3 scripts/okf-graph.py pack sample-okf agents/graph-engineer.md --hops 2
 python3 scripts/okf-graph.py edges sample-okf --rel routes_to
+python3 scripts/okf-graph.py graph sample-okf --focus agents/graph-engineer.md --hops 2
+python3 scripts/okf-graph.py graph sample-okf --format html > okf-graph.html
 # TicketLink from worklog:
 bin/worklog fold | python3 scripts/okf-ticket-link.py emit --bundle sample-okf --open-only --dry-run
 ```
@@ -85,7 +87,7 @@ bin/worklog fold | python3 scripts/okf-ticket-link.py emit --bundle sample-okf -
 
 ### Commands
 
-`/okf-init` · `/okf-author` · `/okf-impact` · `/okf-query` · `/okf-validate`
+`/okf-init` · `/okf-author` · `/okf-impact` · `/okf-query` · `/okf-validate` · `/okf-visualize` · `/okf-maintain`
 
 ### Agent
 

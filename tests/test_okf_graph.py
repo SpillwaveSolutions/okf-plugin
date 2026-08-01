@@ -140,6 +140,80 @@ def test_pack_mermaid_has_no_collapsed_nodes():
     assert "```mermaid" in out["markdown"]
 
 
+def run_script_raw(*args) -> tuple[int, str]:
+    """For subcommands that print an artifact rather than JSON."""
+    proc = subprocess.run(
+        [sys.executable, str(SCRIPT), *args], capture_output=True, text=True, cwd=REPO
+    )
+    return proc.returncode, proc.stdout
+
+
+def test_graph_mermaid_is_a_fenced_block():
+    code, out = run_script_raw("graph", "sample-okf")
+    assert code == 0, out
+    assert out.startswith("```mermaid\ngraph LR\n"), out[:80]
+    assert out.rstrip().endswith("```"), out[-80:]
+    # every concept in the bundle gets a node line, orphans included
+    _, doc = run_script("graph", "sample-okf", "--format", "json")
+    for n in doc["nodes"]:
+        assert g.mermaid_id(n["id"]) in out, f"{n['id']} missing from mermaid"
+
+
+def test_graph_json_shape():
+    code, out = run_script("graph", "sample-okf", "--format", "json")
+    assert code == 0, out
+    assert out["focus"] is None and out["hops"] is None, out
+    assert out["nodes"] and out["edges"], out
+    for n in out["nodes"]:
+        assert set(n) == {"id", "title", "type", "verified"}, n
+    ids = {n["id"] for n in out["nodes"]}
+    for e in out["edges"]:
+        assert set(e) == {"from", "to", "rel"}, e
+        # no dangling endpoints: broken links belong to validate, not the graph
+        assert e["from"] in ids and e["to"] in ids, e
+
+
+def test_graph_focus_narrows_the_node_set():
+    _, whole = run_script("graph", "sample-okf", "--format", "json")
+    _, near = run_script(
+        "graph", "sample-okf", "--format", "json", "--focus", "agents/graph-engineer.md",
+        "--hops", "1",
+    )
+    assert near["focus"] == "agents/graph-engineer.md", near["focus"]
+    whole_ids = {n["id"] for n in whole["nodes"]}
+    near_ids = {n["id"] for n in near["nodes"]}
+    assert near_ids < whole_ids, f"focus did not narrow: {len(near_ids)}/{len(whole_ids)}"
+    assert "agents/graph-engineer.md" in near_ids
+    # more hops reach at least as far
+    _, far = run_script(
+        "graph", "sample-okf", "--format", "json", "--focus", "agents/graph-engineer.md",
+        "--hops", "3",
+    )
+    assert near_ids <= {n["id"] for n in far["nodes"]}
+
+
+def test_graph_focus_unknown_concept_errors():
+    code, out = run_script("graph", "sample-okf", "--format", "json", "--focus", "no/such.md")
+    assert code == 1, out
+    assert "error" in out, out
+
+
+def test_graph_html_is_self_contained():
+    code, out = run_script_raw("graph", "sample-okf", "--format", "html")
+    assert code == 0, out[:200]
+    assert out.startswith("<!doctype html>"), out[:40]
+    assert "</html>" in out
+    # no network: a CSP-locked viewer or an offline file must render fully
+    assert "http://" not in out and "https://" not in out, "external reference in html"
+    for tag in ("<script", "src=", "@import", "url("):
+        assert tag not in out, f"external/executable resource in html: {tag}"
+    assert '<pre class="mermaid">' in out and "graph LR" in out
+    # the node table carries the same concepts as the JSON view
+    _, doc = run_script("graph", "sample-okf", "--format", "json")
+    for n in doc["nodes"]:
+        assert f"<code>{n['id']}</code>" in out, f"{n['id']} missing from html table"
+
+
 def test_strict_validate_flags_warnings():
     """--strict turns warn into a non-zero exit so CI can gate on it; the
     default stays lenient because the skills depend on exit 0."""

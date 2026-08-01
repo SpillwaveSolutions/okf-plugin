@@ -20,16 +20,29 @@ python3 scripts/okf-graph.py backlinks <bundle> <concept>
 python3 scripts/okf-graph.py subgraph <bundle> <concept> [--hops N]
 python3 scripts/okf-graph.py pack <bundle> <concept> [--hops 2] [--max-nodes 20]
 python3 scripts/okf-graph.py edges <bundle> [--from PATH] [--rel REL]
-python3 scripts/okf-graph.py validate <bundle>
+python3 scripts/okf-graph.py graph <bundle> [--format mermaid|json|html] [--focus PATH] [--hops 2]
+python3 scripts/okf-graph.py validate <bundle> [--strict]
 python3 scripts/okf-graph.py orphans <bundle>
 ```
 
 | Command | Output |
 |---------|--------|
 | `impact` | Inbound/outbound closures, typed `direct_edges`, suggested update order (JSON) |
+| `backlinks` | Concepts linking *to* the target, with their rels (JSON) |
+| `subgraph` | Undirected N-hop neighborhood: nodes + edges (JSON) |
 | `pack` | Progressive disclosure pack; JSON includes ready-to-paste `markdown` |
 | `edges` | Edge list; filter by `--rel routes_to` etc. |
-| `validate` | Conformance + broken links + unverified high-impact (JSON) |
+| `graph` | Whole bundle or `--focus` neighborhood. `--format json` prints JSON; `mermaid` (default) and `html` print the artifact itself |
+| `validate` | Conformance + broken links + unverified high-impact (JSON). `--strict` also exits non-zero on warnings — used by CI |
+| `orphans` | Concepts with no inbound or outbound edges (JSON) |
+
+The `html` view is fully self-contained: Mermaid source plus concept/edge
+tables, no CDN or network fetches.
+
+```bash
+python3 scripts/okf-graph.py graph sample-okf --focus agents/graph-engineer.md --hops 1
+python3 scripts/okf-graph.py graph sample-okf --format html > docs/okf-graph.html
+```
 
 Concepts resolve by path, stem, or title. Typed edges come from Markdown links plus optional frontmatter `links[].rel`.
 
