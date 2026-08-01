@@ -14,6 +14,7 @@
    "tag": "v0.3.0",
    "title": "Code Walkthrough 2026-08-01 v0.3.0-release",
    "truth_state": "snapshot",
+   "wiki": "https://github.com/SpillwaveSolutions/okf-plugin/wiki/Code-Walkthrough-2026-08-01_v0.3.0-release",
    "wiki_key": "design/2026-08-01_v0.3.0-release-code-walkthrough"
   },
   {
@@ -30,6 +31,7 @@
    "tag": "v0.3.0",
    "title": "Design Doc 2026-08-01 v0.3.0-release",
    "truth_state": "snapshot",
+   "wiki": "https://github.com/SpillwaveSolutions/okf-plugin/wiki/Design-Doc-2026-08-01_v0.3.0-release",
    "wiki_key": "design/2026-08-01_v0.3.0-release-design-doc"
   },
   {
@@ -146,6 +148,7 @@
    "status": "completed",
    "title": "v0.3.0 \u2014 fix the plumbing, add the net",
    "truth_state": "current",
+   "wiki": "https://github.com/SpillwaveSolutions/okf-plugin/wiki/Plan-v030-plumbing-and-tests",
    "wiki_key": "plan/2026-08-01-v030-plumbing-and-tests"
   },
   {
@@ -172,6 +175,7 @@
    "source_hash": "fb13abec",
    "title": "Roadmap",
    "truth_state": "snapshot",
+   "wiki": "https://github.com/SpillwaveSolutions/okf-plugin/wiki/Roadmap-2026-08-01_v0.3.0-release",
    "wiki_key": "roadmap-snapshot/2026-08-01_v0.3.0-release"
   },
   {

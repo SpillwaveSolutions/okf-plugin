@@ -1,7 +1,7 @@
 {
   "design/2026-08-01_v0.3.0-release-code-walkthrough": {
     "canonical_key": "design/2026-08-01_v0.3.0-release-code-walkthrough",
-    "doc_type": "",
+    "doc_type": "design",
     "page_id": "Code-Walkthrough-2026-08-01_v0.3.0-release",
     "render_hash": "dcd5f55faa4f",
     "rev": "0a9c5f969e78edfdde20785a00c3af2bbb1f7dc5",
@@ -14,7 +14,7 @@
   },
   "design/2026-08-01_v0.3.0-release-design-doc": {
     "canonical_key": "design/2026-08-01_v0.3.0-release-design-doc",
-    "doc_type": "",
+    "doc_type": "design",
     "page_id": "Design-Doc-2026-08-01_v0.3.0-release",
     "render_hash": "f9219caa69d3",
     "rev": "0a9c5f969e78edfdde20785a00c3af2bbb1f7dc5",
@@ -523,7 +523,7 @@
   },
   "plan/2026-08-01-v030-plumbing-and-tests": {
     "canonical_key": "plan/2026-08-01-v030-plumbing-and-tests",
-    "doc_type": "",
+    "doc_type": "plan",
     "page_id": "Plan-v030-plumbing-and-tests",
     "render_hash": "09476ea4c91b",
     "rev": "0a9c5f969e78edfdde20785a00c3af2bbb1f7dc5",
@@ -628,7 +628,7 @@
   },
   "roadmap-snapshot/2026-08-01_v0.3.0-release": {
     "canonical_key": "roadmap-snapshot/2026-08-01_v0.3.0-release",
-    "doc_type": "",
+    "doc_type": "roadmap-snapshot",
     "page_id": "Roadmap-2026-08-01_v0.3.0-release",
     "render_hash": "4116641b7631",
     "rev": "0a9c5f969e78edfdde20785a00c3af2bbb1f7dc5",
