@@ -109,14 +109,28 @@
   {
    "canonical_key": "roadmap",
    "doc_type": "roadmap",
-   "generated_at": "2026-08-01T22:04:00Z",
+   "generated_at": "2026-08-01T22:06:02Z",
    "slug": "roadmap",
    "source": "docs/roadmap.md",
-   "source_hash": "fb13abec",
+   "source_hash": "630f4116",
    "title": "Roadmap",
    "truth_state": "current",
    "wiki": "https://github.com/SpillwaveSolutions/okf-plugin/wiki/Roadmap",
    "wiki_key": "roadmap"
+  },
+  {
+   "canonical_key": "roadmap-snapshot/2026-08-01_v0.3.0-release",
+   "date": "2026-08-01",
+   "doc_type": "roadmap-snapshot",
+   "generated_at": "2026-08-01T22:04:00Z",
+   "name": "v0.3.0-release",
+   "release": "v0.3.0",
+   "slug": "2026-08-01_v0.3.0-release",
+   "source": "docs/roadmap/2026-08-01_v0.3.0-release.md",
+   "source_hash": "fb13abec",
+   "title": "Roadmap",
+   "truth_state": "snapshot",
+   "wiki_key": "roadmap-snapshot/2026-08-01_v0.3.0-release"
   },
   {
    "canonical_key": "spec",

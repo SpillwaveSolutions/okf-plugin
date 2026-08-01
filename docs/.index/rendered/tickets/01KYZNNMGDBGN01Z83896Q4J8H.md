@@ -4,6 +4,10 @@
 
 After the move to the SpillwaveSolutions org, the ticket sync state still mapped six work items to issue numbers 1-6.
 
+## Linked PRs
+
+- [[PR-9]]
+
 ## Release
 
 - [[Release-v0.3.0]]

@@ -2,16 +2,23 @@
 
 _The evidence chain: plan → item → ticket → code → release, forward and backward. Generated from `docs/.index/_graph.json`; do not edit._
 
+### Cut the v0.3.0 release
+`01KYZNSQQQDZD0J6XERYHJF98F` · status: todo
+- targets: release/v0.3.0
+
 ### Tell agents to verify their worktree base before building
 `01KYZNNMWG2ZHJV4YRKPJX0DZE` · status: done
+- lands-in: pr/9
 - targets: release/v0.3.0
 
 ### Clear ticket sync keys left pointing at the old repository
 `01KYZNNMGDBGN01Z83896Q4J8H` · status: done
+- lands-in: pr/9
 - targets: release/v0.3.0
 
 ### Regenerate stale IA index so the doc gates stop warning
 `01KYZNNM1XEWFFN01EE60THRXK` · status: done
+- lands-in: pr/9
 - targets: release/v0.3.0
 
 ### Release chore — bump to 0.3.0 across the four manifests and README

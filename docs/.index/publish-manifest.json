@@ -24,7 +24,7 @@
    "frozen": false,
    "page_name": "Index-Releases",
    "render": "as-is",
-   "render_hash": "f45668ba0034",
+   "render_hash": "c8eaf466326f",
    "source": "docs/.index/rendered/releases.md",
    "title": "Releases Index",
    "truth_state": "current",
@@ -44,7 +44,7 @@
    "frozen": false,
    "page_name": "Index-Traceability",
    "render": "as-is",
-   "render_hash": "75f63e901bad",
+   "render_hash": "5df45dbd2029",
    "source": "docs/.index/rendered/traceability.md",
    "title": "Traceability Index",
    "truth_state": "current",
@@ -59,6 +59,16 @@
    "title": "PR #8",
    "truth_state": "not tracked",
    "wiki_key": "pr/8"
+  },
+  {
+   "frozen": false,
+   "page_name": "PR-9",
+   "render": "as-is",
+   "render_hash": "66f20aa9427f",
+   "source": "docs/.index/rendered/prs/9.md",
+   "title": "PR #9",
+   "truth_state": "not tracked",
+   "wiki_key": "pr/9"
   },
   {
    "frozen": false,
@@ -104,7 +114,7 @@
    "frozen": false,
    "page_name": "Release-v0.3.0",
    "render": "as-is",
-   "render_hash": "b9642214a209",
+   "render_hash": "63492089db6f",
    "source": "docs/.index/rendered/releases/v0.3.0.md",
    "title": "Release v0.3.0",
    "truth_state": "shipped",
@@ -404,7 +414,7 @@
    "frozen": false,
    "page_name": "Ticket-01KYZNNM1XEWFFN01EE60THRXK",
    "render": "as-is",
-   "render_hash": "21bb8a2ad15a",
+   "render_hash": "d5a8fcb6b00e",
    "source": "docs/.index/rendered/tickets/01KYZNNM1XEWFFN01EE60THRXK.md",
    "title": "Regenerate stale IA index so the doc gates stop warning",
    "truth_state": "done",
@@ -414,7 +424,7 @@
    "frozen": false,
    "page_name": "Ticket-01KYZNNMGDBGN01Z83896Q4J8H",
    "render": "as-is",
-   "render_hash": "b21370989c6c",
+   "render_hash": "ab6c331ac61d",
    "source": "docs/.index/rendered/tickets/01KYZNNMGDBGN01Z83896Q4J8H.md",
    "title": "Clear ticket sync keys left pointing at the old repository",
    "truth_state": "done",
@@ -424,11 +434,21 @@
    "frozen": false,
    "page_name": "Ticket-01KYZNNMWG2ZHJV4YRKPJX0DZE",
    "render": "as-is",
-   "render_hash": "dc858239af0f",
+   "render_hash": "5b75b750ad1e",
    "source": "docs/.index/rendered/tickets/01KYZNNMWG2ZHJV4YRKPJX0DZE.md",
    "title": "Tell agents to verify their worktree base before building",
    "truth_state": "done",
    "wiki_key": "item/01KYZNNMWG2ZHJV4YRKPJX0DZE"
+  },
+  {
+   "frozen": false,
+   "page_name": "Ticket-01KYZNSQQQDZD0J6XERYHJF98F",
+   "render": "as-is",
+   "render_hash": "a2f688aee2af",
+   "source": "docs/.index/rendered/tickets/01KYZNSQQQDZD0J6XERYHJF98F.md",
+   "title": "Cut the v0.3.0 release",
+   "truth_state": "open",
+   "wiki_key": "item/01KYZNSQQQDZD0J6XERYHJF98F"
   },
   {
    "banner": "> **Current** \u2014 this is the living version. Historical snapshots are linked from [[Index-Releases]].",
@@ -508,15 +528,26 @@
    "wiki_key": "plan/2026-08-01-v030-plumbing-and-tests"
   },
   {
-   "banner": "> **Current** \u2014 this is the living version; regenerated at 2026-08-01T22:04:00Z. Historical snapshots are linked from [[Index-Releases]].",
+   "banner": "> **Current** \u2014 this is the living version; regenerated at 2026-08-01T22:06:02Z. Historical snapshots are linked from [[Index-Releases]].",
    "frozen": false,
    "page_name": "Roadmap",
    "render": "doc+banner",
-   "render_hash": "93522e995e23",
+   "render_hash": "e69e076a8cbc",
    "source": "docs/roadmap.md",
    "title": "Roadmap",
    "truth_state": "current",
    "wiki_key": "roadmap"
+  },
+  {
+   "banner": "> **Snapshot** of release v0.3.0 (2026-08-01) \u2014 frozen record. The current version is [[Roadmap]].",
+   "frozen": true,
+   "page_name": "Roadmap-2026-08-01_v0.3.0-release",
+   "render": "doc+banner",
+   "render_hash": "4116641b7631",
+   "source": "docs/roadmap/2026-08-01_v0.3.0-release.md",
+   "title": "Roadmap",
+   "truth_state": "snapshot",
+   "wiki_key": "roadmap-snapshot/2026-08-01_v0.3.0-release"
   },
   {
    "banner": "> **Current** \u2014 this is the living version. Historical snapshots are linked from [[Index-Releases]].",
@@ -531,7 +562,7 @@
   }
  ],
  "sidebar": {
-  "render_hash": "bf90917cf238",
+  "render_hash": "d43f55501b76",
   "source": "docs/.index/rendered/_Sidebar.md"
  },
  "version": 1
