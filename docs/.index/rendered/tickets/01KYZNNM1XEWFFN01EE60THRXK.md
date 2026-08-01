@@ -4,6 +4,10 @@
 
 The doc-metadata, inventory, and rendered-page gates had drifted two days behind the work log and warned on every commit, with the message saying they become a hard gate soon.
 
+## Linked PRs
+
+- [[PR-9]]
+
 ## Release
 
 - [[Release-v0.3.0]]

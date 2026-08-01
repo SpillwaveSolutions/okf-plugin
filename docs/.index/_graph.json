@@ -252,8 +252,18 @@
   },
   {
    "from": "item/01KYZNNM1XEWFFN01EE60THRXK",
+   "to": "pr/9",
+   "type": "lands-in"
+  },
+  {
+   "from": "item/01KYZNNM1XEWFFN01EE60THRXK",
    "to": "release/v0.3.0",
    "type": "targets"
+  },
+  {
+   "from": "item/01KYZNNMGDBGN01Z83896Q4J8H",
+   "to": "pr/9",
+   "type": "lands-in"
   },
   {
    "from": "item/01KYZNNMGDBGN01Z83896Q4J8H",
@@ -262,6 +272,16 @@
   },
   {
    "from": "item/01KYZNNMWG2ZHJV4YRKPJX0DZE",
+   "to": "pr/9",
+   "type": "lands-in"
+  },
+  {
+   "from": "item/01KYZNNMWG2ZHJV4YRKPJX0DZE",
+   "to": "release/v0.3.0",
+   "type": "targets"
+  },
+  {
+   "from": "item/01KYZNSQQQDZD0J6XERYHJF98F",
    "to": "release/v0.3.0",
    "type": "targets"
   },
@@ -349,6 +369,16 @@
    "from": "plan/2026-08-01-v030-plumbing-and-tests",
    "to": "item/01KYZFDBAZW0F3RCN8P9J1R29A",
    "type": "produces"
+  },
+  {
+   "from": "roadmap-snapshot/2026-08-01_v0.3.0-release",
+   "to": "roadmap",
+   "type": "snapshot-of"
+  },
+  {
+   "from": "roadmap-snapshot/2026-08-01_v0.3.0-release",
+   "to": "release/v0.3.0",
+   "type": "targets"
   }
  ],
  "nodes": {
@@ -548,6 +578,11 @@
    "status": "done",
    "title": "Tell agents to verify their worktree base before building"
   },
+  "item/01KYZNSQQQDZD0J6XERYHJF98F": {
+   "doc_type": "item",
+   "status": "todo",
+   "title": "Cut the v0.3.0 release"
+  },
   "plan/2026-07-29-wiki-ticket-adoption": {
    "doc_type": "plan",
    "source": "docs/plans/2026-07-29-wiki-ticket-adoption.md",
@@ -561,6 +596,9 @@
    "truth_state": "current"
   },
   "pr/8": {
+   "doc_type": "pr"
+  },
+  "pr/9": {
    "doc_type": "pr"
   },
   "release/v0.1.0": {
@@ -583,6 +621,12 @@
    "source": "docs/roadmap.md",
    "title": "Roadmap",
    "truth_state": "current"
+  },
+  "roadmap-snapshot/2026-08-01_v0.3.0-release": {
+   "doc_type": "roadmap-snapshot",
+   "source": "docs/roadmap/2026-08-01_v0.3.0-release.md",
+   "title": "Roadmap",
+   "truth_state": "snapshot"
   },
   "spec": {
    "doc_type": "guide",
