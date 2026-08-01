@@ -31,8 +31,9 @@ links:
 ## Generate from worklog
 
 ```bash
-# Open items → TicketLink files under the bundle
-bin/worklog fold | python3 scripts/okf-ticket-link.py emit \
+# Open items → TicketLink files under the bundle.
+# bin/worklog is repo-local (worklog-enabled repos only), not part of the plugin.
+bin/worklog fold | python3 "${CLAUDE_PLUGIN_ROOT}/scripts/okf-ticket-link.py" emit \
   --bundle sample-okf --open-only
 
 # Single ULID

@@ -6,4 +6,4 @@ description: Multi-hop query / progressive disclosure pack from an OKF concept. 
 Extract a progressive disclosure subgraph using the **okf-query** skill.
 
 Parse `$ARGUMENTS` as concept path/title and optional hops (default 2).
-Follow `skills/okf-query/SKILL.md` and emit a compact context pack.
+Follow `${CLAUDE_PLUGIN_ROOT}/skills/okf-query/SKILL.md` and emit a compact context pack.

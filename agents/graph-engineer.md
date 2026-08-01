@@ -43,6 +43,7 @@ You are the **Graph Engineer**. Treat the OKF repository as a dual graph: a **kn
 1. Prefer WikiTicket SDD worklog ULIDs as durable ids.
 2. Emit/update `TicketLink` concepts via:
    ```bash
+   # bin/worklog is repo-local (worklog-enabled repos only), not part of the plugin.
    bin/worklog fold | python3 "${CLAUDE_PLUGIN_ROOT}/scripts/okf-ticket-link.py" emit --bundle <bundle> --open-only
    ```
 3. Link tickets with `rel: tracks` / `maps_to` (see `skills/okf-author/references/ticketlink-sldc.md`).

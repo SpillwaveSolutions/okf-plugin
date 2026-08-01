@@ -7,4 +7,4 @@ Validate the OKF bundle using the **okf-validate** skill.
 
 Bundle path: use `$ARGUMENTS` if provided, else auto-detect `.okf/` or `sample-okf/`.
 
-Follow `skills/okf-validate/SKILL.md`. Prefer `okf validate`; fallback to `okf-graph.py validate`.
+Follow `${CLAUDE_PLUGIN_ROOT}/skills/okf-validate/SKILL.md`. Prefer `okf validate`; fallback to `okf-graph.py validate`.
