@@ -15,6 +15,13 @@ jobs:
       # the branch guard only makes sense for an actual `git commit`.
       - name: log invariants
         run: WORKLOG_SKIP_BRANCH_GUARD=1 hooks/pre-commit
+      # The graph engine is what the plugin exists to do; nothing exercised it
+      # before v0.3.0. --strict so warnings gate here even though the skills
+      # (and okf-curate.sh) keep the lenient default.
+      - name: graph engine tests
+        run: python3 tests/test_okf_graph.py -q
+      - name: sample bundle stays valid
+        run: python3 scripts/okf-graph.py validate sample-okf --strict
       # commit-msg's own MERGE_HEAD check doesn't exist post-hoc in a CI
       # checkout, so re-derive "was this a merge" via --no-merges instead.
       - name: commit messages reference a worklog item or ticket
