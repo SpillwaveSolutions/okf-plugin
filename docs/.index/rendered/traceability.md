@@ -3,7 +3,7 @@
 _The evidence chain: plan → item → ticket → code → release, forward and backward. Generated from `docs/.index/_graph.json`; do not edit._
 
 ### Cut the v0.3.0 release
-`01KYZNSQQQDZD0J6XERYHJF98F` · status: todo
+`01KYZNSQQQDZD0J6XERYHJF98F` · status: done
 - targets: release/v0.3.0
 
 ### Tell agents to verify their worktree base before building
