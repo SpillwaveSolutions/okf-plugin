@@ -1,29 +1,4 @@
 {
   "adapter_path": "/Users/richardhightower/clients/spillwave/src/okf-plugin/adapters/github/adapter",
-  "items": {
-    "01KYQZ4PAMZCM9N56K8F3034F2": {
-      "last_pushed_hash": "bef08c1f5ba1444c",
-      "last_pushed_key": "1"
-    },
-    "01KYQZ4PAN551JXFMH2GF82BXF": {
-      "last_pushed_hash": "b0edc4e107cb8677",
-      "last_pushed_key": "2"
-    },
-    "01KYQZ4PAN6A8EX36M2ZRWMDAZ": {
-      "last_pushed_hash": "c40924efb9dd6847",
-      "last_pushed_key": "3"
-    },
-    "01KYQZ4PAN71X19C6ZZVM42ZS2": {
-      "last_pushed_hash": "88d8ee43fbcef7ca",
-      "last_pushed_key": "4"
-    },
-    "01KYQZ4PANG2JE670X42GCZY6S": {
-      "last_pushed_hash": "fb7824f1ce09ef34",
-      "last_pushed_key": "5"
-    },
-    "01KYQZ4PANQFYAMMEBBHYPPG6P": {
-      "last_pushed_hash": "32716b1737d91df1",
-      "last_pushed_key": "6"
-    }
-  }
+  "items": {}
 }

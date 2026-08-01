@@ -39,6 +39,11 @@ Plugin root variable in Claude/Grok plugin context: `${CLAUDE_PLUGIN_ROOT}`.
 5. Complete YAML frontmatter on every concept (`type`, `title`, `description`, `timestamp`).
 6. Do not fabricate graph edges.
 7. High-trust first: prefer `verified: true`, non-stale, `status: active|accepted`.
+8. Working in an isolated worktree: verify your base commit with
+   `git log --oneline -3` before writing code. A worktree may be cut from the
+   repo default branch rather than the branch you were told to build on, so the
+   commits you depend on can be missing. `git reset --hard <intended-branch>`
+   while the tree is clean, then build.
 
 ## Skill routing (natural language)
 

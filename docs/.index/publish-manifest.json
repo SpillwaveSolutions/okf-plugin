@@ -14,7 +14,7 @@
    "frozen": false,
    "page_name": "Index-Decisions",
    "render": "as-is",
-   "render_hash": "a5eefae3f29c",
+   "render_hash": "6842de463e19",
    "source": "docs/.index/rendered/decisions.md",
    "title": "Decisions Index",
    "truth_state": "current",
@@ -44,11 +44,21 @@
    "frozen": false,
    "page_name": "Index-Traceability",
    "render": "as-is",
-   "render_hash": "50b0f831af48",
+   "render_hash": "75f63e901bad",
    "source": "docs/.index/rendered/traceability.md",
    "title": "Traceability Index",
    "truth_state": "current",
    "wiki_key": "index/traceability"
+  },
+  {
+   "frozen": false,
+   "page_name": "PR-8",
+   "render": "as-is",
+   "render_hash": "eec2ec466457",
+   "source": "docs/.index/rendered/prs/8.md",
+   "title": "PR #8",
+   "truth_state": "not tracked",
+   "wiki_key": "pr/8"
   },
   {
    "frozen": false,
@@ -89,6 +99,16 @@
    "title": "Release v0.2.1",
    "truth_state": "shipped",
    "wiki_key": "release/v0.2.1"
+  },
+  {
+   "frozen": false,
+   "page_name": "Release-v0.3.0",
+   "render": "as-is",
+   "render_hash": "b9642214a209",
+   "source": "docs/.index/rendered/releases/v0.3.0.md",
+   "title": "Release v0.3.0",
+   "truth_state": "shipped",
+   "wiki_key": "release/v0.3.0"
   },
   {
    "frozen": false,
@@ -301,6 +321,116 @@
    "wiki_key": "item/01KYR4G11VPKJBWGJV1QD0H184"
   },
   {
+   "frozen": false,
+   "page_name": "Ticket-01KYW8WH356FYJ3PM9EFKB8BCW",
+   "render": "as-is",
+   "render_hash": "77c3a1bf335f",
+   "source": "docs/.index/rendered/tickets/01KYW8WH356FYJ3PM9EFKB8BCW.md",
+   "title": "Local Substack\u2192OKF integration test runner",
+   "truth_state": "done",
+   "wiki_key": "item/01KYW8WH356FYJ3PM9EFKB8BCW"
+  },
+  {
+   "frozen": false,
+   "page_name": "Ticket-01KYZFDBAY0AX03XQ6SAT6SXJW",
+   "render": "as-is",
+   "render_hash": "90238535b0dd",
+   "source": "docs/.index/rendered/tickets/01KYZFDBAY0AX03XQ6SAT6SXJW.md",
+   "title": "Fix the no-op post-edit hook and curate fallback",
+   "truth_state": "done",
+   "wiki_key": "item/01KYZFDBAY0AX03XQ6SAT6SXJW"
+  },
+  {
+   "frozen": false,
+   "page_name": "Ticket-01KYZFDBAY2VPBHBNXW7E4ZKHF",
+   "render": "as-is",
+   "render_hash": "592b415a2a69",
+   "source": "docs/.index/rendered/tickets/01KYZFDBAY2VPBHBNXW7E4ZKHF.md",
+   "title": "Fix okf-graph.py block-sequence YAML, Mermaid IDs, and add validate --strict",
+   "truth_state": "done",
+   "wiki_key": "item/01KYZFDBAY2VPBHBNXW7E4ZKHF"
+  },
+  {
+   "frozen": false,
+   "page_name": "Ticket-01KYZFDBAYGEG2FKWRADN46Z9W",
+   "render": "as-is",
+   "render_hash": "01bc586e5c7a",
+   "source": "docs/.index/rendered/tickets/01KYZFDBAYGEG2FKWRADN46Z9W.md",
+   "title": "v0.3.0 \u2014 fix the plumbing, add the net",
+   "truth_state": "done",
+   "wiki_key": "item/01KYZFDBAYGEG2FKWRADN46Z9W"
+  },
+  {
+   "frozen": false,
+   "page_name": "Ticket-01KYZFDBAZ0T4W5TZYVXSBXADV",
+   "render": "as-is",
+   "render_hash": "360ddf51548e",
+   "source": "docs/.index/rendered/tickets/01KYZFDBAZ0T4W5TZYVXSBXADV.md",
+   "title": "Add tests/test_okf_graph.py and wire it into CI and pre-commit",
+   "truth_state": "done",
+   "wiki_key": "item/01KYZFDBAZ0T4W5TZYVXSBXADV"
+  },
+  {
+   "frozen": false,
+   "page_name": "Ticket-01KYZFDBAZ62YTTMN7SRGD2QKC",
+   "render": "as-is",
+   "render_hash": "a0a0d951479c",
+   "source": "docs/.index/rendered/tickets/01KYZFDBAZ62YTTMN7SRGD2QKC.md",
+   "title": "Qualify intra-plugin paths with CLAUDE_PLUGIN_ROOT",
+   "truth_state": "done",
+   "wiki_key": "item/01KYZFDBAZ62YTTMN7SRGD2QKC"
+  },
+  {
+   "frozen": false,
+   "page_name": "Ticket-01KYZFDBAZ6G090EZ3FSS0FXS9",
+   "render": "as-is",
+   "render_hash": "ea28d073a271",
+   "source": "docs/.index/rendered/tickets/01KYZFDBAZ6G090EZ3FSS0FXS9.md",
+   "title": "Add graph subcommand and the two missing slash commands",
+   "truth_state": "done",
+   "wiki_key": "item/01KYZFDBAZ6G090EZ3FSS0FXS9"
+  },
+  {
+   "frozen": false,
+   "page_name": "Ticket-01KYZFDBAZW0F3RCN8P9J1R29A",
+   "render": "as-is",
+   "render_hash": "575a3d3bdc03",
+   "source": "docs/.index/rendered/tickets/01KYZFDBAZW0F3RCN8P9J1R29A.md",
+   "title": "Release chore \u2014 bump to 0.3.0 across the four manifests and README",
+   "truth_state": "done",
+   "wiki_key": "item/01KYZFDBAZW0F3RCN8P9J1R29A"
+  },
+  {
+   "frozen": false,
+   "page_name": "Ticket-01KYZNNM1XEWFFN01EE60THRXK",
+   "render": "as-is",
+   "render_hash": "21bb8a2ad15a",
+   "source": "docs/.index/rendered/tickets/01KYZNNM1XEWFFN01EE60THRXK.md",
+   "title": "Regenerate stale IA index so the doc gates stop warning",
+   "truth_state": "done",
+   "wiki_key": "item/01KYZNNM1XEWFFN01EE60THRXK"
+  },
+  {
+   "frozen": false,
+   "page_name": "Ticket-01KYZNNMGDBGN01Z83896Q4J8H",
+   "render": "as-is",
+   "render_hash": "b21370989c6c",
+   "source": "docs/.index/rendered/tickets/01KYZNNMGDBGN01Z83896Q4J8H.md",
+   "title": "Clear ticket sync keys left pointing at the old repository",
+   "truth_state": "done",
+   "wiki_key": "item/01KYZNNMGDBGN01Z83896Q4J8H"
+  },
+  {
+   "frozen": false,
+   "page_name": "Ticket-01KYZNNMWG2ZHJV4YRKPJX0DZE",
+   "render": "as-is",
+   "render_hash": "dc858239af0f",
+   "source": "docs/.index/rendered/tickets/01KYZNNMWG2ZHJV4YRKPJX0DZE.md",
+   "title": "Tell agents to verify their worktree base before building",
+   "truth_state": "done",
+   "wiki_key": "item/01KYZNNMWG2ZHJV4YRKPJX0DZE"
+  },
+  {
    "banner": "> **Current** \u2014 this is the living version. Historical snapshots are linked from [[Index-Releases]].",
    "frozen": false,
    "page_name": "Code-Walkthrough",
@@ -327,7 +457,7 @@
    "frozen": false,
    "page_name": "CLI-Reference",
    "render": "doc+banner",
-   "render_hash": "12ba457a7375",
+   "render_hash": "7896618bc242",
    "source": "docs/user_guide/cli-reference.md",
    "title": "CLI Reference",
    "truth_state": "current",
@@ -338,7 +468,7 @@
    "frozen": false,
    "page_name": "Plugin-Guide",
    "render": "doc+banner",
-   "render_hash": "e01c3db15f03",
+   "render_hash": "ce0bbd4f133d",
    "source": "docs/user_guide/plugin-guide.md",
    "title": "Plugin Guide",
    "truth_state": "current",
@@ -367,11 +497,22 @@
    "wiki_key": "plan/2026-07-29-wiki-ticket-adoption"
   },
   {
-   "banner": "> **Current** \u2014 this is the living version; regenerated at 2026-07-29T23:48:57Z. Historical snapshots are linked from [[Index-Releases]].",
+   "banner": "> **Current** \u2014 the latest status report. Reports freeze once published; corrections appear in later reports.",
+   "frozen": true,
+   "page_name": "Plan-v030-plumbing-and-tests",
+   "render": "doc+banner",
+   "render_hash": "09476ea4c91b",
+   "source": "docs/plans/2026-08-01-v030-plumbing-and-tests.md",
+   "title": "v0.3.0 \u2014 fix the plumbing, add the net",
+   "truth_state": "current",
+   "wiki_key": "plan/2026-08-01-v030-plumbing-and-tests"
+  },
+  {
+   "banner": "> **Current** \u2014 this is the living version; regenerated at 2026-08-01T22:04:00Z. Historical snapshots are linked from [[Index-Releases]].",
    "frozen": false,
    "page_name": "Roadmap",
    "render": "doc+banner",
-   "render_hash": "8d229cde12db",
+   "render_hash": "93522e995e23",
    "source": "docs/roadmap.md",
    "title": "Roadmap",
    "truth_state": "current",
