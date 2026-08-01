@@ -77,6 +77,8 @@ def parse_frontmatter(text: str) -> dict[str, Any]:
     links: list[dict[str, str]] = []
     in_links = False
     current: dict[str, str] | None = None
+    # key whose value may turn out to be a block sequence (`tags:` then `- a`)
+    pending_list_key: str | None = None
 
     for raw in block.splitlines():
         line = raw.rstrip()
@@ -88,6 +90,7 @@ def parse_frontmatter(text: str) -> dict[str, Any]:
         if re.match(r"^links:\s*$", stripped):
             in_links = True
             current = None
+            pending_list_key = None
             continue
         if in_links:
             item = re.match(r"^-\s+(.*)$", stripped)
@@ -113,11 +116,27 @@ def parse_frontmatter(text: str) -> dict[str, Any]:
             in_links = False
             # fall through to parse this line as normal key
 
+        # block-sequence items belonging to the previous bare `key:`
+        if pending_list_key is not None:
+            item = re.match(r"^-\s+(.*)$", stripped)
+            if item:
+                if not isinstance(meta.get(pending_list_key), list):
+                    meta[pending_list_key] = []
+                meta[pending_list_key].append(item.group(1).strip().strip('"').strip("'"))
+                continue
+            # no list materialized; the bare key keeps its empty-string value
+            pending_list_key = None
+
         if ":" not in stripped:
             continue
         key, _, val = stripped.partition(":")
         key = key.strip()
         val = val.strip().strip('"').strip("'")
+        if not val:
+            # may be followed by a block sequence; stays "" if nothing follows
+            pending_list_key = key
+            meta[key] = ""
+            continue
         if val.lower() in ("true", "false"):
             meta[key] = val.lower() == "true"
         elif val.startswith("[") and val.endswith("]"):
@@ -133,6 +152,37 @@ def parse_frontmatter(text: str) -> dict[str, Any]:
     if links:
         meta["links"] = links
     return meta
+
+
+def mermaid_id(rel: str) -> str:
+    """Mermaid-safe node id from the *full* relative path.
+
+    Deriving ids from the stem collapses every `index.md` in the bundle into
+    one node (sample-okf has seven), and merges `agents/foo.md` with
+    `docs/foo.md`.
+    """
+    ident = re.sub(r"[^A-Za-z0-9_]", "_", rel)
+    first = ident[:1]
+    return ident if first.isalpha() or first == "_" else "n" + ident
+
+
+def render_mermaid(edges: list[dict[str, str]], concepts: dict[str, "Concept"]) -> list[str]:
+    """`graph LR` body: labelled nodes, then typed edges. Shared by pack and graph."""
+    lines = ["graph LR"]
+    seen: set[str] = set()
+    for e in edges:
+        for rel in (e["from"], e["to"]):
+            if rel in seen:
+                continue
+            seen.add(rel)
+            c = concepts.get(rel)
+            label = (c.title if c else Path(rel).stem).replace('"', "'")
+            lines.append(f'  {mermaid_id(rel)}["{label}"]')
+    for e in edges:
+        a, b = mermaid_id(e["from"]), mermaid_id(e["to"])
+        label = e["rel"] if e["rel"] != "links_to" else ""
+        lines.append(f"  {a} -->|{label}| {b}" if label else f"  {a} --> {b}")
+    return lines
 
 
 def _normalize_target(target: str, source: Path, bundle: Path) -> str | None:
@@ -513,15 +563,8 @@ def cmd_pack(bundle: Path, concept: str, hops: int, max_nodes: int, undirected: 
             flag = " ⚠ unverified high-impact"
         lines.append(f"{i}. **{c.title}** (`{n}`) — {c.type}{flag}")
 
-    lines += ["", "## Graph (Mermaid)", "```mermaid", "graph LR"]
-    for e in edges:
-        a = Path(e["from"]).stem.replace("-", "_")
-        b = Path(e["to"]).stem.replace("-", "_")
-        label = e["rel"] if e["rel"] != "links_to" else ""
-        if label:
-            lines.append(f"  {a} -->|{label}| {b}")
-        else:
-            lines.append(f"  {a} --> {b}")
+    lines += ["", "## Graph (Mermaid)", "```mermaid"]
+    lines += render_mermaid(edges, concepts)
     lines.append("```")
 
     if excluded:
@@ -561,7 +604,7 @@ def cmd_edges(bundle: Path, from_path: str | None, rel_filter: str | None) -> in
     return 0
 
 
-def cmd_validate(bundle: Path) -> int:
+def cmd_validate(bundle: Path, strict: bool = False) -> int:
     concepts = load_bundle(bundle)
     issues: list[dict[str, str]] = []
     if not (bundle / "index.md").exists():
@@ -615,6 +658,7 @@ def cmd_validate(bundle: Path) -> int:
                 }
             )
     errors = sum(1 for i in issues if i["severity"] == "error")
+    warnings = sum(1 for i in issues if i["severity"] == "warn")
     print(
         json.dumps(
             {
@@ -623,11 +667,15 @@ def cmd_validate(bundle: Path) -> int:
                 "edge_count": sum(len(c.edges) for c in concepts.values()),
                 "issues": issues,
                 "error_count": errors,
+                "warn_count": warnings,
+                "strict": strict,
             },
             indent=2,
         )
     )
-    return 1 if errors else 0
+    # Default stays lenient: the skills call validate and expect 0 on warnings.
+    # --strict is for CI, which needs warnings to actually gate.
+    return 1 if errors or (strict and warnings) else 0
 
 
 def cmd_orphans(bundle: Path) -> int:
@@ -673,9 +721,16 @@ def main() -> int:
     s.add_argument("--from", dest="from_path", default=None)
     s.add_argument("--rel", dest="rel_filter", default=None)
 
-    for name in ("validate", "orphans"):
-        s = sub.add_parser(name)
-        s.add_argument("bundle")
+    s = sub.add_parser("validate")
+    s.add_argument("bundle")
+    s.add_argument(
+        "--strict",
+        action="store_true",
+        help="Exit non-zero on warnings too (for CI gates)",
+    )
+
+    s = sub.add_parser("orphans")
+    s.add_argument("bundle")
 
     args = p.parse_args()
     bundle = Path(args.bundle).resolve()
@@ -694,7 +749,7 @@ def main() -> int:
     if args.cmd == "edges":
         return cmd_edges(bundle, args.from_path, args.rel_filter)
     if args.cmd == "validate":
-        return cmd_validate(bundle)
+        return cmd_validate(bundle, strict=args.strict)
     if args.cmd == "orphans":
         return cmd_orphans(bundle)
     return 1

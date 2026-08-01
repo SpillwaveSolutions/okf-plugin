@@ -1,9 +1,19 @@
 #!/usr/bin/env bash
-# Post-edit hook: validate OKF concepts after Write/Edit.
-# Expects a file path as $1 (or $FILE_PATH from the hook environment).
+# Post-edit hook: validate OKF concepts after Write/Edit/MultiEdit.
+# Takes a file path as $1, or reads the PostToolUse payload from stdin.
 set -euo pipefail
 
-FILE="${1:-${FILE_PATH:-}}"
+# Claude Code delivers the tool payload as JSON on stdin; there is no
+# $FILE_PATH in the hook environment. python3 rather than jq: the plugin
+# already requires python3 everywhere, jq is not guaranteed present.
+FILE="${1:-}"
+if [[ -z "$FILE" ]]; then
+  FILE="$(python3 -c 'import json,sys
+try:
+    print(json.load(sys.stdin).get("tool_input", {}).get("file_path", ""))
+except Exception:
+    pass' 2>/dev/null || true)"
+fi
 
 # Only act on OKF-related paths
 if [[ -z "$FILE" ]]; then
@@ -59,32 +69,10 @@ if command -v okf >/dev/null 2>&1; then
 elif command -v okfcli >/dev/null 2>&1; then
   okfcli validate "$BUNDLE_ROOT" 2>&1 || true
 else
-  # Lightweight fallback: frontmatter + link checks on the touched file
-  if [[ -f "$FILE" ]]; then
-    if ! head -1 "$FILE" | grep -q '^---'; then
-      echo "WARN: $FILE missing YAML frontmatter (expected --- opener)"
-    fi
-    # Report broken relative/absolute md links that don't resolve under bundle
-    while IFS= read -r link; do
-      target="${link#*(}"
-      target="${target%)}"
-      target="${target%%#*}"
-      [[ -z "$target" || "$target" == http* || "$target" == mailto:* ]] && continue
-      if [[ "$target" == /* ]]; then
-        cand="${BUNDLE_ROOT}${target}"
-      else
-        cand="$(cd "$(dirname "$FILE")" && realpath -m "$target" 2>/dev/null || echo "$(dirname "$FILE")/$target")"
-      fi
-      if [[ ! -f "$cand" && ! -f "${BUNDLE_ROOT}${target}" ]]; then
-        # also try relative to bundle with leading slash stripped
-        alt="${BUNDLE_ROOT}/${target#/}"
-        if [[ ! -f "$alt" ]]; then
-          echo "WARN: possible broken link in $(basename "$FILE"): $target"
-        fi
-      fi
-    done < <(grep -oE '\[[^]]+\]\([^)]+\)' "$FILE" 2>/dev/null || true)
-    echo "okf-curate: okf CLI not found — ran lightweight checks only"
-  fi
+  # No external CLI: use this repo's own validator, which sits next to us and
+  # understands typed edges. (The previous grep fallback also used `realpath
+  # -m`, absent from stock macOS.)
+  python3 "$(dirname "$0")/okf-graph.py" validate "$BUNDLE_ROOT" || true
 fi
 
 exit 0
