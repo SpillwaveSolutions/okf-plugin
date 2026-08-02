@@ -12,7 +12,3 @@ worklog items into TicketLink concepts without breaking plain Markdown links.
 ## Release
 
 - [[Release-v0.2.0]]
-
-## Related tickets
-
-- [github #5](https://github.com/RichardHightower/okf-plugin/issues/5)

@@ -2,6 +2,7 @@
 
 - [[Roadmap]]
 - [[Design-Doc]] · [[Code-Walkthrough]]
+- Plan: [[Plan-v031-correctness-and-traceability]]
 
 ### History
 

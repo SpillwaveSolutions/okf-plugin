@@ -2,6 +2,83 @@
 
 _The evidence chain: plan → item → ticket → code → release, forward and backward. Generated from `docs/.index/_graph.json`; do not edit._
 
+### Skip dot-directories when loading a bundle
+`01KZ2CAAT6Z9Q09MMFFWD7XH1R` · status: todo
+- belongs-to: v0.3.1 — correctness cleanup and traceability backfill
+- references: [github#23](https://github.com/SpillwaveSolutions/okf-plugin/issues/23)
+- targets: release/v0.3.1
+- produced-by: [[Plan-v031-correctness-and-traceability]]
+
+### Curate the bundle wherever it is rooted
+`01KZ2CAAT6YNARXMA7HMNM1AZ1` · status: todo
+- belongs-to: v0.3.1 — correctness cleanup and traceability backfill
+- references: [github#22](https://github.com/SpillwaveSolutions/okf-plugin/issues/22)
+- targets: release/v0.3.1
+- produced-by: [[Plan-v031-correctness-and-traceability]]
+
+### Flag links that point outside the bundle
+`01KZ2CAAT6XQ5WCT70AS6QQNTY` · status: todo
+- belongs-to: v0.3.1 — correctness cleanup and traceability backfill
+- references: [github#21](https://github.com/SpillwaveSolutions/okf-plugin/issues/21)
+- targets: release/v0.3.1
+- produced-by: [[Plan-v031-correctness-and-traceability]]
+
+### Backfill external tickets for closed work
+`01KZ2CAAT66ZFTBX9NQ7Z0AKKX` · status: todo
+- belongs-to: v0.3.1 — correctness cleanup and traceability backfill
+- references: [github#20](https://github.com/SpillwaveSolutions/okf-plugin/issues/20)
+- targets: release/v0.3.1
+- produced-by: [[Plan-v031-correctness-and-traceability]]
+
+### Build the undirected adjacency once in subgraph
+`01KZ2CAAT64CERBRZMR7AJZ5XW` · status: todo
+- belongs-to: v0.3.1 — correctness cleanup and traceability backfill
+- references: [github#19](https://github.com/SpillwaveSolutions/okf-plugin/issues/19)
+- targets: release/v0.3.1
+- produced-by: [[Plan-v031-correctness-and-traceability]]
+
+### Correct the plan page published to the wiki
+`01KZ2CAAT61CM8G0N25MPDEHRQ` · status: todo
+- belongs-to: v0.3.1 — correctness cleanup and traceability backfill
+- references: [github#18](https://github.com/SpillwaveSolutions/okf-plugin/issues/18)
+- targets: release/v0.3.1
+- produced-by: [[Plan-v031-correctness-and-traceability]]
+
+### Make merge_edges precedence match what it documents
+`01KZ2CAAT5JS108XWJ4T00B3V1` · status: todo
+- belongs-to: v0.3.1 — correctness cleanup and traceability backfill
+- references: [github#17](https://github.com/SpillwaveSolutions/okf-plugin/issues/17)
+- targets: release/v0.3.1
+- produced-by: [[Plan-v031-correctness-and-traceability]]
+
+### v0.3.1 — correctness cleanup and traceability backfill
+`01KZ2CAAT5G2ND3RAF4TAXR5B9` · status: todo
+- references: [github#16](https://github.com/SpillwaveSolutions/okf-plugin/issues/16)
+- contains: Escalate unverified medium-impact concepts in criticality_of
+- contains: Report ambiguous concept lookups instead of guessing
+- contains: Make merge_edges precedence match what it documents
+- contains: Correct the plan page published to the wiki
+- contains: Build the undirected adjacency once in subgraph
+- contains: Backfill external tickets for closed work
+- contains: Flag links that point outside the bundle
+- contains: Curate the bundle wherever it is rooted
+- contains: Skip dot-directories when loading a bundle
+- produced-by: [[Plan-v031-correctness-and-traceability]]
+
+### Report ambiguous concept lookups instead of guessing
+`01KZ2CAAT5C7PGNP8QDXGJJB9E` · status: todo
+- belongs-to: v0.3.1 — correctness cleanup and traceability backfill
+- references: [github#15](https://github.com/SpillwaveSolutions/okf-plugin/issues/15)
+- targets: release/v0.3.1
+- produced-by: [[Plan-v031-correctness-and-traceability]]
+
+### Escalate unverified medium-impact concepts in criticality_of
+`01KZ2CAAT56M9V49211G7NVBYV` · status: todo
+- belongs-to: v0.3.1 — correctness cleanup and traceability backfill
+- references: [github#14](https://github.com/SpillwaveSolutions/okf-plugin/issues/14)
+- targets: release/v0.3.1
+- produced-by: [[Plan-v031-correctness-and-traceability]]
+
 ### Cut the v0.3.0 release
 `01KYZNSQQQDZD0J6XERYHJF98F` · status: done
 - targets: release/v0.3.0
@@ -139,35 +216,30 @@ _The evidence chain: plan → item → ticket → code → release, forward and 
 ### Optional Claude marketplace listing for okf-graph-eng
 `01KYQZ4PANQFYAMMEBBHYPPG6P` · status: done
 - belongs-to: Adopt WikiTicket SDD for okf-plugin
-- references: [github#6](https://github.com/RichardHightower/okf-plugin/issues/6)
 - targets: release/v0.2.0
 - produced-by: [[Plan-wiki-ticket-adoption]]
 
 ### v0.2 — richer typed-edge conventions and TicketLink SLDC helpers
 `01KYQZ4PANG2JE670X42GCZY6S` · status: done
 - belongs-to: Adopt WikiTicket SDD for okf-plugin
-- references: [github#5](https://github.com/RichardHightower/okf-plugin/issues/5)
 - targets: release/v0.2.0
 - produced-by: [[Plan-wiki-ticket-adoption]]
 
 ### v0.2 — GraphEngineer polish and progressive-disclosure defaults
 `01KYQZ4PAN71X19C6ZZVM42ZS2` · status: done
 - belongs-to: Adopt WikiTicket SDD for okf-plugin
-- references: [github#4](https://github.com/RichardHightower/okf-plugin/issues/4)
 - targets: release/v0.2.0
 - produced-by: [[Plan-wiki-ticket-adoption]]
 
 ### Publish initial roadmap and plan to GitHub wiki
 `01KYQZ4PAN6A8EX36M2ZRWMDAZ` · status: done
 - belongs-to: Adopt WikiTicket SDD for okf-plugin
-- references: [github#3](https://github.com/RichardHightower/okf-plugin/issues/3)
 - targets: release/v0.1.1
 - produced-by: [[Plan-wiki-ticket-adoption]]
 
 ### Sync open work items to GitHub Issues
 `01KYQZ4PAN551JXFMH2GF82BXF` · status: done
 - belongs-to: Adopt WikiTicket SDD for okf-plugin
-- references: [github#2](https://github.com/RichardHightower/okf-plugin/issues/2)
 - targets: release/v0.1.1
 - produced-by: [[Plan-wiki-ticket-adoption]]
 
@@ -178,7 +250,6 @@ _The evidence chain: plan → item → ticket → code → release, forward and 
 
 ### Adopt WikiTicket SDD for okf-plugin
 `01KYQZ4PAMZCM9N56K8F3034F2` · status: done
-- references: [github#1](https://github.com/RichardHightower/okf-plugin/issues/1)
 - contains: Scaffold worklog tooling in okf-plugin
 - contains: Configure GitHub Issues and GitHub wiki in .work/config.yml
 - contains: Sync open work items to GitHub Issues

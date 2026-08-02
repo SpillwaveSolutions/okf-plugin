@@ -11,7 +11,3 @@ Push active roadmap items to Issues so non-CLI stakeholders can track work.
 ## Release
 
 - [[Release-v0.1.1]]
-
-## Related tickets
-
-- [github #2](https://github.com/RichardHightower/okf-plugin/issues/2)
