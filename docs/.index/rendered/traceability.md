@@ -2,6 +2,11 @@
 
 _The evidence chain: plan → item → ticket → code → release, forward and backward. Generated from `docs/.index/_graph.json`; do not edit._
 
+### Plan pages get a status-report banner that ignores their status
+`01KZ2CYK20RWGPSEE6VGZ3NHBP` · status: todo
+- references: [github#27](https://github.com/SpillwaveSolutions/okf-plugin/issues/27)
+- targets: release/v0.3.1
+
 ### Skip dot-directories when loading a bundle
 `01KZ2CAAT6Z9Q09MMFFWD7XH1R` · status: todo
 - belongs-to: v0.3.1 — correctness cleanup and traceability backfill
@@ -10,8 +15,9 @@ _The evidence chain: plan → item → ticket → code → release, forward and 
 - produced-by: [[Plan-v031-correctness-and-traceability]]
 
 ### Curate the bundle wherever it is rooted
-`01KZ2CAAT6YNARXMA7HMNM1AZ1` · status: todo
+`01KZ2CAAT6YNARXMA7HMNM1AZ1` · status: done
 - belongs-to: v0.3.1 — correctness cleanup and traceability backfill
+- lands-in: pr/26
 - references: [github#22](https://github.com/SpillwaveSolutions/okf-plugin/issues/22)
 - targets: release/v0.3.1
 - produced-by: [[Plan-v031-correctness-and-traceability]]
@@ -38,8 +44,9 @@ _The evidence chain: plan → item → ticket → code → release, forward and 
 - produced-by: [[Plan-v031-correctness-and-traceability]]
 
 ### Correct the plan page published to the wiki
-`01KZ2CAAT61CM8G0N25MPDEHRQ` · status: todo
+`01KZ2CAAT61CM8G0N25MPDEHRQ` · status: done
 - belongs-to: v0.3.1 — correctness cleanup and traceability backfill
+- lands-in: pr/25
 - references: [github#18](https://github.com/SpillwaveSolutions/okf-plugin/issues/18)
 - targets: release/v0.3.1
 - produced-by: [[Plan-v031-correctness-and-traceability]]
