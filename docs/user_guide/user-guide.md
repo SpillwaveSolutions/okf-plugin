@@ -47,6 +47,23 @@ python3 scripts/okf-graph.py impact <bundle> <concept>
 
 Prefer this before renaming or splitting high-degree agents, workflows, or shared state.
 
+Each affected concept carries a **criticality** tier derived from its type —
+`AgentNode`, `Workflow`, `Harness`, `SharedState` are high; `Dataset`, `Table`,
+`Metric`, `API`, `ToolCapability` are medium; everything else is low. A concept
+that is not `verified` escalates one level: `medium` → `high`, `high` →
+`critical`. `low` never escalates — an unverified `Reference` is not news.
+
+`<concept>` is a bundle-relative path, a stem, or a title. If a shorthand
+matches several concepts the command lists every candidate and exits `1` instead
+of guessing:
+
+```console
+$ python3 scripts/okf-graph.py impact sample-okf index
+{"error": "ambiguous concept: index", "candidates": ["agents/index.md", "decisions/index.md", "index.md", ...]}
+```
+
+Pass the full path to disambiguate.
+
 ### Progressive disclosure packs
 
 Default: **2 hops**, ~**20 nodes**, following **outbound** edges only. Add
@@ -82,10 +99,17 @@ python3 scripts/okf-graph.py validate <bundle> --strict   # warnings also exit n
 ```
 
 Default is lenient. Only **errors** — a broken link, a missing root `index.md` —
-exit non-zero. **Warnings** (missing `type` or `title`, an unverified
-high-impact concept, a `TicketLink` with no `external_id`/`worklog_id`) print
-but still exit `0`. Use `--strict` to make warnings gate CI. Every skill and the
-post-edit hook call the lenient form.
+exit non-zero. **Warnings** print but still exit `0`:
+
+- missing `type` or `title`
+- `link outside bundle → …` — a link whose target resolves above the bundle
+  root, usually a mistyped `../../`. It is not an edge, so it used to vanish
+  silently; it is now reported
+- an unverified high-impact concept
+- a `TicketLink` with no `external_id`/`worklog_id`
+
+Use `--strict` to make warnings gate CI. Every skill and the post-edit hook call
+the lenient form.
 
 ### Maintain
 
@@ -97,9 +121,15 @@ python3 scripts/okf-graph.py edges <bundle> --rel routes_to
 
 ### Curation on save
 
-The post-edit hook (`Write|Edit|MultiEdit`) runs `scripts/okf-curate.sh` on OKF
-paths and validates the surrounding bundle. It reports; it never blocks the
-edit.
+The post-edit hook (`Write|Edit|MultiEdit`) runs `scripts/okf-curate.sh` on
+every Markdown edit. The script walks up from the edited file looking for a
+bundle root — the nearest ancestor with an `index.md` containing `okf_version`,
+or a `.okf/` directory — and validates that bundle. A bundle rooted anywhere
+qualifies, not just `.okf/`, `knowledge/` or `sample-okf/`.
+
+Edit a Markdown file that is in no bundle and the hook does nothing and says
+nothing: there is no fallback to some other bundle in the repo. It reports; it
+never blocks the edit.
 
 ### Tickets (WikiTicket / worklog)
 

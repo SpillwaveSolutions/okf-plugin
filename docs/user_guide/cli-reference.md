@@ -33,7 +33,7 @@ python3 scripts/okf-graph.py orphans <bundle>
 | `pack` | Progressive disclosure pack; JSON includes ready-to-paste `markdown`. Outbound-only by default — `--undirected` also walks inbound edges, which can flood via hub indexes |
 | `edges` | Edge list; filter by `--rel routes_to` etc. |
 | `graph` | Whole bundle or `--focus` neighborhood. `--format json` prints JSON; `mermaid` (default) and `html` print the artifact itself |
-| `validate` | Conformance + broken links + unverified high-impact (JSON). `--strict` also exits non-zero on warnings — used by CI |
+| `validate` | Conformance + broken links + links pointing outside the bundle + unverified high-impact (JSON). `--strict` also exits non-zero on warnings — used by CI |
 | `orphans` | Concepts with no inbound or outbound edges (JSON) |
 
 The `html` view is fully self-contained: Mermaid source plus concept/edge
@@ -44,7 +44,27 @@ python3 scripts/okf-graph.py graph sample-okf --focus agents/graph-engineer.md -
 python3 scripts/okf-graph.py graph sample-okf --format html > docs/okf-graph.html
 ```
 
-Concepts resolve by path, stem, or title. Typed edges come from Markdown links plus optional frontmatter `links[].rel`.
+Typed edges come from Markdown links plus optional frontmatter `links[].rel`.
+
+### Resolving a concept argument
+
+Every command taking a `<concept>` resolves it in tiers, most specific first:
+
+1. Exact bundle-relative path (`agents/graph-engineer.md`)
+2. File stem or frontmatter title (`graph-engineer`)
+3. Path suffix (`graph-engineer.md`)
+
+A tier matching **more than one** concept is ambiguous: the command prints
+every candidate and exits `1` rather than picking one.
+
+```console
+$ python3 scripts/okf-graph.py impact sample-okf index
+{"error": "ambiguous concept: index", "candidates": ["agents/index.md", "decisions/index.md", "index.md", ...]}
+```
+
+Full paths — what the skills pass — are never ambiguous. Shorthand that used to
+resolve by iteration order now errors instead, so pass the full path when a stem
+is shared across directories.
 
 ## `scripts/okf-ticket-link.py`
 
@@ -64,10 +84,19 @@ Post-edit hook helper, wired to `Write|Edit|MultiEdit` in `hooks/hooks.json`.
 Takes a file path as `$1`, or reads the `PostToolUse` payload as JSON on stdin
 (`.tool_input.file_path`) — which is how Claude Code actually delivers it.
 
-Acts only on OKF-ish paths (`.okf/`, `knowledge/`, `sample-okf/`), resolves the
-nearest bundle root, then runs `okf validate` (plus `okf lint` if available),
-`okfcli validate`, or — with no external CLI — `okf-graph.py validate` from this
-repo. Never fails the edit: every branch exits `0`.
+A Markdown extension (`.md`/`.markdown`) is the only pre-check; **bundle
+membership decides the rest**. It walks up from the edited file for the nearest
+ancestor holding an `index.md` containing `okf_version`, or a `.okf/` directory
+with an `index.md`. That root is what gets curated, so a bundle rooted anywhere
+— not just `.okf/`, `knowledge/` or `sample-okf/` — is covered.
+
+Finding no bundle root is a **silent** no-op: there is no fallback to the repo's
+own `.okf/` or `sample-okf/`, so editing an unrelated Markdown file neither
+curates the wrong bundle nor prints anything.
+
+Inside a bundle it runs `okf validate` (plus `okf lint` if available), `okfcli
+validate`, or — with no external CLI — `okf-graph.py validate` from this repo.
+Never fails the edit: every branch exits `0`.
 
 ```bash
 scripts/okf-curate.sh sample-okf/knowledge/tool-okf-graph-py.md
@@ -82,17 +111,24 @@ for exercising the engine against a real corpus instead of `sample-okf`; nothing
 in the installed plugin calls it. `python3 scripts/substack_okf.py --help` for
 the subcommands.
 
-## `tests/test_okf_graph.py`
+## Tests
 
 ```bash
-python3 tests/test_okf_graph.py -q
+python3 tests/test_okf_graph.py -q      # graph engine — 24 cases
+bash tests/test_okf_curate.sh           # post-edit hook — 5 checks
 ```
 
-Graph engine coverage — plain asserts, no test framework, no dependencies. Runs
-in CI (alongside `validate sample-okf --strict`) and as a guarded pre-commit
-check. Includes tripwires on `sample-okf`'s concept and edge counts and on
-version consistency across the four manifests, so bumping a version in one place
-fails here.
+Both are plain asserts: no test framework, no dependencies. They run in CI
+(alongside `validate sample-okf --strict`) and as a guarded pre-commit check.
+
+`test_okf_graph.py` covers the engine and includes tripwires on `sample-okf`'s
+concept and edge counts and on version consistency across the four manifests, so
+bumping a version in one place fails here.
+
+`test_okf_curate.sh` covers the hook: a bundle rooted outside every legacy path
+fragment is still curated, a file in no bundle is silently skipped, the
+`PostToolUse` JSON payload on stdin works, malformed stdin is a no-op, and
+non-Markdown is rejected. Silent on success, loud and non-zero on failure.
 
 ## `bin/worklog` (WikiTicket SDD)
 
