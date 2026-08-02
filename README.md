@@ -95,15 +95,18 @@ bin/worklog fold | python3 scripts/okf-ticket-link.py emit --bundle sample-okf -
 
 ### Hooks
 
-Post-edit (`Write|Edit|MultiEdit`) on OKF paths runs `scripts/okf-curate.sh`: `okf validate`/`okf lint` when the official CLI is present, otherwise this repo's own `okf-graph.py validate`. It reads the tool payload from stdin, so it fires on every matching edit.
+Post-edit (`Write|Edit|MultiEdit`) runs `scripts/okf-curate.sh`: `okf validate`/`okf lint` when the official CLI is present, otherwise this repo's own `okf-graph.py validate`. It reads the tool payload from stdin, so it fires on every matching edit.
+
+The bundle it curates is found by walking up from the edited file for an `index.md` containing `okf_version` (or a `.okf/` directory) — so a bundle rooted anywhere works, not just `.okf/`, `knowledge/` or `sample-okf/`. Edits outside any bundle are a silent no-op.
 
 ### Tests
 
 ```bash
-python3 tests/test_okf_graph.py -q      # graph engine, plain asserts, no framework
+python3 tests/test_okf_graph.py -q      # graph engine — 24 cases
+bash tests/test_okf_curate.sh           # post-edit hook — 5 checks
 ```
 
-Run in CI alongside `okf-graph.py validate sample-okf --strict`, and as a guarded pre-commit check.
+Plain asserts, no framework. Run in CI alongside `okf-graph.py validate sample-okf --strict`, and as a guarded pre-commit check.
 
 ### Sample OKF
 
@@ -130,7 +133,8 @@ Generated live from WikiTicket worklog: [`docs/roadmap.md`](./docs/roadmap.md) �
 
 - **v0.1 (MVP)** — skills, packaging, hooks, sample OKF, okfcli/Python wrappers  
 - **v0.2** — typed edges, TicketLink ↔ worklog helpers, GraphEngineer progressive-disclosure defaults, marketplace metadata  
-- **v0.3** — `graph` subcommand (mermaid/json/html), `validate --strict`, a slash command for every skill, first automated coverage of the graph engine, working post-edit hook  
+- **v0.3.0** — `graph` subcommand (mermaid/json/html), `validate --strict`, a slash command for every skill, first automated coverage of the graph engine, working post-edit hook  
+- **v0.3.1** — engine correctness: ambiguous concept lookups error instead of guessing, off-bundle links are reported by `validate`, unverified concepts escalate a criticality tier, curation finds bundles rooted anywhere, plus a shell test suite for the hook  
 - **Later** — MCP server, richer agent-graph overlays  
 
 ## Related ecosystem
