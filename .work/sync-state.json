@@ -1,4 +1,45 @@
 {
   "adapter_path": "/Users/richardhightower/clients/spillwave/src/okf-plugin/adapters/github/adapter",
-  "items": {}
+  "items": {
+    "01KZ2CAAT56M9V49211G7NVBYV": {
+      "last_pushed_hash": "fb8adb9570840afd",
+      "last_pushed_key": "14"
+    },
+    "01KZ2CAAT5C7PGNP8QDXGJJB9E": {
+      "last_pushed_hash": "5321cbd6108c9ef7",
+      "last_pushed_key": "15"
+    },
+    "01KZ2CAAT5G2ND3RAF4TAXR5B9": {
+      "last_pushed_hash": "9329d521aa0d5f6b",
+      "last_pushed_key": "16"
+    },
+    "01KZ2CAAT5JS108XWJ4T00B3V1": {
+      "last_pushed_hash": "96b14d535d0f83ef",
+      "last_pushed_key": "17"
+    },
+    "01KZ2CAAT61CM8G0N25MPDEHRQ": {
+      "last_pushed_hash": "1276e150f0f000b5",
+      "last_pushed_key": "18"
+    },
+    "01KZ2CAAT64CERBRZMR7AJZ5XW": {
+      "last_pushed_hash": "360dcf571866ded1",
+      "last_pushed_key": "19"
+    },
+    "01KZ2CAAT66ZFTBX9NQ7Z0AKKX": {
+      "last_pushed_hash": "ddb67cc7b6686b80",
+      "last_pushed_key": "20"
+    },
+    "01KZ2CAAT6XQ5WCT70AS6QQNTY": {
+      "last_pushed_hash": "cb33cd76beda4a25",
+      "last_pushed_key": "21"
+    },
+    "01KZ2CAAT6YNARXMA7HMNM1AZ1": {
+      "last_pushed_hash": "51184af2999271f3",
+      "last_pushed_key": "22"
+    },
+    "01KZ2CAAT6Z9Q09MMFFWD7XH1R": {
+      "last_pushed_hash": "e804b73249c8b6ad",
+      "last_pushed_key": "23"
+    }
+  }
 }

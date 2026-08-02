@@ -11,7 +11,3 @@ Package and publish the plugin for one-command install once MVP is stable.
 ## Release
 
 - [[Release-v0.2.0]]
-
-## Related tickets
-
-- [github #6](https://github.com/RichardHightower/okf-plugin/issues/6)

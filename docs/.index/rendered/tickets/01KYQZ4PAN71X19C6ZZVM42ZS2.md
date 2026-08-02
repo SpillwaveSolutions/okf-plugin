@@ -12,7 +12,3 @@ real usage of impact and query skills.
 ## Release
 
 - [[Release-v0.2.0]]
-
-## Related tickets
-
-- [github #4](https://github.com/RichardHightower/okf-plugin/issues/4)

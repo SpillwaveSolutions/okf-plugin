@@ -12,7 +12,3 @@ the repo for collaborators.
 ## Release
 
 - [[Release-v0.1.1]]
-
-## Related tickets
-
-- [github #3](https://github.com/RichardHightower/okf-plugin/issues/3)

@@ -24,7 +24,3 @@ so the dual graph points at real managed work. (done)
 as done items so the roadmap reflects what already shipped. (done)
 
 Progress: 9/9 done
-
-## Related tickets
-
-- [github #1](https://github.com/RichardHightower/okf-plugin/issues/1)
