@@ -67,6 +67,9 @@ class Concept:
     meta: dict[str, Any] = field(default_factory=dict)
     outbound: list[str] = field(default_factory=list)
     edges: list[TypedEdge] = field(default_factory=list)
+    # raw link targets that resolved outside the bundle — not edges, but
+    # validate reports them instead of letting a typo'd ../../ disappear
+    off_bundle: list[str] = field(default_factory=list)
 
 
 def parse_frontmatter(text: str) -> dict[str, Any]:
@@ -187,7 +190,16 @@ def render_mermaid(edges: list[dict[str, str]], concepts: dict[str, "Concept"]) 
     return lines
 
 
-def _normalize_target(target: str, source: Path, bundle: Path) -> str | None:
+def _normalize_target(
+    target: str, source: Path, bundle: Path, off_bundle: list[str] | None = None
+) -> str | None:
+    """Bundle-relative path for a link target, or None when it is not an edge.
+
+    A target that resolves *outside* the bundle is still worth knowing about
+    (usually a typo'd `../../`), so pass `off_bundle` to collect those raw
+    targets; `validate` reports them. Everything else — external URLs,
+    anchors, non-Markdown files — is silently not an edge, as before.
+    """
     t = target.split("#")[0].strip()
     if not t or t.startswith("http") or t.startswith("mailto:"):
         return None
@@ -211,17 +223,21 @@ def _normalize_target(target: str, source: Path, bundle: Path) -> str | None:
     try:
         rel = cand.relative_to(bundle.resolve()).as_posix()
     except ValueError:
+        if off_bundle is not None and t not in off_bundle:
+            off_bundle.append(t)
         return None
     if cand.suffix == ".md" or cand.exists() or rel.endswith(".md"):
         return rel
     return None
 
 
-def extract_markdown_links(text: str, source: Path, bundle: Path) -> list[TypedEdge]:
+def extract_markdown_links(
+    text: str, source: Path, bundle: Path, off_bundle: list[str] | None = None
+) -> list[TypedEdge]:
     edges: list[TypedEdge] = []
     seen: set[tuple[str, str]] = set()
     for _label, target in LINK_RE.findall(text):
-        rel_path = _normalize_target(target, source, bundle)
+        rel_path = _normalize_target(target, source, bundle, off_bundle)
         if not rel_path:
             continue
         key = (rel_path, "links_to")
@@ -232,7 +248,9 @@ def extract_markdown_links(text: str, source: Path, bundle: Path) -> list[TypedE
     return edges
 
 
-def extract_frontmatter_links(meta: dict[str, Any], source: Path, bundle: Path) -> list[TypedEdge]:
+def extract_frontmatter_links(
+    meta: dict[str, Any], source: Path, bundle: Path, off_bundle: list[str] | None = None
+) -> list[TypedEdge]:
     edges: list[TypedEdge] = []
     for item in meta.get("links") or []:
         if not isinstance(item, dict):
@@ -241,7 +259,7 @@ def extract_frontmatter_links(meta: dict[str, Any], source: Path, bundle: Path) 
         rel = (item.get("rel") or item.get("type") or "related_to").strip()
         if rel not in KNOWN_RELS:
             rel = rel or "related_to"
-        rel_path = _normalize_target(str(target), source, bundle)
+        rel_path = _normalize_target(str(target), source, bundle, off_bundle)
         if not rel_path:
             continue
         edges.append(TypedEdge(target=rel_path, rel=rel, source="frontmatter"))
@@ -249,28 +267,37 @@ def extract_frontmatter_links(meta: dict[str, Any], source: Path, bundle: Path) 
 
 
 def merge_edges(md_edges: list[TypedEdge], fm_edges: list[TypedEdge]) -> list[TypedEdge]:
-    """Frontmatter typed edges enrich/override plain markdown for the same target."""
+    """Frontmatter typed edges enrich/override plain markdown for the same target.
+
+    Unconditional by design: `extract_markdown_links` only ever emits
+    `links_to`, so a frontmatter edge is always at least as specific as the
+    markdown edge it replaces. The old three-clause guard read like a
+    comparison of rels but could not decide anything — every clause was true
+    for every frontmatter edge.
+    """
     by_target: dict[str, TypedEdge] = {}
     for e in md_edges:
         by_target[e.target] = e
     for e in fm_edges:
-        # typed rel wins over generic links_to
-        prev = by_target.get(e.target)
-        if prev is None or prev.rel == "links_to" or e.source == "frontmatter":
-            by_target[e.target] = e
+        by_target[e.target] = e
     return list(by_target.values())
 
 
 def load_bundle(bundle: Path) -> dict[str, Concept]:
     concepts: dict[str, Concept] = {}
     for path in sorted(bundle.rglob("*.md")):
-        if path.name.startswith("."):
+        parts = path.relative_to(bundle).parts
+        # skip dotfiles *and* dot-directories: pointed at a repo root, .work/,
+        # .git/ and .claude/ are not concepts. Relative parts only — the
+        # bundle itself may legitimately live under a dot-directory.
+        if any(p.startswith(".") for p in parts):
             continue
         rel = path.relative_to(bundle).as_posix()
         text = path.read_text(encoding="utf-8", errors="replace")
         meta = parse_frontmatter(text)
-        md_edges = extract_markdown_links(text, path, bundle)
-        fm_edges = extract_frontmatter_links(meta, path, bundle)
+        off_bundle: list[str] = []
+        md_edges = extract_markdown_links(text, path, bundle, off_bundle)
+        fm_edges = extract_frontmatter_links(meta, path, bundle, off_bundle)
         edges = merge_edges(md_edges, fm_edges)
         c = Concept(
             path=path,
@@ -283,6 +310,7 @@ def load_bundle(bundle: Path) -> dict[str, Concept]:
             meta=meta,
             outbound=[e.target for e in edges],
             edges=edges,
+            off_bundle=off_bundle,
         )
         concepts[rel] = c
     # Drop outbound edges that do not resolve to loaded concepts (broken links
@@ -302,16 +330,46 @@ def build_inbound(concepts: dict[str, Concept]) -> dict[str, list[str]]:
     return inbound
 
 
-def resolve_concept(concepts: dict[str, Concept], query: str) -> str | None:
+def resolve_concept(concepts: dict[str, Concept], query: str) -> tuple[str | None, list[str]]:
+    """Resolve a concept query to a bundle-relative path.
+
+    Returns `(match, candidates)`. Tiers, most specific first: exact path,
+    then stem or title, then path suffix. A tier matching more than one
+    concept is *ambiguous* — `(None, candidates)` — because answering with
+    whichever key `dict` iteration reached first means `impact` and `pack`
+    can silently report on the wrong concept.
+    """
     q = query.strip().lstrip("/")
     if q in concepts:
-        return q
+        return q, [q]
     q_lower = q.lower()
-    for rel, c in concepts.items():
-        if Path(rel).stem.lower() == q_lower or c.title.lower() == q_lower:
-            return rel
-        if rel.endswith(q) or rel.endswith(q + ".md"):
-            return rel
+    named = [
+        rel
+        for rel, c in concepts.items()
+        if Path(rel).stem.lower() == q_lower or c.title.lower() == q_lower
+    ]
+    suffix = [rel for rel in concepts if rel.endswith(q) or rel.endswith(q + ".md")]
+    for tier in (named, suffix):
+        if len(tier) == 1:
+            return tier[0], tier
+        if tier:
+            return None, sorted(tier)
+    return None, []
+
+
+def resolve_or_error(concepts: dict[str, Concept], query: str) -> str | None:
+    """resolve_concept for the cmd_* layer: prints the JSON error on failure.
+
+    Every caller already answers a falsy return with `return 1`, so ambiguity
+    rides the same path as not-found rather than inventing a second one.
+    """
+    match, candidates = resolve_concept(concepts, query)
+    if match:
+        return match
+    if candidates:
+        print(json.dumps({"error": f"ambiguous concept: {query}", "candidates": candidates}))
+    else:
+        print(json.dumps({"error": f"concept not found: {query}"}))
     return None
 
 
@@ -332,14 +390,22 @@ def bfs_closure(start: str, edges: dict[str, list[str]], hops: int | None = None
     return out
 
 
+ESCALATE = {"medium": "high", "high": "critical"}
+
+
 def criticality_of(c: Concept) -> str:
+    """Impact tier, escalated one level while the concept is unverified.
+
+    medium → high, high → critical. `low` never escalates: an unverified
+    Reference is not news.
+    """
     criticality = "low"
     if c.type in HIGH_IMPACT_TYPES:
         criticality = "high"
     elif c.type in MEDIUM_IMPACT_TYPES:
         criticality = "medium"
-    if not c.verified and criticality != "low":
-        criticality = "critical" if criticality == "high" else criticality
+    if not c.verified:
+        criticality = ESCALATE.get(criticality, criticality)
     return criticality
 
 
@@ -376,9 +442,8 @@ def cmd_impact(bundle: Path, concept: str) -> int:
     concepts = load_bundle(bundle)
     inbound_map = build_inbound(concepts)
     outbound_map = {k: v.outbound for k, v in concepts.items()}
-    target = resolve_concept(concepts, concept)
+    target = resolve_or_error(concepts, concept)
     if not target:
-        print(json.dumps({"error": f"concept not found: {concept}"}))
         return 1
     inbound = enrich_nodes(concepts, bfs_closure(target, inbound_map))
     outbound = enrich_nodes(concepts, bfs_closure(target, outbound_map))
@@ -419,9 +484,8 @@ def cmd_impact(bundle: Path, concept: str) -> int:
 def cmd_backlinks(bundle: Path, concept: str) -> int:
     concepts = load_bundle(bundle)
     inbound_map = build_inbound(concepts)
-    target = resolve_concept(concepts, concept)
+    target = resolve_or_error(concepts, concept)
     if not target:
-        print(json.dumps({"error": f"concept not found: {concept}"}))
         return 1
     bl = []
     for i in inbound_map.get(target, []):
@@ -440,21 +504,16 @@ def cmd_backlinks(bundle: Path, concept: str) -> int:
 
 def cmd_subgraph(bundle: Path, concept: str, hops: int) -> int:
     concepts = load_bundle(bundle)
-    inbound_map = build_inbound(concepts)
-    outbound_map = {k: v.outbound for k, v in concepts.items()}
-    target = resolve_concept(concepts, concept)
+    target = resolve_or_error(concepts, concept)
     if not target:
-        print(json.dumps({"error": f"concept not found: {concept}"}))
         return 1
+    # One pass: inbound is the mirror of outbound, so walking build_inbound()
+    # afterwards only re-added the same pairs for sorted(set(...)) to dedup.
     undirected: dict[str, list[str]] = defaultdict(list)
-    for k, outs in outbound_map.items():
-        for o in outs:
+    for k, c in concepts.items():
+        for o in c.outbound:
             undirected[k].append(o)
             undirected[o].append(k)
-    for k, ins in inbound_map.items():
-        for i in ins:
-            undirected[k].append(i)
-            undirected[i].append(k)
     undirected = {k: sorted(set(v)) for k, v in undirected.items()}
     nodes = [target] + [x["id"] for x in bfs_closure(target, undirected, hops=hops)]
     node_set = set(nodes)
@@ -495,9 +554,8 @@ def cmd_pack(bundle: Path, concept: str, hops: int, max_nodes: int, undirected: 
     """
     concepts = load_bundle(bundle)
     outbound_map = {k: list(v.outbound) for k, v in concepts.items()}
-    target = resolve_concept(concepts, concept)
+    target = resolve_or_error(concepts, concept)
     if not target:
-        print(json.dumps({"error": f"concept not found: {concept}"}))
         return 1
 
     if undirected:
@@ -594,9 +652,8 @@ def cmd_edges(bundle: Path, from_path: str | None, rel_filter: str | None) -> in
     concepts = load_bundle(bundle)
     edges = edge_index(concepts)
     if from_path:
-        resolved = resolve_concept(concepts, from_path)
+        resolved = resolve_or_error(concepts, from_path)
         if not resolved:
-            print(json.dumps({"error": f"concept not found: {from_path}"}))
             return 1
         edges = [e for e in edges if e["from"] == resolved]
     if rel_filter:
@@ -702,9 +759,8 @@ def cmd_graph(bundle: Path, fmt: str, focus: str | None, hops: int) -> int:
     nodes = sorted(concepts)
 
     if focus:
-        root = resolve_concept(concepts, focus)
+        root = resolve_or_error(concepts, focus)
         if not root:
-            print(json.dumps({"error": f"concept not found: {focus}"}))
             return 1
         undirected: dict[str, list[str]] = defaultdict(list)
         for k, c in concepts.items():
@@ -773,6 +829,12 @@ def cmd_validate(bundle: Path, strict: bool = False) -> int:
             issues.append({"severity": "warn", "path": rel, "message": "missing or unknown type"})
         if not c.meta.get("title") and c.path.name != "index.md":
             issues.append({"severity": "warn", "path": rel, "message": "missing title"})
+        # warn, not error: the default exit code must stay 0 for the skills
+        # and okf-curate.sh; --strict gates these in CI.
+        for t in c.off_bundle:
+            issues.append(
+                {"severity": "warn", "path": rel, "message": f"link outside bundle → {t}"}
+            )
         for e in c.edges:
             if e.target not in concepts:
                 issues.append({"severity": "error", "path": rel, "message": f"broken link → {e.target}"})

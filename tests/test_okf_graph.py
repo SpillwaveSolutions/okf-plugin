@@ -93,6 +93,56 @@ def test_merge_edges_frontmatter_wins():
     assert merged["a.md"].rel == "uses", merged
 
 
+def test_merge_edges_keeps_markdown_only_targets():
+    """Frontmatter overrides its own targets and nothing else. Markdown edges
+    are only ever `links_to`, so frontmatter is always at least as specific —
+    the precedence is unconditional, not a comparison of rels."""
+    md = [
+        g.TypedEdge(target="a.md", rel="links_to", source="markdown"),
+        g.TypedEdge(target="b.md", rel="links_to", source="markdown"),
+    ]
+    fm = [
+        g.TypedEdge(target="a.md", rel="depends_on", source="frontmatter"),
+        g.TypedEdge(target="c.md", rel="routes_to", source="frontmatter"),
+    ]
+    merged = {e.target: e for e in g.merge_edges(md, fm)}
+    assert set(merged) == {"a.md", "b.md", "c.md"}, merged
+    assert merged["a.md"].rel == "depends_on", merged
+    assert merged["b.md"].rel == "links_to" and merged["b.md"].source == "markdown", merged
+    assert merged["c.md"].source == "frontmatter", merged
+    # one edge per target, no duplicates
+    assert len(g.merge_edges(md, fm)) == 3
+
+
+def _concept(rel: str = "x.md", **kw):
+    return g.Concept(path=Path(rel), rel=rel, **kw)
+
+
+def test_criticality_escalates_unverified_medium():
+    """Unverified escalates one level: medium→high, high→critical. Regression:
+    the medium arm assigned the variable to itself, so the tier was decorative."""
+    assert g.criticality_of(_concept(type="Dataset", verified=True)) == "medium"
+    assert g.criticality_of(_concept(type="Dataset", verified=False)) == "high"
+    assert g.criticality_of(_concept(type="Workflow", verified=True)) == "high"
+    assert g.criticality_of(_concept(type="Workflow", verified=False)) == "critical"
+    # low never escalates, verified or not
+    assert g.criticality_of(_concept(type="Reference", verified=False)) == "low"
+
+
+def test_criticality_ordering_survives_escalation():
+    """enrich_nodes is the only consumer that ranks on criticality; the
+    escalated value must stay inside its {critical,high,medium,low} order map."""
+    concepts = {
+        "w.md": _concept(rel="w.md", title="Flow", type="Workflow", verified=False),
+        "d.md": _concept(rel="d.md", title="Data", type="Dataset", verified=False),
+        "r.md": _concept(rel="r.md", title="Ref", type="Reference", verified=True),
+    }
+    items = [{"id": r, "depth": 1} for r in ("r.md", "d.md", "w.md")]
+    ranked = g.enrich_nodes(concepts, items)
+    assert [x["id"] for x in ranked] == ["w.md", "d.md", "r.md"], ranked
+    assert [x["criticality"] for x in ranked] == ["critical", "high", "low"], ranked
+
+
 def test_mermaid_ids_are_unique_per_path():
     """Regression: IDs were derived from Path(...).stem, so every index.md in
     the bundle collapsed into a single node."""
@@ -106,6 +156,42 @@ def test_mermaid_ids_are_unique_per_path():
         assert not mid[0].isdigit(), mid
     # and stable across calls
     assert g.mermaid_id("agents/index.md") == a
+
+
+def test_resolve_concept_reports_ambiguity():
+    """A suffix or stem query matching two concepts must report both instead of
+    answering about whichever one iteration happened to reach first."""
+    concepts = {
+        "a/page.md": _concept(rel="a/page.md", title="A page"),
+        "b/page.md": _concept(rel="b/page.md", title="B page"),
+        "a/only.md": _concept(rel="a/only.md", title="Only"),
+    }
+    # exact path is unambiguous by construction
+    assert g.resolve_concept(concepts, "a/page.md")[0] == "a/page.md"
+    assert g.resolve_concept(concepts, "/a/page.md")[0] == "a/page.md"
+    # title and unambiguous suffix still resolve
+    assert g.resolve_concept(concepts, "Only")[0] == "a/only.md"
+    assert g.resolve_concept(concepts, "only.md")[0] == "a/only.md"
+    # ambiguous suffix and ambiguous stem both report their candidates
+    for q in ("page.md", "page"):
+        match, candidates = g.resolve_concept(concepts, q)
+        assert match is None, f"{q} guessed {match}"
+        assert candidates == ["a/page.md", "b/page.md"], candidates
+    assert g.resolve_concept(concepts, "nope.md") == (None, [])
+
+
+def test_load_bundle_skips_dot_directories():
+    """Pointed at a repo root, load_bundle must not pull .work/ or .git/ in as
+    concepts. Regression: only dot-*files* were skipped, not dot-*dirs*."""
+    with tempfile.TemporaryDirectory() as td:
+        bundle = Path(td) / "b"
+        (bundle / ".work").mkdir(parents=True)
+        (bundle / "docs").mkdir()
+        (bundle / "index.md").write_text("---\ntitle: Root\n---\n")
+        (bundle / ".work" / "notes.md").write_text("---\ntitle: Hidden\n---\n")
+        (bundle / ".hidden.md").write_text("---\ntitle: Dotfile\n---\n")
+        (bundle / "docs" / "real.md").write_text("---\ntitle: Real\n---\n")
+        assert set(g.load_bundle(bundle)) == {"index.md", "docs/real.md"}
 
 
 def run_script(*args) -> tuple[int, dict]:
@@ -212,6 +298,61 @@ def test_graph_html_is_self_contained():
     _, doc = run_script("graph", "sample-okf", "--format", "json")
     for n in doc["nodes"]:
         assert f"<code>{n['id']}</code>" in out, f"{n['id']} missing from html table"
+
+
+def test_ambiguous_concept_is_a_cli_error():
+    """impact/pack must refuse an ambiguous query rather than silently answer
+    about the wrong concept."""
+    with tempfile.TemporaryDirectory() as td:
+        bundle = Path(td) / "b"
+        (bundle / "a").mkdir(parents=True)
+        (bundle / "b").mkdir()
+        (bundle / "index.md").write_text("---\ntitle: Root\n---\n[a](/a/page.md) [b](/b/page.md)\n")
+        (bundle / "a" / "page.md").write_text("---\ntitle: A\ntype: Reference\n---\n")
+        (bundle / "b" / "page.md").write_text("---\ntitle: B\ntype: Reference\n---\n")
+        for cmd in ("impact", "backlinks", "subgraph", "pack"):
+            code, out = run_script(cmd, str(bundle), "page.md")
+            assert code == 1, (cmd, out)
+            assert "error" in out, (cmd, out)
+            assert out.get("candidates") == ["a/page.md", "b/page.md"], (cmd, out)
+        # the unambiguous full path still works
+        code, _ = run_script("impact", str(bundle), "a/page.md")
+        assert code == 0
+
+
+def test_validate_reports_off_bundle_links():
+    """A typo'd ../../ link is not an edge, but it must not vanish either —
+    validate reports it as a warning so --strict gates it in CI."""
+    with tempfile.TemporaryDirectory() as td:
+        bundle = Path(td) / "b"
+        (bundle / "sub").mkdir(parents=True)
+        (bundle / "index.md").write_text("---\ntitle: Root\n---\n[p](/sub/page.md)\n")
+        (bundle / "sub" / "page.md").write_text(
+            "---\ntitle: P\ntype: Reference\nlinks:\n  - rel: uses\n    target: ../../other.md\n"
+            "---\n[typo](../../elsewhere.md)\n"
+        )
+        code, out = run_script("validate", str(bundle))
+        flagged = [i for i in out["issues"] if "outside bundle" in i["message"]]
+        assert len(flagged) == 2, out["issues"]
+        assert {i["severity"] for i in flagged} == {"warn"}, flagged
+        assert {i["path"] for i in flagged} == {"sub/page.md"}, flagged
+        assert any("elsewhere.md" in i["message"] for i in flagged), flagged
+        assert any("other.md" in i["message"] for i in flagged), flagged
+        # default exit stays 0 — the skills and okf-curate.sh depend on it
+        assert code == 0 and out["error_count"] == 0, out
+        strict, _ = run_script("validate", str(bundle), "--strict")
+        assert strict == 1
+
+
+def test_subgraph_neighbourhood_is_symmetric():
+    """subgraph walks the graph undirected: if B is in A's 1-hop set then A is
+    in B's. Locks the behaviour of the (formerly two-pass) adjacency build."""
+    _, a = run_script("subgraph", "sample-okf", "agents/graph-engineer.md", "--hops", "1")
+    neighbours = [n["id"] for n in a["nodes"] if n["id"] != a["root"]]
+    assert neighbours, a
+    for nid in neighbours:
+        _, b = run_script("subgraph", "sample-okf", nid, "--hops", "1")
+        assert a["root"] in [n["id"] for n in b["nodes"]], (nid, b["nodes"])
 
 
 def test_strict_validate_flags_warnings():
