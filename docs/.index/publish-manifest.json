@@ -4,7 +4,7 @@
    "frozen": false,
    "page_name": "Home",
    "render": "as-is",
-   "render_hash": "70f524540370",
+   "render_hash": "6606cabdb615",
    "source": "docs/.index/rendered/home.md",
    "title": "Home",
    "truth_state": "current",
@@ -14,7 +14,7 @@
    "frozen": false,
    "page_name": "Index-Decisions",
    "render": "as-is",
-   "render_hash": "da4bf0de9612",
+   "render_hash": "0625d87a0059",
    "source": "docs/.index/rendered/decisions.md",
    "title": "Decisions Index",
    "truth_state": "current",
@@ -24,7 +24,7 @@
    "frozen": false,
    "page_name": "Index-Releases",
    "render": "as-is",
-   "render_hash": "1a4a2694dc11",
+   "render_hash": "e07fec9229a9",
    "source": "docs/.index/rendered/releases.md",
    "title": "Releases Index",
    "truth_state": "current",
@@ -44,7 +44,7 @@
    "frozen": false,
    "page_name": "Index-Traceability",
    "render": "as-is",
-   "render_hash": "d2d7dbc46929",
+   "render_hash": "f7d203c67145",
    "source": "docs/.index/rendered/traceability.md",
    "title": "Traceability Index",
    "truth_state": "current",
@@ -69,6 +69,16 @@
    "title": "PR #26",
    "truth_state": "not tracked",
    "wiki_key": "pr/26"
+  },
+  {
+   "frozen": false,
+   "page_name": "PR-29",
+   "render": "as-is",
+   "render_hash": "05fef2022b84",
+   "source": "docs/.index/rendered/prs/29.md",
+   "title": "PR #29",
+   "truth_state": "not tracked",
+   "wiki_key": "pr/29"
   },
   {
    "frozen": false,
@@ -144,7 +154,7 @@
    "frozen": false,
    "page_name": "Release-v0.3.1",
    "render": "as-is",
-   "render_hash": "9da5d89aaaf9",
+   "render_hash": "40c4c6746e54",
    "source": "docs/.index/rendered/releases/v0.3.1.md",
    "title": "Release v0.3.1",
    "truth_state": "shipped",
@@ -484,27 +494,27 @@
    "frozen": false,
    "page_name": "Ticket-01KZ2CAAT56M9V49211G7NVBYV",
    "render": "as-is",
-   "render_hash": "51232cfb4f59",
+   "render_hash": "f921bc801ae5",
    "source": "docs/.index/rendered/tickets/01KZ2CAAT56M9V49211G7NVBYV.md",
    "title": "Escalate unverified medium-impact concepts in criticality_of",
-   "truth_state": "open",
+   "truth_state": "done",
    "wiki_key": "item/01KZ2CAAT56M9V49211G7NVBYV"
   },
   {
    "frozen": false,
    "page_name": "Ticket-01KZ2CAAT5C7PGNP8QDXGJJB9E",
    "render": "as-is",
-   "render_hash": "d1d674e83415",
+   "render_hash": "6d403a0eb96a",
    "source": "docs/.index/rendered/tickets/01KZ2CAAT5C7PGNP8QDXGJJB9E.md",
    "title": "Report ambiguous concept lookups instead of guessing",
-   "truth_state": "open",
+   "truth_state": "done",
    "wiki_key": "item/01KZ2CAAT5C7PGNP8QDXGJJB9E"
   },
   {
    "frozen": false,
    "page_name": "Ticket-01KZ2CAAT5G2ND3RAF4TAXR5B9",
    "render": "as-is",
-   "render_hash": "ab262e95e20d",
+   "render_hash": "24975e55f7ca",
    "source": "docs/.index/rendered/tickets/01KZ2CAAT5G2ND3RAF4TAXR5B9.md",
    "title": "v0.3.1 \u2014 correctness cleanup and traceability backfill",
    "truth_state": "open",
@@ -514,10 +524,10 @@
    "frozen": false,
    "page_name": "Ticket-01KZ2CAAT5JS108XWJ4T00B3V1",
    "render": "as-is",
-   "render_hash": "084912a3d5d4",
+   "render_hash": "aa41a5281c5f",
    "source": "docs/.index/rendered/tickets/01KZ2CAAT5JS108XWJ4T00B3V1.md",
    "title": "Make merge_edges precedence match what it documents",
-   "truth_state": "open",
+   "truth_state": "done",
    "wiki_key": "item/01KZ2CAAT5JS108XWJ4T00B3V1"
   },
   {
@@ -534,30 +544,30 @@
    "frozen": false,
    "page_name": "Ticket-01KZ2CAAT64CERBRZMR7AJZ5XW",
    "render": "as-is",
-   "render_hash": "0dac6cc19fed",
+   "render_hash": "3e32bb4e1437",
    "source": "docs/.index/rendered/tickets/01KZ2CAAT64CERBRZMR7AJZ5XW.md",
    "title": "Build the undirected adjacency once in subgraph",
-   "truth_state": "open",
+   "truth_state": "done",
    "wiki_key": "item/01KZ2CAAT64CERBRZMR7AJZ5XW"
   },
   {
    "frozen": false,
    "page_name": "Ticket-01KZ2CAAT66ZFTBX9NQ7Z0AKKX",
    "render": "as-is",
-   "render_hash": "89d46eed283f",
+   "render_hash": "e33f170ed092",
    "source": "docs/.index/rendered/tickets/01KZ2CAAT66ZFTBX9NQ7Z0AKKX.md",
    "title": "Backfill external tickets for closed work",
-   "truth_state": "open",
+   "truth_state": "done",
    "wiki_key": "item/01KZ2CAAT66ZFTBX9NQ7Z0AKKX"
   },
   {
    "frozen": false,
    "page_name": "Ticket-01KZ2CAAT6XQ5WCT70AS6QQNTY",
    "render": "as-is",
-   "render_hash": "b6f002bdf276",
+   "render_hash": "de5608067c62",
    "source": "docs/.index/rendered/tickets/01KZ2CAAT6XQ5WCT70AS6QQNTY.md",
    "title": "Flag links that point outside the bundle",
-   "truth_state": "open",
+   "truth_state": "done",
    "wiki_key": "item/01KZ2CAAT6XQ5WCT70AS6QQNTY"
   },
   {
@@ -574,10 +584,10 @@
    "frozen": false,
    "page_name": "Ticket-01KZ2CAAT6Z9Q09MMFFWD7XH1R",
    "render": "as-is",
-   "render_hash": "bcc48ddbe478",
+   "render_hash": "003bf4c4351d",
    "source": "docs/.index/rendered/tickets/01KZ2CAAT6Z9Q09MMFFWD7XH1R.md",
    "title": "Skip dot-directories when loading a bundle",
-   "truth_state": "open",
+   "truth_state": "done",
    "wiki_key": "item/01KZ2CAAT6Z9Q09MMFFWD7XH1R"
   },
   {
@@ -589,6 +599,26 @@
    "title": "Plan pages get a status-report banner that ignores their status",
    "truth_state": "open",
    "wiki_key": "item/01KZ2CYK20RWGPSEE6VGZ3NHBP"
+  },
+  {
+   "frozen": false,
+   "page_name": "Ticket-01KZ2D6MDDCY9G6B3EE33DRZJA",
+   "render": "as-is",
+   "render_hash": "190552411e21",
+   "source": "docs/.index/rendered/tickets/01KZ2D6MDDCY9G6B3EE33DRZJA.md",
+   "title": "Root index.md and log.md are exempt from all link validation",
+   "truth_state": "open",
+   "wiki_key": "item/01KZ2D6MDDCY9G6B3EE33DRZJA"
+  },
+  {
+   "frozen": false,
+   "page_name": "Ticket-01KZ2D6MNZR1EKFTS3CZ8HP0GQ",
+   "render": "as-is",
+   "render_hash": "c7b0dd7a4fa0",
+   "source": "docs/.index/rendered/tickets/01KZ2D6MNZR1EKFTS3CZ8HP0GQ.md",
+   "title": "Cut the v0.3.1 release",
+   "truth_state": "open",
+   "wiki_key": "item/01KZ2D6MNZR1EKFTS3CZ8HP0GQ"
   },
   {
    "banner": "> **Snapshot** of release v0.3.0 (2026-08-01) \u2014 frozen record. The current version is [[Code-Walkthrough]].",
@@ -701,11 +731,11 @@
    "wiki_key": "plan/2026-08-02-v031-correctness-and-traceability"
   },
   {
-   "banner": "> **Current** \u2014 this is the living version; regenerated at 2026-08-02T23:29:34Z. Historical snapshots are linked from [[Index-Releases]].",
+   "banner": "> **Current** \u2014 this is the living version; regenerated at 2026-08-02T23:34:38Z. Historical snapshots are linked from [[Index-Releases]].",
    "frozen": false,
    "page_name": "Roadmap",
    "render": "doc+banner",
-   "render_hash": "09f863740d4a",
+   "render_hash": "220bdb9d4834",
    "source": "docs/roadmap.md",
    "title": "Roadmap",
    "truth_state": "current",
@@ -723,6 +753,17 @@
    "wiki_key": "roadmap-snapshot/2026-08-01_v0.3.0-release"
   },
   {
+   "banner": "> **Snapshot** of release v0.3.1 (2026-08-02) \u2014 frozen record. The current version is [[Roadmap]].",
+   "frozen": true,
+   "page_name": "Roadmap-2026-08-02_v0.3.1-release",
+   "render": "doc+banner",
+   "render_hash": "69fe7ab17849",
+   "source": "docs/roadmap/2026-08-02_v0.3.1-release.md",
+   "title": "Roadmap",
+   "truth_state": "snapshot",
+   "wiki_key": "roadmap-snapshot/2026-08-02_v0.3.1-release"
+  },
+  {
    "banner": "> **Current** \u2014 this is the living version. Historical snapshots are linked from [[Index-Releases]].",
    "frozen": false,
    "page_name": "Worklog-Spec",
@@ -735,7 +776,7 @@
   }
  ],
  "sidebar": {
-  "render_hash": "8c52ac4b22a8",
+  "render_hash": "15bf000a6260",
   "source": "docs/.index/rendered/_Sidebar.md"
  },
  "version": 1
