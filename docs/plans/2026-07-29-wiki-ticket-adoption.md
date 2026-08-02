@@ -16,7 +16,7 @@ story (nodes, edges, durable state).
 
 ## Context
 
-- Repo: https://github.com/RichardHightower/okf-plugin
+- Repo: https://github.com/SpillwaveSolutions/okf-plugin
 - Tooling: https://github.com/SpillwaveSolutions/wiki_ticket_sdd (worklog v0.18.0)
 - Hosts: Claude Code + Grok Build
 - Ticketing: GitHub Issues · Wiki: GitHub wiki
@@ -31,28 +31,28 @@ story (nodes, edges, durable state).
   Point ticketing and wiki systems at RichardHightower/okf-plugin so ticket-sync
   and wiki-publish have a real target.
 
-- [ ] (P1) Capture MVP v0.1 delivery as closed worklog history
+- [x] (P1) Capture MVP v0.1 delivery as closed worklog history
   Record the completed plugin scaffold (skills, agent, hooks, sample-okf, docs)
   as done items so the roadmap reflects what already shipped.
 
-- [ ] (P1) Publish initial roadmap and plan to GitHub wiki
+- [x] (P1) Publish initial roadmap and plan to GitHub wiki
   Run ia-index and wiki-publish so Home/roadmap/plan pages are visible outside
   the repo for collaborators.
 
-- [ ] (P1) Sync open work items to GitHub Issues
+- [x] (P1) Sync open work items to GitHub Issues
   Push active roadmap items to Issues so non-CLI stakeholders can track work.
 
-- [ ] (P2) Link sample-okf TicketLink concepts to real worklog ULIDs
+- [x] (P2) Link sample-okf TicketLink concepts to real worklog ULIDs
   Replace the placeholder OKF-001 ticket with live worklog / GitHub issue ids
   so the dual graph points at real managed work.
 
-- [ ] (P2) v0.2 — richer typed-edge conventions and TicketLink SLDC helpers
+- [x] (P2) v0.2 — richer typed-edge conventions and TicketLink SLDC helpers
   Teach skills optional YAML links.rel and helpers that map Wicked Ticket /
   worklog items into TicketLink concepts without breaking plain Markdown links.
 
-- [ ] (P2) v0.2 — GraphEngineer polish and progressive-disclosure defaults
+- [x] (P2) v0.2 — GraphEngineer polish and progressive-disclosure defaults
   Tighten the specialist agent prompts and default 2-hop pack behavior based on
   real usage of impact and query skills.
 
-- [ ] (P3) Optional Claude marketplace listing for okf-graph-eng
+- [x] (P3) Optional Claude marketplace listing for okf-graph-eng
   Package and publish the plugin for one-command install once MVP is stable.

@@ -43,33 +43,33 @@ Verified defects:
 
 ## Tasks
 
-- [ ] (P0) Fix the no-op post-edit hook and curate fallback
+- [x] (P0) Fix the no-op post-edit hook and curate fallback
   Read the file path from the PostToolUse stdin JSON instead of a nonexistent
   $FILE_PATH, widen the matcher to include MultiEdit, and replace the grep-based
   fallback with the repo's own okf-graph.py validate (which also deletes a
   realpath -m call that is broken on stock macOS).
 
-- [ ] (P0) Fix okf-graph.py block-sequence YAML, Mermaid IDs, and add validate --strict
+- [x] (P0) Fix okf-graph.py block-sequence YAML, Mermaid IDs, and add validate --strict
   Parse standard YAML block sequences in frontmatter; derive Mermaid node IDs
   from the full relative path via a shared mermaid_id/render_mermaid helper; add
   a --strict flag so CI can gate on warnings while the skills keep the lenient
   default.
 
-- [ ] (P0) Add tests/test_okf_graph.py and wire it into CI and pre-commit
+- [x] (P0) Add tests/test_okf_graph.py and wire it into CI and pre-commit
   Plain-assert suite covering frontmatter parsing, link normalization, edge
   merging, Mermaid ID uniqueness, sample-okf validity, and version consistency
   across the four manifests. Runs in CI and as a guarded pre-commit check.
 
-- [ ] (P1) Qualify intra-plugin paths with CLAUDE_PLUGIN_ROOT
+- [x] (P1) Qualify intra-plugin paths with CLAUDE_PLUGIN_ROOT
   Command files referenced skills by bare relative path, which does not resolve
   in a consuming project. Annotate repo-local bin/worklog references honestly
   rather than pretending they resolve from the plugin root.
 
-- [ ] (P2) Add graph subcommand and the two missing slash commands
+- [x] (P2) Add graph subcommand and the two missing slash commands
   Back the okf-visualize skill with a real graph subcommand (mermaid/json/html)
   built on the shared emitter, and add commands for okf-visualize and
   okf-maintain so all seven skills have a command. Non-blocking for the release.
 
-- [ ] (P2) Release chore — bump to 0.3.0 across the four manifests and README
+- [x] (P2) Release chore — bump to 0.3.0 across the four manifests and README
   The version lives in four places and drifts silently; the new test asserts
   they agree.
