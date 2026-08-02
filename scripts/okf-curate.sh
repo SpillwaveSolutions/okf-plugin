@@ -15,16 +15,23 @@ except Exception:
     pass' 2>/dev/null || true)"
 fi
 
-# Only act on OKF-related paths
+# Cheap pre-check only: OKF bundles are Markdown, so anything else can never
+# need curation and is not worth a filesystem walk. Bundle membership itself is
+# decided by find_bundle_root below — a hard-coded list of path fragments
+# ("knowledge/", "sample-okf/") is not a bundle test and skipped bundles rooted
+# anywhere else.
 if [[ -z "$FILE" ]]; then
   exit 0
 fi
 case "$FILE" in
-  *.okf/*|*/.okf/*|*knowledge/*|*sample-okf/*) ;;
+  *.md|*.markdown) ;;
   *) exit 0 ;;
 esac
 
-# Resolve bundle root: nearest directory containing index.md with okf_version, or .okf/
+# Resolve bundle root: nearest ancestor containing index.md with okf_version,
+# or a .okf/ bundle directory. No fallback to a repo's .okf/ or sample-okf/:
+# a file that is not inside a bundle must not be curated against an unrelated
+# one just because the repo happens to ship a bundle somewhere.
 find_bundle_root() {
   local dir
   dir="$(cd "$(dirname "$FILE")" 2>/dev/null && pwd)" || return 1
@@ -39,23 +46,13 @@ find_bundle_root() {
     fi
     dir="$(dirname "$dir")"
   done
-  # Fallbacks
-  local top
-  top="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
-  if [[ -d "$top/.okf" ]]; then
-    echo "$top/.okf"
-    return 0
-  fi
-  if [[ -d "$top/sample-okf" ]]; then
-    echo "$top/sample-okf"
-    return 0
-  fi
   return 1
 }
 
+# Silent when the file is not in a bundle: every Markdown edit in every repo
+# reaches this point, and the hook must not narrate non-events.
 BUNDLE_ROOT="$(find_bundle_root || true)"
 if [[ -z "${BUNDLE_ROOT:-}" ]]; then
-  echo "okf-curate: no OKF bundle root found for $FILE — skipping"
   exit 0
 fi
 
