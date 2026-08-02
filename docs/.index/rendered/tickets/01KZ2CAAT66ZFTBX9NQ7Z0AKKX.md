@@ -1,6 +1,6 @@
 # Backfill external tickets for closed work
 
-`01KZ2CAAT66ZFTBX9NQ7Z0AKKX` · task/ops · **open**
+`01KZ2CAAT66ZFTBX9NQ7Z0AKKX` · task/ops · **done**
 
 Every closed item lacks an external ticket: the originals live in the
 pre-move repository and their keys were cleared in v0.3.0 because they

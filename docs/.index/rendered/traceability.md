@@ -2,14 +2,24 @@
 
 _The evidence chain: plan → item → ticket → code → release, forward and backward. Generated from `docs/.index/_graph.json`; do not edit._
 
+### Cut the v0.3.1 release
+`01KZ2D6MNZR1EKFTS3CZ8HP0GQ` · status: todo
+- references: [github#31](https://github.com/SpillwaveSolutions/okf-plugin/issues/31)
+- targets: release/v0.3.1
+
+### Root index.md and log.md are exempt from all link validation
+`01KZ2D6MDDCY9G6B3EE33DRZJA` · status: todo
+- references: [github#30](https://github.com/SpillwaveSolutions/okf-plugin/issues/30)
+
 ### Plan pages get a status-report banner that ignores their status
 `01KZ2CYK20RWGPSEE6VGZ3NHBP` · status: todo
 - references: [github#27](https://github.com/SpillwaveSolutions/okf-plugin/issues/27)
 - targets: release/v0.3.1
 
 ### Skip dot-directories when loading a bundle
-`01KZ2CAAT6Z9Q09MMFFWD7XH1R` · status: todo
+`01KZ2CAAT6Z9Q09MMFFWD7XH1R` · status: done
 - belongs-to: v0.3.1 — correctness cleanup and traceability backfill
+- lands-in: pr/29
 - references: [github#23](https://github.com/SpillwaveSolutions/okf-plugin/issues/23)
 - targets: release/v0.3.1
 - produced-by: [[Plan-v031-correctness-and-traceability]]
@@ -23,22 +33,24 @@ _The evidence chain: plan → item → ticket → code → release, forward and 
 - produced-by: [[Plan-v031-correctness-and-traceability]]
 
 ### Flag links that point outside the bundle
-`01KZ2CAAT6XQ5WCT70AS6QQNTY` · status: todo
+`01KZ2CAAT6XQ5WCT70AS6QQNTY` · status: done
 - belongs-to: v0.3.1 — correctness cleanup and traceability backfill
+- lands-in: pr/29
 - references: [github#21](https://github.com/SpillwaveSolutions/okf-plugin/issues/21)
 - targets: release/v0.3.1
 - produced-by: [[Plan-v031-correctness-and-traceability]]
 
 ### Backfill external tickets for closed work
-`01KZ2CAAT66ZFTBX9NQ7Z0AKKX` · status: todo
+`01KZ2CAAT66ZFTBX9NQ7Z0AKKX` · status: done
 - belongs-to: v0.3.1 — correctness cleanup and traceability backfill
 - references: [github#20](https://github.com/SpillwaveSolutions/okf-plugin/issues/20)
 - targets: release/v0.3.1
 - produced-by: [[Plan-v031-correctness-and-traceability]]
 
 ### Build the undirected adjacency once in subgraph
-`01KZ2CAAT64CERBRZMR7AJZ5XW` · status: todo
+`01KZ2CAAT64CERBRZMR7AJZ5XW` · status: done
 - belongs-to: v0.3.1 — correctness cleanup and traceability backfill
+- lands-in: pr/29
 - references: [github#19](https://github.com/SpillwaveSolutions/okf-plugin/issues/19)
 - targets: release/v0.3.1
 - produced-by: [[Plan-v031-correctness-and-traceability]]
@@ -52,8 +64,9 @@ _The evidence chain: plan → item → ticket → code → release, forward and 
 - produced-by: [[Plan-v031-correctness-and-traceability]]
 
 ### Make merge_edges precedence match what it documents
-`01KZ2CAAT5JS108XWJ4T00B3V1` · status: todo
+`01KZ2CAAT5JS108XWJ4T00B3V1` · status: done
 - belongs-to: v0.3.1 — correctness cleanup and traceability backfill
+- lands-in: pr/29
 - references: [github#17](https://github.com/SpillwaveSolutions/okf-plugin/issues/17)
 - targets: release/v0.3.1
 - produced-by: [[Plan-v031-correctness-and-traceability]]
@@ -73,15 +86,17 @@ _The evidence chain: plan → item → ticket → code → release, forward and 
 - produced-by: [[Plan-v031-correctness-and-traceability]]
 
 ### Report ambiguous concept lookups instead of guessing
-`01KZ2CAAT5C7PGNP8QDXGJJB9E` · status: todo
+`01KZ2CAAT5C7PGNP8QDXGJJB9E` · status: done
 - belongs-to: v0.3.1 — correctness cleanup and traceability backfill
+- lands-in: pr/29
 - references: [github#15](https://github.com/SpillwaveSolutions/okf-plugin/issues/15)
 - targets: release/v0.3.1
 - produced-by: [[Plan-v031-correctness-and-traceability]]
 
 ### Escalate unverified medium-impact concepts in criticality_of
-`01KZ2CAAT56M9V49211G7NVBYV` · status: todo
+`01KZ2CAAT56M9V49211G7NVBYV` · status: done
 - belongs-to: v0.3.1 — correctness cleanup and traceability backfill
+- lands-in: pr/29
 - references: [github#14](https://github.com/SpillwaveSolutions/okf-plugin/issues/14)
 - targets: release/v0.3.1
 - produced-by: [[Plan-v031-correctness-and-traceability]]

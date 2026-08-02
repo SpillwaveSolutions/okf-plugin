@@ -3,6 +3,68 @@
 Notable changes to **okf-graph-eng**. Newest first. Released sections are
 frozen — corrections go in the next release's notes.
 
+## 0.3.1 — 2026-08-02
+
+Correctness release. v0.3.0 fixed the defects that stopped the plugin working
+at all; this one clears the defects found while doing that — logic that was
+dead, silent, or wrong without ever crashing. For a tool whose whole job is
+"tell me what depends on what", quietly reporting something other than the
+truth is the failure mode that matters most.
+
+### Fixed
+
+- **Medium-impact concepts never escalated.** The unverified branch of
+  `criticality_of` assigned the tier to itself, so only `high` could ever
+  become `critical` and the entire medium tier was decorative. Unverified
+  concepts now escalate one level: `medium` → `high`, `high` → `critical`.
+  `low` still never escalates.
+- **Ambiguous concept lookups guessed silently.** A query matching several
+  concepts by path suffix or stem resolved to whichever came first in
+  iteration order, so `impact` and `pack` could answer about the wrong
+  concept without saying so. Lookup now resolves in tiers — exact path, then
+  stem or title, then suffix — and an ambiguous tier returns an error listing
+  every candidate. Full paths, which the skills pass, are unaffected.
+- **Links pointing outside the bundle vanished.** A target resolving outside
+  the bundle root was dropped before validation ever saw it, so a mistyped
+  `../../` was invisible rather than broken. `validate` now reports it as a
+  warning; the default exit code is unchanged and `--strict` gates it.
+- **Bundle loading walked dot-directories.** Only dot-*files* were skipped, so
+  pointing the engine at a repo root pulled `.git/`, `.work/` and `.claude/`
+  in as concepts. Matched on bundle-relative parts, so a bundle that itself
+  lives under a dot-directory still loads.
+- **Post-edit curation only recognised three hard-coded paths.** A bundle
+  rooted anywhere other than `.okf/`, `knowledge/` or `sample-okf/` was
+  skipped entirely — which mattered from v0.3.0 onward, when the hook started
+  firing at all. Bundle membership is now decided by the walk-up test that was
+  already in the script; the cheap pre-check only rejects non-Markdown. The
+  repo-level `.okf/` and `sample-okf/` fallbacks are gone, so a file outside
+  any bundle is no longer curated against an unrelated one.
+- **The plan pages published to the wiki contradicted the tracker.** Two
+  completed plans showed unchecked task boxes, and one linked to the
+  pre-move repository. Prose describing what a task did at the time was left
+  frozen; only the status mirrors and the stale link changed.
+- **Ticket sync still targeted the pre-move repository.** v0.3.0 cleared the
+  adapter's cache, but the event log carried its own external keys — and
+  since GitHub shares one number space between issues and pull requests, a
+  push would have rewritten this repo's pull requests 1 through 6. Unlinked
+  through the supported command rather than editing the log.
+
+### Changed
+
+- `merge_edges` no longer carries a three-clause precedence guard in which
+  every clause was true for every frontmatter edge. The behaviour was already
+  correct — markdown links are always `links_to`, so a frontmatter edge is
+  always at least as specific — and the condition only made it look
+  conditional.
+- `subgraph` builds its undirected adjacency in one pass instead of two.
+  Output is byte-identical.
+
+### Added
+
+- `tests/test_okf_curate.sh` — the repo's first shell test, covering bundle
+  detection, the stdin payload, and the argument form.
+- The graph engine suite grows from 16 cases to 24.
+
 ## 0.3.0 — 2026-08-01
 
 Bug-fix and hardening release. Three defects in shipped v0.2.0 code, the first

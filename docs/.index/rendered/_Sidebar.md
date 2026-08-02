@@ -2,12 +2,11 @@
 
 - [[Roadmap]]
 - [[Design-Doc]] · [[Code-Walkthrough]]
-- Plan: [[Plan-v031-correctness-and-traceability]]
 
 ### History
 
 - [[Index-Releases]]
-- Latest snapshot: [[Roadmap-2026-08-01_v0.3.0-release]]
+- Latest snapshot: [[Roadmap-2026-08-02_v0.3.1-release]]
 - [[Index-Status]]
 - [[Index-Decisions]]
 

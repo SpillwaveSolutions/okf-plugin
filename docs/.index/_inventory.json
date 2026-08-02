@@ -169,7 +169,7 @@
    ],
    "slug": "v031-correctness-and-traceability",
    "source": "docs/plans/2026-08-02-v031-correctness-and-traceability.md",
-   "status": "active",
+   "status": "completed",
    "title": "v0.3.1 \u2014 correctness cleanup and traceability backfill",
    "truth_state": "current",
    "wiki_key": "plan/2026-08-02-v031-correctness-and-traceability"
@@ -177,10 +177,10 @@
   {
    "canonical_key": "roadmap",
    "doc_type": "roadmap",
-   "generated_at": "2026-08-02T23:29:34Z",
+   "generated_at": "2026-08-02T23:34:38Z",
    "slug": "roadmap",
    "source": "docs/roadmap.md",
-   "source_hash": "19bea776",
+   "source_hash": "bd84293b",
    "title": "Roadmap",
    "truth_state": "current",
    "wiki": "https://github.com/SpillwaveSolutions/okf-plugin/wiki/Roadmap",
@@ -196,10 +196,26 @@
    "slug": "2026-08-01_v0.3.0-release",
    "source": "docs/roadmap/2026-08-01_v0.3.0-release.md",
    "source_hash": "fb13abec",
+   "superseded_by": "roadmap-snapshot/2026-08-02_v0.3.1-release",
    "title": "Roadmap",
    "truth_state": "snapshot",
    "wiki": "https://github.com/SpillwaveSolutions/okf-plugin/wiki/Roadmap-2026-08-01_v0.3.0-release",
    "wiki_key": "roadmap-snapshot/2026-08-01_v0.3.0-release"
+  },
+  {
+   "canonical_key": "roadmap-snapshot/2026-08-02_v0.3.1-release",
+   "date": "2026-08-02",
+   "doc_type": "roadmap-snapshot",
+   "generated_at": "2026-08-02T23:33:31Z",
+   "name": "v0.3.1-release",
+   "release": "v0.3.1",
+   "slug": "2026-08-02_v0.3.1-release",
+   "source": "docs/roadmap/2026-08-02_v0.3.1-release.md",
+   "source_hash": "6106caeb",
+   "supersedes": "roadmap-snapshot/2026-08-01_v0.3.0-release",
+   "title": "Roadmap",
+   "truth_state": "snapshot",
+   "wiki_key": "roadmap-snapshot/2026-08-02_v0.3.1-release"
   },
   {
    "canonical_key": "spec",

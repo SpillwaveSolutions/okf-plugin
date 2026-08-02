@@ -292,6 +292,11 @@
   },
   {
    "from": "item/01KZ2CAAT56M9V49211G7NVBYV",
+   "to": "pr/29",
+   "type": "lands-in"
+  },
+  {
+   "from": "item/01KZ2CAAT56M9V49211G7NVBYV",
    "to": "ticket/github#14",
    "type": "references"
   },
@@ -304,6 +309,11 @@
    "from": "item/01KZ2CAAT5C7PGNP8QDXGJJB9E",
    "to": "item/01KZ2CAAT5G2ND3RAF4TAXR5B9",
    "type": "belongs-to"
+  },
+  {
+   "from": "item/01KZ2CAAT5C7PGNP8QDXGJJB9E",
+   "to": "pr/29",
+   "type": "lands-in"
   },
   {
    "from": "item/01KZ2CAAT5C7PGNP8QDXGJJB9E",
@@ -324,6 +334,11 @@
    "from": "item/01KZ2CAAT5JS108XWJ4T00B3V1",
    "to": "item/01KZ2CAAT5G2ND3RAF4TAXR5B9",
    "type": "belongs-to"
+  },
+  {
+   "from": "item/01KZ2CAAT5JS108XWJ4T00B3V1",
+   "to": "pr/29",
+   "type": "lands-in"
   },
   {
    "from": "item/01KZ2CAAT5JS108XWJ4T00B3V1",
@@ -362,6 +377,11 @@
   },
   {
    "from": "item/01KZ2CAAT64CERBRZMR7AJZ5XW",
+   "to": "pr/29",
+   "type": "lands-in"
+  },
+  {
+   "from": "item/01KZ2CAAT64CERBRZMR7AJZ5XW",
    "to": "ticket/github#19",
    "type": "references"
   },
@@ -389,6 +409,11 @@
    "from": "item/01KZ2CAAT6XQ5WCT70AS6QQNTY",
    "to": "item/01KZ2CAAT5G2ND3RAF4TAXR5B9",
    "type": "belongs-to"
+  },
+  {
+   "from": "item/01KZ2CAAT6XQ5WCT70AS6QQNTY",
+   "to": "pr/29",
+   "type": "lands-in"
   },
   {
    "from": "item/01KZ2CAAT6XQ5WCT70AS6QQNTY",
@@ -427,6 +452,11 @@
   },
   {
    "from": "item/01KZ2CAAT6Z9Q09MMFFWD7XH1R",
+   "to": "pr/29",
+   "type": "lands-in"
+  },
+  {
+   "from": "item/01KZ2CAAT6Z9Q09MMFFWD7XH1R",
    "to": "ticket/github#23",
    "type": "references"
   },
@@ -442,6 +472,21 @@
   },
   {
    "from": "item/01KZ2CYK20RWGPSEE6VGZ3NHBP",
+   "to": "release/v0.3.1",
+   "type": "targets"
+  },
+  {
+   "from": "item/01KZ2D6MDDCY9G6B3EE33DRZJA",
+   "to": "ticket/github#30",
+   "type": "references"
+  },
+  {
+   "from": "item/01KZ2D6MNZR1EKFTS3CZ8HP0GQ",
+   "to": "ticket/github#31",
+   "type": "references"
+  },
+  {
+   "from": "item/01KZ2D6MNZR1EKFTS3CZ8HP0GQ",
    "to": "release/v0.3.1",
    "type": "targets"
   },
@@ -588,6 +633,21 @@
   {
    "from": "roadmap-snapshot/2026-08-01_v0.3.0-release",
    "to": "release/v0.3.0",
+   "type": "targets"
+  },
+  {
+   "from": "roadmap-snapshot/2026-08-02_v0.3.1-release",
+   "to": "roadmap",
+   "type": "snapshot-of"
+  },
+  {
+   "from": "roadmap-snapshot/2026-08-02_v0.3.1-release",
+   "to": "roadmap-snapshot/2026-08-01_v0.3.0-release",
+   "type": "supersedes"
+  },
+  {
+   "from": "roadmap-snapshot/2026-08-02_v0.3.1-release",
+   "to": "release/v0.3.1",
    "type": "targets"
   }
  ],
@@ -807,12 +867,12 @@
   },
   "item/01KZ2CAAT56M9V49211G7NVBYV": {
    "doc_type": "item",
-   "status": "todo",
+   "status": "done",
    "title": "Escalate unverified medium-impact concepts in criticality_of"
   },
   "item/01KZ2CAAT5C7PGNP8QDXGJJB9E": {
    "doc_type": "item",
-   "status": "todo",
+   "status": "done",
    "title": "Report ambiguous concept lookups instead of guessing"
   },
   "item/01KZ2CAAT5G2ND3RAF4TAXR5B9": {
@@ -822,7 +882,7 @@
   },
   "item/01KZ2CAAT5JS108XWJ4T00B3V1": {
    "doc_type": "item",
-   "status": "todo",
+   "status": "done",
    "title": "Make merge_edges precedence match what it documents"
   },
   "item/01KZ2CAAT61CM8G0N25MPDEHRQ": {
@@ -832,17 +892,17 @@
   },
   "item/01KZ2CAAT64CERBRZMR7AJZ5XW": {
    "doc_type": "item",
-   "status": "todo",
+   "status": "done",
    "title": "Build the undirected adjacency once in subgraph"
   },
   "item/01KZ2CAAT66ZFTBX9NQ7Z0AKKX": {
    "doc_type": "item",
-   "status": "todo",
+   "status": "done",
    "title": "Backfill external tickets for closed work"
   },
   "item/01KZ2CAAT6XQ5WCT70AS6QQNTY": {
    "doc_type": "item",
-   "status": "todo",
+   "status": "done",
    "title": "Flag links that point outside the bundle"
   },
   "item/01KZ2CAAT6YNARXMA7HMNM1AZ1": {
@@ -852,13 +912,23 @@
   },
   "item/01KZ2CAAT6Z9Q09MMFFWD7XH1R": {
    "doc_type": "item",
-   "status": "todo",
+   "status": "done",
    "title": "Skip dot-directories when loading a bundle"
   },
   "item/01KZ2CYK20RWGPSEE6VGZ3NHBP": {
    "doc_type": "item",
    "status": "todo",
    "title": "Plan pages get a status-report banner that ignores their status"
+  },
+  "item/01KZ2D6MDDCY9G6B3EE33DRZJA": {
+   "doc_type": "item",
+   "status": "todo",
+   "title": "Root index.md and log.md are exempt from all link validation"
+  },
+  "item/01KZ2D6MNZR1EKFTS3CZ8HP0GQ": {
+   "doc_type": "item",
+   "status": "todo",
+   "title": "Cut the v0.3.1 release"
   },
   "plan/2026-07-29-wiki-ticket-adoption": {
    "doc_type": "plan",
@@ -882,6 +952,9 @@
    "doc_type": "pr"
   },
   "pr/26": {
+   "doc_type": "pr"
+  },
+  "pr/29": {
    "doc_type": "pr"
   },
   "pr/8": {
@@ -917,6 +990,12 @@
   "roadmap-snapshot/2026-08-01_v0.3.0-release": {
    "doc_type": "roadmap-snapshot",
    "source": "docs/roadmap/2026-08-01_v0.3.0-release.md",
+   "title": "Roadmap",
+   "truth_state": "snapshot"
+  },
+  "roadmap-snapshot/2026-08-02_v0.3.1-release": {
+   "doc_type": "roadmap-snapshot",
+   "source": "docs/roadmap/2026-08-02_v0.3.1-release.md",
    "title": "Roadmap",
    "truth_state": "snapshot"
   },
@@ -969,6 +1048,14 @@
   "ticket/github#27": {
    "doc_type": "ticket",
    "url": "https://github.com/SpillwaveSolutions/okf-plugin/issues/27"
+  },
+  "ticket/github#30": {
+   "doc_type": "ticket",
+   "url": "https://github.com/SpillwaveSolutions/okf-plugin/issues/30"
+  },
+  "ticket/github#31": {
+   "doc_type": "ticket",
+   "url": "https://github.com/SpillwaveSolutions/okf-plugin/issues/31"
   }
  },
  "version": 1
