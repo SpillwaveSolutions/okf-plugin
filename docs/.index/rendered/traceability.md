@@ -2,6 +2,10 @@
 
 _The evidence chain: plan → item → ticket → code → release, forward and backward. Generated from `docs/.index/_graph.json`; do not edit._
 
+### Release v0.3.2
+`01KZ30RXDKQG2CSA2D0TXWJQZZ` · status: todo
+- targets: release/v0.3.2
+
 ### The hook's shell test runs on no gate
 `01KZ2EWBA88ZH2GBSBPCX8B42H` · status: done
 - targets: release/v0.3.1
