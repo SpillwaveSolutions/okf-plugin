@@ -2,6 +2,10 @@
 
 _The evidence chain: plan → item → ticket → code → release, forward and backward. Generated from `docs/.index/_graph.json`; do not edit._
 
+### The hook's shell test runs on no gate
+`01KZ2EWBA88ZH2GBSBPCX8B42H` · status: done
+- targets: release/v0.3.1
+
 ### Cut the v0.3.1 release
 `01KZ2D6MNZR1EKFTS3CZ8HP0GQ` · status: todo
 - references: [github#31](https://github.com/SpillwaveSolutions/okf-plugin/issues/31)

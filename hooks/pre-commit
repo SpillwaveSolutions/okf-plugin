@@ -94,6 +94,9 @@ fi
 # Graph engine tests, same guarded pattern.
 [ ! -f tests/test_okf_graph.py ] || python3 tests/test_okf_graph.py -q >/dev/null 2>&1 || fail "graph tests failing — run: python3 tests/test_okf_graph.py"
 
+# Post-edit hook tests, same guarded pattern.
+[ ! -f tests/test_okf_curate.sh ] || bash tests/test_okf_curate.sh >/dev/null 2>&1 || fail "curate tests failing — run: bash tests/test_okf_curate.sh"
+
 # ADRs: schema + cross-file invariants. Guarded like the fold tests.
 [ ! -d docs/adr ] || [ ! -x bin/worklog ] || python3 bin/worklog adr check >/dev/null || fail "ADR validation failed — run: worklog adr check"
 
