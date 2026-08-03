@@ -82,6 +82,7 @@
    "tag": "v0.3.2",
    "title": "Code Walkthrough 2026-08-03 v0.3.2-release",
    "truth_state": "snapshot",
+   "wiki": "https://github.com/SpillwaveSolutions/okf-plugin/wiki/Code-Walkthrough-2026-08-03_v0.3.2-release",
    "wiki_key": "design/2026-08-03_v0.3.2-release-code-walkthrough"
   },
   {
@@ -98,6 +99,7 @@
    "tag": "v0.3.2",
    "title": "Design Doc 2026-08-03 v0.3.2-release",
    "truth_state": "snapshot",
+   "wiki": "https://github.com/SpillwaveSolutions/okf-plugin/wiki/Design-Doc-2026-08-03_v0.3.2-release",
    "wiki_key": "design/2026-08-03_v0.3.2-release-design-doc"
   },
   {
@@ -244,10 +246,10 @@
   {
    "canonical_key": "roadmap",
    "doc_type": "roadmap",
-   "generated_at": "2026-08-03T05:15:33Z",
+   "generated_at": "2026-08-03T14:05:49Z",
    "slug": "roadmap",
    "source": "docs/roadmap.md",
-   "source_hash": "300348ba",
+   "source_hash": "1bb57982",
    "title": "Roadmap",
    "truth_state": "current",
    "wiki": "https://github.com/SpillwaveSolutions/okf-plugin/wiki/Roadmap",
@@ -299,6 +301,7 @@
    "supersedes": "roadmap-snapshot/2026-08-02_v0.3.1-release",
    "title": "Roadmap",
    "truth_state": "snapshot",
+   "wiki": "https://github.com/SpillwaveSolutions/okf-plugin/wiki/Roadmap-2026-08-03_v0.3.2-release",
    "wiki_key": "roadmap-snapshot/2026-08-03_v0.3.2-release"
   },
   {
