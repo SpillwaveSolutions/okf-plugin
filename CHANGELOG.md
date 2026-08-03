@@ -3,7 +3,7 @@
 Notable changes to **okf-graph-eng**. Newest first. Released sections are
 frozen — corrections go in the next release's notes.
 
-## 0.3.2 — unreleased
+## 0.3.2 — 2026-08-03
 
 ### Fixed
 
