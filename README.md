@@ -102,7 +102,7 @@ The bundle it curates is found by walking up from the edited file for an `index.
 ### Tests
 
 ```bash
-python3 tests/test_okf_graph.py -q      # graph engine — 24 cases
+python3 tests/test_okf_graph.py -q      # graph engine — 25 cases
 bash tests/test_okf_curate.sh           # post-edit hook — 5 checks
 ```
 
@@ -135,6 +135,7 @@ Generated live from WikiTicket worklog: [`docs/roadmap.md`](./docs/roadmap.md) �
 - **v0.2** — typed edges, TicketLink ↔ worklog helpers, GraphEngineer progressive-disclosure defaults, marketplace metadata  
 - **v0.3.0** — `graph` subcommand (mermaid/json/html), `validate --strict`, a slash command for every skill, first automated coverage of the graph engine, working post-edit hook  
 - **v0.3.1** — engine correctness: ambiguous concept lookups error instead of guessing, off-bundle links are reported by `validate`, unverified concepts escalate a criticality tier, curation finds bundles rooted anywhere, plus a shell test suite for the hook  
+- **v0.3.2** — `validate` now link-checks the bundle's entry point: the root `index.md` and `log.md` were skipped by the whole validation loop, so a broken link there was the one broken link never reported. Their `type`/`title` exemption still stands  
 - **Later** — MCP server, richer agent-graph overlays  
 
 ## Related ecosystem

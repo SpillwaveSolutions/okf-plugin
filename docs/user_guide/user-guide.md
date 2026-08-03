@@ -111,6 +111,15 @@ exit non-zero. **Warnings** print but still exit `0`:
 Use `--strict` to make warnings gate CI. Every skill and the post-edit hook call
 the lenient form.
 
+The bundle's root `index.md` and `log.md` carry no `type`/`title` of their own
+and are exempt from those two warnings — but **their links are checked like
+everyone else's**. Through v0.3.1 the exemption skipped those files entirely, so
+the entry point was the one file where a broken link went unreported. A broken
+link there is now an error; one pointing outside the bundle is a warning, which
+`--strict` gates. The metadata exemption is unchanged: any `index.md` is excused
+at any depth, but only the *root* `log.md` is structural — a nested `sub/log.md`
+still wants a `type` and `title`.
+
 ### Maintain
 
 ```bash

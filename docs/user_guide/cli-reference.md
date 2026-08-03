@@ -33,7 +33,7 @@ python3 scripts/okf-graph.py orphans <bundle>
 | `pack` | Progressive disclosure pack; JSON includes ready-to-paste `markdown`. Outbound-only by default — `--undirected` also walks inbound edges, which can flood via hub indexes |
 | `edges` | Edge list; filter by `--rel routes_to` etc. |
 | `graph` | Whole bundle or `--focus` neighborhood. `--format json` prints JSON; `mermaid` (default) and `html` print the artifact itself |
-| `validate` | Conformance + broken links + links pointing outside the bundle + unverified high-impact (JSON). `--strict` also exits non-zero on warnings — used by CI |
+| `validate` | Conformance + broken links + links pointing outside the bundle + unverified high-impact (JSON). Link checks cover the root `index.md`/`log.md` too — only their `type`/`title` is exempt. `--strict` also exits non-zero on warnings — used by CI |
 | `orphans` | Concepts with no inbound or outbound edges (JSON) |
 
 The `html` view is fully self-contained: Mermaid source plus concept/edge
@@ -114,7 +114,7 @@ the subcommands.
 ## Tests
 
 ```bash
-python3 tests/test_okf_graph.py -q      # graph engine — 24 cases
+python3 tests/test_okf_graph.py -q      # graph engine — 25 cases
 bash tests/test_okf_curate.sh           # post-edit hook — 5 checks
 ```
 
