@@ -3,6 +3,18 @@
 Notable changes to **okf-graph-eng**. Newest first. Released sections are
 frozen — corrections go in the next release's notes.
 
+## 0.3.2 — unreleased
+
+### Fixed
+
+- **The bundle's root `index.md` and `log.md` skipped every link check.** The
+  exemption meant to excuse two structural files from `type`/`title` warnings
+  sat at the top of the validation loop as a `continue`, so it also skipped
+  broken links, out-of-bundle links, non-standard rels, and TicketLink
+  hygiene — leaving the entry point, the most linked-from file a bundle has,
+  as the one place a broken link went unreported. The two metadata checks are
+  now excused individually and everything else applies to every file.
+
 ## 0.3.1 — 2026-08-02
 
 Correctness release. v0.3.0 fixed the defects that stopped the plugin working

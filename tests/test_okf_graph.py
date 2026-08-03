@@ -344,6 +344,31 @@ def test_validate_reports_off_bundle_links():
         assert strict == 1
 
 
+def test_root_index_and_log_have_their_links_validated():
+    """The root index.md/log.md exemption is for type and title only. It used
+    to `continue` past the whole loop body, so the bundle's entry point — its
+    most linked-from file — was the one place a broken link went unreported."""
+    with tempfile.TemporaryDirectory() as td:
+        bundle = Path(td) / "b"
+        (bundle / "sub").mkdir(parents=True)
+        # no title on any of these: the metadata exemption must survive
+        (bundle / "index.md").write_text("[gone](/missing.md)\n[out](../../escape.md)\n")
+        (bundle / "log.md").write_text("[gone too](/absent.md)\n")
+        (bundle / "sub" / "index.md").write_text("---\ntype: Index\n---\n")
+        (bundle / "sub" / "log.md").write_text("---\ntype: Reference\n---\n")
+        code, out = run_script("validate", str(bundle))
+        broken = {(i["path"], i["message"]) for i in out["issues"]
+                  if "broken link" in i["message"]}
+        assert ("index.md", "broken link → missing.md") in broken, out["issues"]
+        assert ("log.md", "broken link → absent.md") in broken, out["issues"]
+        assert code == 1 and out["error_count"] == 2, out
+        assert any(i["path"] == "index.md" and "outside bundle" in i["message"]
+                   for i in out["issues"]), out["issues"]
+        # …while the exemption they actually needed still holds, at any depth
+        titles = {i["path"] for i in out["issues"] if "missing title" in i["message"]}
+        assert titles == {"sub/log.md"}, titles  # only the root log.md is structural
+
+
 def test_subgraph_neighbourhood_is_symmetric():
     """subgraph walks the graph undirected: if B is in A's 1-hop set then A is
     in B's. Locks the behaviour of the (formerly two-pass) adjacency build."""
