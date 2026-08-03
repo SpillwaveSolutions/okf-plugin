@@ -7,7 +7,7 @@ _The evidence chain: plan → item → ticket → code → release, forward and 
 - targets: release/v0.3.1
 
 ### Cut the v0.3.1 release
-`01KZ2D6MNZR1EKFTS3CZ8HP0GQ` · status: todo
+`01KZ2D6MNZR1EKFTS3CZ8HP0GQ` · status: done
 - references: [github#31](https://github.com/SpillwaveSolutions/okf-plugin/issues/31)
 - targets: release/v0.3.1
 
