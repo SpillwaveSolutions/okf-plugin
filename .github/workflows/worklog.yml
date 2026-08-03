@@ -20,6 +20,10 @@ jobs:
       # (and okf-curate.sh) keep the lenient default.
       - name: graph engine tests
         run: python3 tests/test_okf_graph.py -q
+      # The post-edit hook shipped configured-but-never-firing for two
+      # releases; its test does not get to be ungated too.
+      - name: curate hook tests
+        run: bash tests/test_okf_curate.sh
       - name: sample bundle stays valid
         run: python3 scripts/okf-graph.py validate sample-okf --strict
       # commit-msg's own MERGE_HEAD check doesn't exist post-hoc in a CI

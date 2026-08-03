@@ -4,6 +4,8 @@ _What shipped, with the frozen evidence for each release. Generated; do not edit
 
 ## v0.3.1 — 2026-08-02
 
+- Design: [[Code-Walkthrough-2026-08-02_v0.3.1-release]]
+- Design: [[Design-Doc-2026-08-02_v0.3.1-release]]
 - Roadmap snapshot: [[Roadmap-2026-08-02_v0.3.1-release]]
 - Shipped: Escalate unverified medium-impact concepts in criticality_of (#14)
 - Shipped: Report ambiguous concept lookups instead of guessing (#15)
@@ -14,6 +16,7 @@ _What shipped, with the frozen evidence for each release. Generated; do not edit
 - Shipped: Flag links that point outside the bundle (#21)
 - Shipped: Curate the bundle wherever it is rooted (#22)
 - Shipped: Skip dot-directories when loading a bundle (#23)
+- Shipped: The hook's shell test runs on no gate
 
 ## v0.3.0 — 2026-08-01
 
