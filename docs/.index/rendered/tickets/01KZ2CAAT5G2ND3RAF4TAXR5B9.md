@@ -1,6 +1,6 @@
 # v0.3.1 — correctness cleanup and traceability backfill
 
-`01KZ2CAAT5G2ND3RAF4TAXR5B9` · epic/ops · **open**
+`01KZ2CAAT5G2ND3RAF4TAXR5B9` · epic/ops · **done**
 
 Clear the defects found while fixing v0.3.0: logic that is dead, silent, or wrong without crashing, plus the public traceability gap left by the move to the SpillwaveSolutions org.
 

@@ -76,7 +76,7 @@ _The evidence chain: plan → item → ticket → code → release, forward and 
 - produced-by: [[Plan-v031-correctness-and-traceability]]
 
 ### v0.3.1 — correctness cleanup and traceability backfill
-`01KZ2CAAT5G2ND3RAF4TAXR5B9` · status: todo
+`01KZ2CAAT5G2ND3RAF4TAXR5B9` · status: done
 - references: [github#16](https://github.com/SpillwaveSolutions/okf-plugin/issues/16)
 - contains: Escalate unverified medium-impact concepts in criticality_of
 - contains: Report ambiguous concept lookups instead of guessing
