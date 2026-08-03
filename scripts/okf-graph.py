@@ -823,12 +823,15 @@ def cmd_validate(bundle: Path, strict: bool = False) -> int:
     if not (bundle / "index.md").exists():
         issues.append({"severity": "error", "message": "missing root index.md"})
     for rel, c in concepts.items():
-        if rel in ("index.md", "log.md"):
-            continue
-        if c.type in ("", "Unknown") and c.path.name != "index.md":
-            issues.append({"severity": "warn", "path": rel, "message": "missing or unknown type"})
-        if not c.meta.get("title") and c.path.name != "index.md":
-            issues.append({"severity": "warn", "path": rel, "message": "missing title"})
+        # Structural files carry no type/title of their own: any index.md (its
+        # type is assigned on load) and the bundle's root log.md. Only those two
+        # checks are excused -- their LINKS are validated like anyone else's.
+        structural = c.path.name == "index.md" or rel == "log.md"
+        if not structural:
+            if c.type in ("", "Unknown"):
+                issues.append({"severity": "warn", "path": rel, "message": "missing or unknown type"})
+            if not c.meta.get("title"):
+                issues.append({"severity": "warn", "path": rel, "message": "missing title"})
         # warn, not error: the default exit code must stay 0 for the skills
         # and okf-curate.sh; --strict gates these in CI.
         for t in c.off_bundle:
