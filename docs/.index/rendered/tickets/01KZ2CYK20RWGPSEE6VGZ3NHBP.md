@@ -1,6 +1,6 @@
 # Plan pages get a status-report banner that ignores their status
 
-`01KZ2CYK20RWGPSEE6VGZ3NHBP` · task/bug · **open**
+`01KZ2CYK20RWGPSEE6VGZ3NHBP` · task/bug · **done**
 
 Every plan page published to the wiki carries the banner 'Current — the latest status report.
 

@@ -16,7 +16,7 @@ _The evidence chain: plan → item → ticket → code → release, forward and 
 - references: [github#30](https://github.com/SpillwaveSolutions/okf-plugin/issues/30)
 
 ### Plan pages get a status-report banner that ignores their status
-`01KZ2CYK20RWGPSEE6VGZ3NHBP` · status: todo
+`01KZ2CYK20RWGPSEE6VGZ3NHBP` · status: done
 - references: [github#27](https://github.com/SpillwaveSolutions/okf-plugin/issues/27)
 - targets: release/v0.3.1
 
