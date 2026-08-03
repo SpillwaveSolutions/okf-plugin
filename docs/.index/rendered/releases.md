@@ -16,6 +16,7 @@ _What shipped, with the frozen evidence for each release. Generated; do not edit
 - Shipped: Flag links that point outside the bundle (#21)
 - Shipped: Curate the bundle wherever it is rooted (#22)
 - Shipped: Skip dot-directories when loading a bundle (#23)
+- Shipped: Plan pages get a status-report banner that ignores their status (#27)
 - Shipped: Cut the v0.3.1 release (#31)
 - Shipped: The hook's shell test runs on no gate
 
