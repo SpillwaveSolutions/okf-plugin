@@ -12,7 +12,7 @@ _The evidence chain: plan → item → ticket → code → release, forward and 
 - targets: release/v0.3.1
 
 ### Root index.md and log.md are exempt from all link validation
-`01KZ2D6MDDCY9G6B3EE33DRZJA` · status: todo
+`01KZ2D6MDDCY9G6B3EE33DRZJA` · status: done
 - references: [github#30](https://github.com/SpillwaveSolutions/okf-plugin/issues/30)
 
 ### Plan pages get a status-report banner that ignores their status
