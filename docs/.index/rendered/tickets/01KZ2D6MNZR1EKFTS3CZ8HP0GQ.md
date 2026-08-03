@@ -1,6 +1,6 @@
 # Cut the v0.3.1 release
 
-`01KZ2D6MNZR1EKFTS3CZ8HP0GQ` · task/ops · **open**
+`01KZ2D6MNZR1EKFTS3CZ8HP0GQ` · task/ops · **done**
 
 Stamp the changelog, snapshot the roadmap, tag, publish the platform release, refresh the sync-doc targets, and republish the wiki.
 
