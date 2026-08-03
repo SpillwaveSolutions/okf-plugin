@@ -44,7 +44,7 @@
    "frozen": false,
    "page_name": "Index-Traceability",
    "render": "as-is",
-   "render_hash": "fb17a5a34a56",
+   "render_hash": "9865d4381a0f",
    "source": "docs/.index/rendered/traceability.md",
    "title": "Traceability Index",
    "truth_state": "current",
@@ -514,10 +514,10 @@
    "frozen": false,
    "page_name": "Ticket-01KZ2CAAT5G2ND3RAF4TAXR5B9",
    "render": "as-is",
-   "render_hash": "24975e55f7ca",
+   "render_hash": "be17c7d382aa",
    "source": "docs/.index/rendered/tickets/01KZ2CAAT5G2ND3RAF4TAXR5B9.md",
    "title": "v0.3.1 \u2014 correctness cleanup and traceability backfill",
-   "truth_state": "open",
+   "truth_state": "done",
    "wiki_key": "item/01KZ2CAAT5G2ND3RAF4TAXR5B9"
   },
   {
@@ -763,11 +763,11 @@
    "wiki_key": "plan/2026-08-02-v031-correctness-and-traceability"
   },
   {
-   "banner": "> **Current** \u2014 this is the living version; regenerated at 2026-08-03T00:04:55Z. Historical snapshots are linked from [[Index-Releases]].",
+   "banner": "> **Current** \u2014 this is the living version; regenerated at 2026-08-03T00:07:03Z. Historical snapshots are linked from [[Index-Releases]].",
    "frozen": false,
    "page_name": "Roadmap",
    "render": "doc+banner",
-   "render_hash": "4c9f91933d88",
+   "render_hash": "cf0e59712b2c",
    "source": "docs/roadmap.md",
    "title": "Roadmap",
    "truth_state": "current",
