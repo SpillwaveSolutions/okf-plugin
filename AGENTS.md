@@ -44,6 +44,10 @@ Plugin root variable in Claude/Grok plugin context: `${CLAUDE_PLUGIN_ROOT}`.
    repo default branch rather than the branch you were told to build on, so the
    commits you depend on can be missing. `git reset --hard <intended-branch>`
    while the tree is clean, then build.
+9. Merge PRs with `gh pr merge --merge`, never `--squash`. Frozen documents are
+   stamped with the commit they were written against and `worklog doc-verify`
+   resolves their code citations at that commit; a squash keeps that commit off
+   the default branch, so a fresh clone cannot resolve it.
 
 ## Skill routing (natural language)
 

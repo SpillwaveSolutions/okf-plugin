@@ -44,4 +44,4 @@ classifier:
   min_confidence: 0.7
   debounce: stop
 
-installed: 0.18.0
+installed: 0.22.2

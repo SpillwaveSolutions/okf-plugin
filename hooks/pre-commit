@@ -33,6 +33,24 @@ if [ -z "${WORKLOG_SKIP_BRANCH_GUARD:-}" ] && \
   esac
 fi
 
+# Conflict markers, in ANY staged file, with no merge exemption (01KYZEC0C1).
+# A merge is exactly when this happens: commit-msg exempts merge commits from
+# its item-reference rule and nothing else parses tests/ or plugin/, so a
+# resolution that missed a hunk committed cleanly and was only found by
+# running the suite. Staged content only -- an unstaged conflict elsewhere in
+# the tree is not this commit's problem.
+conflicted=$(git diff --cached --name-only --diff-filter=ACM |
+             while IFS= read -r f; do
+               [ -f "$f" ] || continue
+               if git show ":$f" 2>/dev/null |
+                  grep -qE '^(<{7}|={7}|>{7})( |$)'; then echo "$f"; fi
+             done)
+if [ -n "$conflicted" ]; then
+  fail "unresolved conflict markers in staged files:
+$(echo "$conflicted" | sed 's/^/  /')
+Resolve them, re-stage, and commit again."
+fi
+
 for f in .work/todo.jsonl .work/done.jsonl; do
   [ -f "$f" ] || continue
 
@@ -75,6 +93,17 @@ sys.exit(0 if ok else 1)
 PY
 done
 
+# Merge integrity guard (#243 + #237): a union merge can resurrect the very
+# lines a compaction just deleted, or land two branches that each claimed the
+# same external ticket. Only meaningful when a merge is in flight -- same
+# signal the branch guard above uses (WORKLOG_MERGE_COMMIT for a fresh `git
+# merge`, MERGE_HEAD for a resumed one).
+if { [ -n "${WORKLOG_MERGE_COMMIT:-}" ] || [ -f "$(git rev-parse --git-path MERGE_HEAD)" ]; } \
+   && [ -f bin/compact.py ]; then
+  python3 bin/compact.py --merge-check .work/todo.jsonl .work/done.jsonl || \
+    fail "merge integrity check failed (see above) -- resolve manually, then git merge --continue, or git merge --abort"
+fi
+
 # Invariant 15.7: the roadmap is generated. Regenerate and diff.
 # mktemp, not a fixed path: two checkouts running this concurrently must not
 # race on the same scratch file.
@@ -91,26 +120,45 @@ fi
 # Guarded: scaffolded repos have no tests/ (the suite lives in the source repo).
 [ ! -f tests/test_fold.py ] || python3 tests/test_fold.py -q >/dev/null 2>&1 || fail "fold tests failing"
 
-# Graph engine tests, same guarded pattern.
+# --- okf-plugin local gates (01KZD84S62B5TWKQSX4XV9848M) -------------------
+# This file is vendored: `worklog init` rewrites it wholesale on every upgrade,
+# which silently deleted these two lines going 0.18.0 -> 0.22.2. They are
+# restored here because there is no extension point to put them anywhere else.
+# What stops the next upgrade from eating them quietly is not this comment --
+# it is test_pre_commit_keeps_the_local_gates() in tests/test_okf_graph.py,
+# which CI runs directly and which fails if either line goes missing.
 [ ! -f tests/test_okf_graph.py ] || python3 tests/test_okf_graph.py -q >/dev/null 2>&1 || fail "graph tests failing — run: python3 tests/test_okf_graph.py"
-
-# Post-edit hook tests, same guarded pattern.
 [ ! -f tests/test_okf_curate.sh ] || bash tests/test_okf_curate.sh >/dev/null 2>&1 || fail "curate tests failing — run: bash tests/test_okf_curate.sh"
+# --- end okf-plugin local gates --------------------------------------------
 
 # ADRs: schema + cross-file invariants. Guarded like the fold tests.
 [ ! -d docs/adr ] || [ ! -x bin/worklog ] || python3 bin/worklog adr check >/dev/null || fail "ADR validation failed — run: worklog adr check"
 
 # IA gates (plan ia-content-model, migration 0002): wiki_key present/unique,
-# schema-valid frontmatter, fresh inventory. WARN-ONLY for one release cycle,
-# then promoted to hard fail. Guarded like the fold tests.
-if [ -f bin/ia.py ] && [ -x bin/worklog ]; then
+# schema-valid frontmatter, fresh inventory. The warn-only release cycle is
+# over — these are hard now (#98).
+#
+# The extra `-d docs/.index` guard is what makes promotion safe: it asks "has
+# this repo opted INTO the IA?", where the bin/ia.py guard only asks "does it
+# have the code?". A scaffolded repo gets bin/ from the plugin but has never
+# generated an index, and must not be blocked from its first commit. A repo
+# that HAS an index stays fully enforced — deleting any single generated file
+# inside it still fails, because the directory is still there.
+if [ -f bin/ia.py ] && [ -x bin/worklog ] && [ -d docs/.index ]; then
   python3 bin/worklog ia-normalize --check >/dev/null 2>&1 || \
-    echo "worklog: WARNING (soon a hard gate) — doc metadata drift; run: worklog ia-normalize" >&2
+    fail "doc metadata drift; run: worklog ia-normalize"
   python3 bin/worklog ia-inventory --check >/dev/null 2>&1 || \
-    echo "worklog: WARNING (soon a hard gate) — inventory stale/invalid; run: worklog ia-inventory" >&2
+    fail "inventory stale/invalid; run: worklog ia-inventory"
   [ ! -f bin/ia_render.py ] || python3 bin/worklog ia-render --check >/dev/null 2>&1 || \
-    echo "worklog: WARNING (soon a hard gate) — rendered pages/manifest stale; run: worklog ia-render" >&2
+    fail "rendered pages/manifest stale; run: worklog ia-render"
   # trace-check stays warn-level here forever; --strict runs at release time
   [ ! -f bin/ia_graph.py ] || python3 bin/worklog trace-check >/dev/null 2>&1 || \
     echo "worklog: WARNING — unlinked evidence; run: worklog trace-check" >&2
+  # doc-verify, same tier and for the same reason: it reports on documents
+  # this commit may not touch, so blocking here would punish the wrong
+  # commit. --strict runs at release time. It is also skipped outright on a
+  # shallow clone, where `git show <sha>:path` cannot resolve and every
+  # answer would be "unresolvable" (#294).
+  [ ! -f bin/doc_verify.py ] || python3 bin/worklog doc-verify --strict >/dev/null 2>&1 || \
+    echo "worklog: WARNING — document citations do not match the commit they were written against; run: worklog doc-verify" >&2
 fi

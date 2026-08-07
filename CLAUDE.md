@@ -50,6 +50,17 @@ Use `${CLAUDE_PLUGIN_ROOT}` for all intra-plugin paths in hooks and skill instru
    If not, `git reset --hard <intended-branch>` before writing code — a working
    tree with no commits of its own is safe to move. Skipping this check silently
    rebuilds work that already exists, or conflicts at merge time.
+9. **Merge PRs with a merge commit, not a squash.** Use `gh pr merge --merge`.
+   Frozen documents (design docs, plans, snapshots) are stamped with the commit
+   they were written against, and `worklog doc-verify` resolves every code
+   citation at that commit. A squash never puts the authoring commit on the
+   default branch, so in a fresh clone `git show <sha>:<path>` fails and the
+   verifier loses its ground truth — it must then report `unresolvable` rather
+   than degrade to HEAD, which is the assumption that produced the bad
+   citations it exists to catch. Upstream ADR-0008 records the same rule.
+   PRs #38–#45 were squashed before this was understood; they happen to resolve
+   because their stamps landed on main anyway, but do not take them as
+   precedent.
 
 ## Common commands
 

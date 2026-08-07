@@ -2,6 +2,63 @@
 
 _The evidence chain: plan → item → ticket → code → release, forward and backward. Generated from `docs/.index/_graph.json`; do not edit._
 
+### Restore the repo-local test gates the upgrade removed from pre-commit
+`01KZD84S62B5TWKQSX4XV9848M` · status: done
+- belongs-to: Upgrade the vendored worklog tooling to 0.22.2
+
+### Install the doc-verify modules the upgrade leaves out
+`01KZD823EHZ7W4HG9N5CV4SRMT` · status: done
+- belongs-to: Upgrade the vendored worklog tooling to 0.22.2
+- produced-by: [[Plan-worklog-0-22-2-upgrade]]
+
+### File the missing-module gap upstream
+`01KZD823EHXEV8Z72ZCNZA8VZH` · status: done
+- belongs-to: Upgrade the vendored worklog tooling to 0.22.2
+- produced-by: [[Plan-worklog-0-22-2-upgrade]]
+
+### Upgrade the vendored tooling to 0.22.2
+`01KZD823EHQRBSGQ76C4EK1TXT` · status: done
+- belongs-to: Upgrade the vendored worklog tooling to 0.22.2
+- produced-by: [[Plan-worklog-0-22-2-upgrade]]
+
+### Restore merge commits as the pull request merge style
+`01KZD823EHMRAZH978P0EYQFB1` · status: done
+- belongs-to: Upgrade the vendored worklog tooling to 0.22.2
+- produced-by: [[Plan-worklog-0-22-2-upgrade]]
+
+### Baseline the citation verifier and fix real defects only
+`01KZD823EHMC16WZNM4W193VVX` · status: done
+- belongs-to: Upgrade the vendored worklog tooling to 0.22.2
+- produced-by: [[Plan-worklog-0-22-2-upgrade]]
+
+### Republish and confirm the plan banners are fixed
+`01KZD823EHGFVX6NSM2ZT057SY` · status: todo
+- belongs-to: Upgrade the vendored worklog tooling to 0.22.2
+- produced-by: [[Plan-worklog-0-22-2-upgrade]]
+
+### Backfill document provenance
+`01KZD823EHAFN2YF6WCG2T7XN8` · status: done
+- belongs-to: Upgrade the vendored worklog tooling to 0.22.2
+- produced-by: [[Plan-worklog-0-22-2-upgrade]]
+
+### Complete the three manual steps the upgrade requires
+`01KZD823EH6PBMN2DRD9WAX52F` · status: done
+- belongs-to: Upgrade the vendored worklog tooling to 0.22.2
+- produced-by: [[Plan-worklog-0-22-2-upgrade]]
+
+### Upgrade the vendored worklog tooling to 0.22.2
+`01KZD823EG6R5E1FXFX416RQ0G` · status: todo
+- contains: Complete the three manual steps the upgrade requires
+- contains: Backfill document provenance
+- contains: Republish and confirm the plan banners are fixed
+- contains: Baseline the citation verifier and fix real defects only
+- contains: Restore merge commits as the pull request merge style
+- contains: Upgrade the vendored tooling to 0.22.2
+- contains: File the missing-module gap upstream
+- contains: Install the doc-verify modules the upgrade leaves out
+- contains: Restore the repo-local test gates the upgrade removed from pre-commit
+- produced-by: [[Plan-worklog-0-22-2-upgrade]]
+
 ### Release v0.3.2
 `01KZ30RXDKQG2CSA2D0TXWJQZZ` · status: done
 - targets: release/v0.3.2

@@ -19,4 +19,8 @@ integration-okf/
 # worklog: keep event logs & config; ignore local-only caches
 .work/wiki-checkout/
 .work/suggestions.jsonl
+.work/.sessions
 adapters/**/__pycache__/
+
+# Agent worktrees (git worktree add ...); never part of a commit.
+.claude/worktrees/

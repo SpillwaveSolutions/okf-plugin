@@ -30,6 +30,8 @@ INGEST_FIELDS = ("title", "body", "status", "priority", "assignee", "type",
 CLOSED_STATUSES = ("done", "cancelled")
 LOCAL_ONLY = ("worklog sync: no adapter configured — local-only "
               "(set WORKLOG_TICKET_ADAPTER or run worklog adapter check)")
+LOG_PATHS = (".work/todo.jsonl", ".work/done.jsonl")
+EPOCH = "1970-01-01T00:00:00Z"  # ponytail: fallback --since for an empty log
 
 # Mirror of schema/capabilities.schema.json — embedded because installed repos
 # ship bin/ without schema/. tests/test_dispatch.py asserts the two are identical.
@@ -121,6 +123,34 @@ def rev_to_ms(rev):
         return int(time.time() * 1000)  # ponytail: unparseable rev -> now
 
 
+def earliest_event_ts(paths=LOG_PATHS):
+    """Earliest `ts` across the local event log.
+
+    Seeds --since on a cursor-less first pull (worklog#141): the adapter
+    contract requires one of --since/--keys, so a repo that has never pulled
+    before must not call it with neither. Bad JSON or a missing file is
+    skipped, same leniency as fold.py's own log reader.
+    """
+    earliest = None
+    for path in paths:
+        try:
+            fh = open(path, encoding="utf-8")
+        except FileNotFoundError:
+            continue
+        with fh:
+            for line in fh:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    ts = json.loads(line).get("ts")
+                except json.JSONDecodeError:
+                    continue
+                if ts and (earliest is None or ts < earliest):
+                    earliest = ts
+    return earliest
+
+
 def resolve_adapter():
     path = os.environ.get("WORKLOG_TICKET_ADAPTER")
     if path:
@@ -135,6 +165,11 @@ def resolve_adapter():
 class Dispatcher:
     COUNT_KEYS = ("created", "updated", "closed", "skipped", "pulled",
                   "conflicts", "deferred")
+    # How many not-founds, with nothing succeeding, before we stop believing
+    # the tickets and start suspecting the project. Three rather than one so a
+    # genuinely-deleted first ticket does not abort a healthy run; low enough
+    # that a bad project setting cannot walk the whole log (ADR-0004).
+    GONE_ABORT = 3
 
     def __init__(self, adapter, retry_base_delay=0.5, dry_run=False):
         self.adapter = adapter
@@ -143,7 +178,20 @@ class Dispatcher:
         self.counts = dict.fromkeys(self.COUNT_KEYS, 0)
         self.drift = []
         self.collisions = {}
+        # #238: what this run replaced on live tickets, and what the one
+        # batched read to find that out cost.
+        self.overwrites = []
+        self.remote_before = {}
+        self.snapshot_cost = None
         self.state = self._load_state()
+        # GONE bookkeeping (ADR-0004). Exit code 3 cannot separate a deleted
+        # ticket from an unreachable project — both are 404 — so the guard is
+        # on SCALE, not on any per-ticket judgement: a run that has proved
+        # nothing may condemn at most GONE_ABORT-1 items before it aborts.
+        # `adapter_ok` is what disarms that, and the marks are buffered so the
+        # abort can leave nothing behind.
+        self.adapter_ok = False
+        self.pending_gone = {}
 
     # --- state (.work/sync-state.json, per-clone) ---
 
@@ -290,6 +338,12 @@ class Dispatcher:
         """§3.6 exit-code table. True = success, carry on with the item."""
         rc = p.returncode
         if rc == 0:
+            # Reachability is proven, and this key answers — so any gone mark
+            # from an earlier run is stale. Without this, a ticket restored
+            # from the tracker's trash stays skipped forever, because the mark
+            # is only outgrown when the key itself changes (ADR-0004).
+            self.adapter_ok = True
+            self.item_state(item["id"]).pop("gone_key", None)
             return True
         iid = item["id"]
         if rc == 2:
@@ -297,10 +351,27 @@ class Dispatcher:
             sys.exit("worklog sync: adapter auth failure — re-authenticate "
                      "with the tracker and re-run. Nothing further was pushed.")
         if rc == 3:
+            # GONE (definite not-found), not a transient failure. The adapter
+            # contract says to clear `external` so the item files afresh, but
+            # doing that automatically here cannot tell a real deletion from
+            # a flaky 404 -- and auto-clearing on a transient error would
+            # file a duplicate. Deliberately conservative (worklog#241): stop
+            # retrying this item every run and hand the decision to a human,
+            # instead of popping last_pushed_hash and hammering the same
+            # dead key forever.
             key = (item.get("external") or {}).get("key")
-            self.note("key %s gone remotely; will re-push %s next run"
-                      % (key, iid[:8]))
-            self.item_state(iid).pop("last_pushed_hash", None)
+            self.pending_gone[iid] = key
+            if not self.adapter_ok and len(self.pending_gone) >= self.GONE_ABORT:
+                self._save_state()   # deliberately WITHOUT the pending marks
+                sys.exit(
+                    "worklog sync: %d tickets reported gone and not one "
+                    "adapter call has succeeded — the project itself is "
+                    "probably unreachable, not the tickets. Nothing was "
+                    "changed. Check WORKLOG_TICKET_PROJECT and the tracker "
+                    "credentials, then re-run." % len(self.pending_gone))
+            self.note("%s: ticket %s reported gone remotely — not retried "
+                      "automatically; run `worklog unlink %s` to clear the "
+                      "link and file a fresh one" % (iid[:8], key, iid))
             self.counts["deferred"] += 1
         elif rc == 4:
             self.note("rate limited on %s; deferred after 3 retries" % iid[:8])
@@ -360,7 +431,105 @@ class Dispatcher:
             print("    worklog sync --keys %s   # re-push the surviving owner "
                   "over the damage" % key, file=sys.stderr)
 
+    def refuse_ambiguous_keys(self, items, keys):
+        """--keys accepts a ticket number as well as an item ULID. A number
+        more than one item claims must be refused outright, not drag every
+        claimant into scope -- that is exactly the reflex an operator reaches
+        for while repairing a duplicate (github#226), and precisely wrong
+        then (worklog#239). Unlike the collision guard below (which skips the
+        colliders and keeps the rest of the run going), an ambiguous forced
+        key stops the run before anything is pushed -- the operator asked for
+        one specific ticket and got a fork in the road instead.
+        """
+        for key in keys:
+            owners = sorted(i["id"] for i in items
+                            if (i.get("external") or {}).get("key") == key)
+            if len(owners) > 1:
+                sys.exit("worklog sync: --keys %r is ambiguous — claimed by "
+                         "%d items: %s (worklog unlink the wrong one first)"
+                         % (key, len(owners), ", ".join(owners)))
+
+    # --- overwrite reporting (#238) ---
+
+    # What a reader would notice being replaced on a live ticket. Deliberately
+    # not every ingest field: `body` is long enough to bury the line that
+    # matters, and this exists to make damage visible at a glance.
+    OVERWRITE_FIELDS = ("title", "status", "priority", "milestone", "assignee")
+
+    def _keys_at_risk(self, items, caps, keys, blocked):
+        """Keys of tickets this run may overwrite.
+
+        Approximate on purpose. It does not re-derive the push loop's exact
+        scope rules -- over-fetching costs nothing (the read is batched) and
+        under-fetching only means one ticket reports no before/after. Cloning
+        that logic to be exact would put the delicate part in two places.
+        """
+        at_risk = []
+        for item in items:
+            ext = item.get("external") or {}
+            key = ext.get("key")
+            if (not key or item["id"] in blocked or item.get("_orphan")
+                    or not item.get("title")):
+                continue
+            h = canonical_hash(self.outbound(item, caps))
+            forced = bool(keys) and (item["id"] in keys or key in keys)
+            if self.is_dirty(item["id"], h, ext) or forced:
+                at_risk.append(str(key))
+        return at_risk
+
+    def snapshot_remote(self, caps, at_risk):
+        """{key: remote fields} as they stand BEFORE this run pushes.
+
+        ONE batched `pull --keys` for the whole run. The ticket that asked for
+        this flagged "one extra read per updated ticket" as a real cost worth
+        measuring -- so it is a read per RUN instead, and the run reports how
+        long it took and how many tickets it covered. The adapter contract
+        already accepts a key list, so no new verb was needed.
+
+        Degrades to {}: no pull support, a failed read, or unparseable output
+        all mean "report the fields without before/after", never a failed sync.
+        """
+        if not at_risk or "pull" not in caps["supports"]:
+            return {}
+        started = time.time()
+        p = self.run_adapter("pull", "--keys", ",".join(sorted(set(at_risk))))
+        self.snapshot_cost = (len(set(at_risk)), time.time() - started)
+        if p.returncode != 0:
+            self.note("could not read current ticket state (exit %d); "
+                      "overwrites reported without before/after" % p.returncode)
+            return {}
+        snap = {}
+        for raw in p.stdout.splitlines():
+            if not raw.strip():
+                continue
+            try:
+                line = json.loads(raw)
+            except json.JSONDecodeError:
+                continue
+            key = (line.get("external") or {}).get("key")
+            if key is not None:
+                snap[str(key)] = line
+        return snap
+
+    def note_overwrite(self, iid, key, payload_item):
+        """Record which live fields this push replaced, before -> after."""
+        before = self.remote_before.get(str(key))
+        if before is None:
+            return
+        changed = []
+        for f in self.OVERWRITE_FIELDS:
+            if f not in before:
+                continue
+            old, new = before.get(f), payload_item.get(f)
+            if old != new:
+                changed.append("%s: %r -> %r" % (f, old, new))
+        if changed:
+            self.overwrites.append("%s (%s): %s"
+                                   % (key, iid[:8], "; ".join(changed)))
+
     def push_items(self, items, caps, keys):
+        if keys:
+            self.refuse_ambiguous_keys(items, keys)
         # Collection-level gate: inside the loop every item looks perfectly
         # valid, which is exactly why github#226 was invisible from the log.
         self.collisions = {k: v for k, v in external_owners(items).items()
@@ -368,6 +537,10 @@ class Dispatcher:
         if self.collisions:
             self.report_collisions(items)
         blocked = {i for ids in self.collisions.values() for i in ids}
+        # Read the live tickets BEFORE anything is pushed -- after the push
+        # there is no "before" left to report (#238).
+        self.remote_before = self.snapshot_remote(
+            caps, self._keys_at_risk(items, caps, keys, blocked))
         for item in items:
             iid = item["id"]
             ext = item.get("external") or {}
@@ -375,13 +548,29 @@ class Dispatcher:
             # titleless items are fold debris, not work — report, never push.
             # Pushing one files an "(untitled)" ticket remotely.
             if item.get("_orphan") or not item.get("title"):
-                self.drift.append(f"{iid[:8]}: orphan/untitled item skipped — not pushed")
+                # Once it is closed the debris is settled: it can never be
+                # pushed and there is nothing to act on, so repeating it every
+                # run only teaches readers to skim drift (01KYTGNS76).
+                if item.get("status") not in CLOSED_STATUSES:
+                    self.drift.append(
+                        f"{iid[:8]}: orphan/untitled item skipped — not pushed")
                 continue
             # Before `closed` is computed, so the update-then-close branch is
             # covered too — that is the path that marked the reported ticket
             # Done. Corruption needs BOTH claimants pushed, so skipping the
             # set removes it entirely; the rest of the run proceeds.
             if iid in blocked:
+                continue
+            # A ticket reported gone (rc 3) on a prior run: don't retry it
+            # every run (worklog#241) -- surface the remedy again so it isn't
+            # forgotten. `worklog unlink` clears `external`, so ext["key"]
+            # then mismatches gone_key and the item re-enters scope normally.
+            gone_key = self.state.get("items", {}).get(iid, {}).get("gone_key")
+            if gone_key is not None and gone_key == ext.get("key"):
+                self.note("%s: ticket %s reported gone remotely — not "
+                          "retried automatically; run `worklog unlink %s` "
+                          "to clear the link and file a fresh one"
+                          % (iid[:8], gone_key, iid))
                 continue
             closed = item.get("status") in CLOSED_STATUSES
             payload_item = self.outbound(item, caps)
@@ -438,6 +627,16 @@ class Dispatcher:
                 else:
                     if self.dry_run:
                         print("would close %s (%s)" % (key, item.get("status")))
+                        # A close is not always only a close: a dirty item
+                        # pushes its final shape first (see below), and that
+                        # push can rewrite fields on a ticket somebody else
+                        # filed. Reporting overwrites only on the update path
+                        # left this one silent -- the path where an operator
+                        # reading "would close" is least expecting a field
+                        # write. Same call, same condition, so the dry run now
+                        # predicts exactly what the real run does.
+                        if dirty:
+                            self.note_overwrite(iid, key, payload_item)
                         continue
                     if dirty:
                         # Close alone never syncs fields (adapter close is
@@ -451,6 +650,9 @@ class Dispatcher:
                             "item": payload_item})
                         if not self.handle_exit(item, p):
                             continue
+                        # This is the path that marked the reported ticket
+                        # Done -- the one most worth naming out loud.
+                        self.note_overwrite(iid, key, payload_item)
                 p = self.run_adapter("close", str(key),
                                      item.get("resolution") or item["status"])
                 if self.handle_exit(item, p):
@@ -465,6 +667,10 @@ class Dispatcher:
             if self.dry_run:
                 print("would %s %s%s" % (op, iid[:8],
                                          " -> %s" % ext["key"] if ext.get("key") else ""))
+                # The most useful place for this: see what would be replaced
+                # while it is still hypothetical.
+                if op == "update":
+                    self.note_overwrite(iid, ext["key"], payload_item)
                 continue
             p = self.call_push(payload)
             if not self.handle_exit(item, p):
@@ -484,7 +690,11 @@ class Dispatcher:
                 self.counts["created"] += 1
             else:
                 self.counts["updated"] += 1
+                self.note_overwrite(iid, pushed_key, payload_item)
             self.record_push(iid, h, pushed_key)
+        # The push loop is over, so the abort can no longer fire: whatever is
+        # still buffered is what this run really means to record.
+        self.commit_gone()
 
     # --- pull side ---
 
@@ -493,8 +703,12 @@ class Dispatcher:
             self.note("adapter does not support pull; local log may lag remote")
             return
         system = caps["system"]
-        cursor = self.state.get("cursors", {}).get(system)
-        args = ["pull"] + (["--since", cursor] if cursor else [])
+        # No cursor yet (first pull for this system) -> the adapter contract
+        # still requires --since or --keys, so seed one from the earliest
+        # local event instead of calling with neither (worklog#141).
+        cursor = (self.state.get("cursors", {}).get(system)
+                 or earliest_event_ts() or EPOCH)
+        args = ["pull", "--since", cursor]
         p = self.run_adapter(*args)
         if p.returncode == 2:
             sys.exit("worklog sync: adapter auth failure on pull — "
@@ -502,6 +716,7 @@ class Dispatcher:
         if p.returncode != 0:
             self.note("pull failed (exit %d); cursor not advanced" % p.returncode)
             return
+        self.adapter_ok = True   # a clean pull proves the project is reachable
         by_id = {i["id"]: i for i in items}
         max_rev = cursor
         for raw in p.stdout.splitlines():
@@ -565,6 +780,19 @@ class Dispatcher:
         if max_rev and not self.dry_run:
             self.state.setdefault("cursors", {})[system] = max_rev
 
+    def commit_gone(self):
+        """Flush the run's buffered gone marks into state.
+
+        Buffering is not a second safety rule — GONE_ABORT is the rule, and it
+        has already fired if this run was going to condemn items at scale. What
+        buffering buys is that the abort leaves nothing behind: marks written
+        item-by-item would survive the exit that was supposed to change
+        nothing (ADR-0004).
+        """
+        for iid, key in self.pending_gone.items():
+            self.item_state(iid)["gone_key"] = key
+        self.pending_gone.clear()
+
     # --- the run ---
 
     def sync(self, keys=None, push=True, pull=True):
@@ -587,6 +815,16 @@ class Dispatcher:
     def report(self):
         print("sync report: " + " ".join("%s=%d" % (k, self.counts[k])
                                          for k in self.COUNT_KEYS))
+        # Before drift: "updated 2" is not the line that catches damage --
+        # naming the field that changed on a live ticket is (#238).
+        if self.overwrites:
+            print("overwrote live ticket fields:")
+            for line in self.overwrites:
+                print("  - " + line)
+        if self.snapshot_cost:
+            n, secs = self.snapshot_cost
+            print("  (read %d ticket%s in %.2fs to report the above)"
+                  % (n, "" if n == 1 else "s", secs))
         if self.drift:
             print("drift:")
             for line in self.drift:
