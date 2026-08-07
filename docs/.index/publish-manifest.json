@@ -1,5 +1,5 @@
 {
- "git_hash": "018e71d",
+ "git_hash": "73d7ab4",
  "pages": [
   {
    "frozen": false,
@@ -45,7 +45,7 @@
    "frozen": false,
    "page_name": "Index-Traceability",
    "render": "as-is",
-   "render_hash": "78ad288c4872",
+   "render_hash": "8edaba359b24",
    "source": "docs/.index/rendered/traceability.md",
    "title": "Traceability Index",
    "truth_state": "current",
@@ -655,7 +655,7 @@
    "frozen": false,
    "page_name": "Ticket-01KZD823EG6R5E1FXFX416RQ0G",
    "render": "as-is",
-   "render_hash": "685b165febbd",
+   "render_hash": "e8371c013889",
    "source": "docs/.index/rendered/tickets/01KZD823EG6R5E1FXFX416RQ0G.md",
    "title": "Upgrade the vendored worklog tooling to 0.22.2",
    "truth_state": "open",
@@ -675,10 +675,10 @@
    "frozen": false,
    "page_name": "Ticket-01KZD823EHAFN2YF6WCG2T7XN8",
    "render": "as-is",
-   "render_hash": "06cf46d8d8db",
+   "render_hash": "a98270b1dd7d",
    "source": "docs/.index/rendered/tickets/01KZD823EHAFN2YF6WCG2T7XN8.md",
    "title": "Backfill document provenance",
-   "truth_state": "open",
+   "truth_state": "done",
    "wiki_key": "item/01KZD823EHAFN2YF6WCG2T7XN8"
   },
   {
@@ -705,10 +705,10 @@
    "frozen": false,
    "page_name": "Ticket-01KZD823EHMRAZH978P0EYQFB1",
    "render": "as-is",
-   "render_hash": "9e6a2895ef0f",
+   "render_hash": "83be867af3e3",
    "source": "docs/.index/rendered/tickets/01KZD823EHMRAZH978P0EYQFB1.md",
    "title": "Restore merge commits as the pull request merge style",
-   "truth_state": "open",
+   "truth_state": "done",
    "wiki_key": "item/01KZD823EHMRAZH978P0EYQFB1"
   },
   {
@@ -725,10 +725,10 @@
    "frozen": false,
    "page_name": "Ticket-01KZD823EHXEV8Z72ZCNZA8VZH",
    "render": "as-is",
-   "render_hash": "79e7ab5630b6",
+   "render_hash": "7c6b7c26fa1b",
    "source": "docs/.index/rendered/tickets/01KZD823EHXEV8Z72ZCNZA8VZH.md",
    "title": "File the missing-module gap upstream",
-   "truth_state": "open",
+   "truth_state": "done",
    "wiki_key": "item/01KZD823EHXEV8Z72ZCNZA8VZH"
   },
   {
@@ -932,13 +932,13 @@
    "wiki_key": "plan/2026-08-07-worklog-0-22-2-upgrade"
   },
   {
-   "banner": "> **Current** \u2014 this is the living version; regenerated at 2026-08-07T04:42:46Z. Historical snapshots are linked from [[Index-Releases]].",
+   "banner": "> **Current** \u2014 this is the living version; regenerated at 2026-08-07T04:45:13Z. Historical snapshots are linked from [[Index-Releases]].",
    "frozen": false,
    "page_name": "Roadmap",
    "render": "doc+banner",
-   "render_hash": "e61b5a51f951",
+   "render_hash": "d91e26e61fc5",
    "source": "docs/roadmap.md",
-   "source_hash": "f2b699b31eb7",
+   "source_hash": "cc9e481dd4d5",
    "title": "Roadmap",
    "truth_state": "current",
    "wiki_key": "roadmap"

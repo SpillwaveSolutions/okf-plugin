@@ -1131,7 +1131,7 @@
   },
   "item/01KZD823EHAFN2YF6WCG2T7XN8": {
    "doc_type": "item",
-   "status": "todo",
+   "status": "done",
    "title": "Backfill document provenance"
   },
   "item/01KZD823EHGFVX6NSM2ZT057SY": {
@@ -1146,7 +1146,7 @@
   },
   "item/01KZD823EHMRAZH978P0EYQFB1": {
    "doc_type": "item",
-   "status": "todo",
+   "status": "done",
    "title": "Restore merge commits as the pull request merge style"
   },
   "item/01KZD823EHQRBSGQ76C4EK1TXT": {
@@ -1156,7 +1156,7 @@
   },
   "item/01KZD823EHXEV8Z72ZCNZA8VZH": {
    "doc_type": "item",
-   "status": "todo",
+   "status": "done",
    "title": "File the missing-module gap upstream"
   },
   "item/01KZD823EHZ7W4HG9N5CV4SRMT": {

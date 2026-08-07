@@ -1,6 +1,6 @@
 # Restore merge commits as the pull request merge style
 
-`01KZD823EHMRAZH978P0EYQFB1` · task/feature · **open**
+`01KZD823EHMRAZH978P0EYQFB1` · task/feature · **done**
 
 This repo used merge commits through pull request 37 and was switched to
 squash during the v0.3.2 work without the change being flagged.

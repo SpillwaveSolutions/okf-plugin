@@ -12,7 +12,7 @@ _The evidence chain: plan → item → ticket → code → release, forward and 
 - produced-by: [[Plan-worklog-0-22-2-upgrade]]
 
 ### File the missing-module gap upstream
-`01KZD823EHXEV8Z72ZCNZA8VZH` · status: todo
+`01KZD823EHXEV8Z72ZCNZA8VZH` · status: done
 - belongs-to: Upgrade the vendored worklog tooling to 0.22.2
 - produced-by: [[Plan-worklog-0-22-2-upgrade]]
 
@@ -22,7 +22,7 @@ _The evidence chain: plan → item → ticket → code → release, forward and 
 - produced-by: [[Plan-worklog-0-22-2-upgrade]]
 
 ### Restore merge commits as the pull request merge style
-`01KZD823EHMRAZH978P0EYQFB1` · status: todo
+`01KZD823EHMRAZH978P0EYQFB1` · status: done
 - belongs-to: Upgrade the vendored worklog tooling to 0.22.2
 - produced-by: [[Plan-worklog-0-22-2-upgrade]]
 
@@ -37,7 +37,7 @@ _The evidence chain: plan → item → ticket → code → release, forward and 
 - produced-by: [[Plan-worklog-0-22-2-upgrade]]
 
 ### Backfill document provenance
-`01KZD823EHAFN2YF6WCG2T7XN8` · status: todo
+`01KZD823EHAFN2YF6WCG2T7XN8` · status: done
 - belongs-to: Upgrade the vendored worklog tooling to 0.22.2
 - produced-by: [[Plan-worklog-0-22-2-upgrade]]
 

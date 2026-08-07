@@ -1,6 +1,6 @@
 # Backfill document provenance
 
-`01KZD823EHAFN2YF6WCG2T7XN8` · task/feature · **open**
+`01KZD823EHAFN2YF6WCG2T7XN8` · task/feature · **done**
 
 Add the merge commit that brought each frozen document to the default branch.
 

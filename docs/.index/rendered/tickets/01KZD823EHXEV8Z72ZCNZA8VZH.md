@@ -1,6 +1,6 @@
 # File the missing-module gap upstream
 
-`01KZD823EHXEV8Z72ZCNZA8VZH` · task/feature · **open**
+`01KZD823EHXEV8Z72ZCNZA8VZH` · task/feature · **done**
 
 Report that init.sh omits doc_verify.py and provenance.py while pre-commit
 references the first, and that the file-exists guard makes the omission
