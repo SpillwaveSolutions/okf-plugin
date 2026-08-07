@@ -1,6 +1,6 @@
 # Upgrade the vendored worklog tooling to 0.22.2
 
-`01KZD823EG6R5E1FXFX416RQ0G` · epic/feature · **open**
+`01KZD823EG6R5E1FXFX416RQ0G` · epic/feature · **done**
 
 Upgrade this repo's vendored worklog tooling from 0.18.0 to 0.22.2 to pull in the plan-banner fix filed upstream as wiki_ticket_sdd#292, plus the trace-check scoping and merge-rescue correctness that shipped alongside it.
 
@@ -10,7 +10,7 @@ Upgrade this repo's vendored worklog tooling from 0.18.0 to 0.22.2 to pull in th
 never be committed and is not currently ignored. (done)
 - [[Ticket-01KZD823EHAFN2YF6WCG2T7XN8]] Backfill document provenance — Add the merge commit that brought each frozen document to the default branch. (done)
 - [[Ticket-01KZD823EHGFVX6NSM2ZT057SY]] Republish and confirm the plan banners are fixed — Publish first and then converge the index, because publishing rewrites the
-published ledger that the normalizer self-describes. (open)
+published ledger that the normalizer self-describes. (done)
 - [[Ticket-01KZD823EHMC16WZNM4W193VVX]] Baseline the citation verifier and fix real defects only — Run doc-verify once and separate fabricated citations, which were already
 wrong in the tree the author had open, from drift, which was correct when
 written and is expected in a frozen document. (done)
@@ -24,4 +24,4 @@ silent. (done)
 bin/doc_verify.py exists, but init does not copy that module or provenance.py. (done)
 - [[Ticket-01KZD84S62B5TWKQSX4XV9848M]] Restore the repo-local test gates the upgrade removed from pre-commit — The upgrade rewrites hooks/pre-commit wholesale, which deleted the two repo-local gate lines this project added in v0.3.0 and v0.3.1: the graph engine test suite and the post-edit hook shell test. (done)
 
-Progress: 8/9 done
+Progress: 9/9 done
