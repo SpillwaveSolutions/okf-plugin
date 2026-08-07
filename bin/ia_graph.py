@@ -4,7 +4,10 @@ over docs + work items, PR/commit linking, and the unlinked-evidence check.
 Forward edges only are stored; reverse edges are DERIVED (§9.4) — the graph
 builder inverts `relates_to` plus the fields the log already carries
 (`parent`, `plan`, `milestone`, `external`, `supersedes`). Deterministic:
-pure function of records + fold; no git or network calls.
+pure function of records + fold; no git or network calls. `pr_sync` is the
+one exception and is deliberately not on that path — it is an explicit
+command that writes a sidecar, so the builder and the renderer keep reading
+committed files only.
 
 Item metadata stays overlay-only: an item sidecar
 (docs/.index/item/<ULID>.yml) holds ONLY what the event log cannot represent
@@ -92,10 +95,16 @@ def build_graph(records=None, items=None):
             edge(key, "references", tkey)
         side = item_sidecar(iid)
         for c in side.get("code") or []:
-            if isinstance(c, dict) and c.get("pr") is not None:
+            if not isinstance(c, dict):
+                continue
+            if c.get("pr") is not None:
                 pkey = "pr/%s" % c["pr"]
                 nodes[pkey] = {"doc_type": "pr"}
                 edge(key, "lands-in", pkey)
+            elif c.get("commit"):
+                ckey = "commit/%s" % c["commit"]
+                nodes[ckey] = {"doc_type": "commit"}
+                edge(key, "lands-in", ckey)
         for e in side.get("relates_to") or []:
             if isinstance(e, dict) and e.get("type") in REVERSE:
                 edge(key, e["type"], str(e.get("target")))
@@ -160,10 +169,117 @@ def link_pr(ulid_, pr=None, commit=None):
     return entry
 
 
+# ------------------------------------------------------------- PR sync
+
+PR_FIELDS = ("title", "url", "state", "files", "reviewDecision",
+             "statusCheckRollup", "mergedAt")
+
+# gh reports one row per check; a page shows one word. Worst state wins —
+# a page that says "passing" while a gate is red is worse than no page.
+_CHECK_BAD = ("FAILURE", "TIMED_OUT", "CANCELLED", "ACTION_REQUIRED",
+              "ERROR", "STARTUP_FAILURE")
+_CHECK_WAIT = ("PENDING", "IN_PROGRESS", "QUEUED", "WAITING", "REQUESTED",
+               "EXPECTED")
+
+
+def rollup_checks(rows):
+    """statusCheckRollup rows -> passing|failing|pending|mixed|none."""
+    states = set()
+    for c in rows or []:
+        if not isinstance(c, dict):
+            continue
+        # A finished check run carries `conclusion`; a running one carries
+        # only `status`. Commit statuses use `state`.
+        s = (c.get("conclusion") or c.get("state") or c.get("status") or "")
+        if s:
+            states.add(s.upper())
+    if not states:
+        return "none"
+    if states & set(_CHECK_BAD):
+        return "failing"
+    if states & set(_CHECK_WAIT):
+        return "pending"
+    if states <= {"SUCCESS", "NEUTRAL", "SKIPPED", "COMPLETED"}:
+        return "passing"
+    return "mixed"
+
+
+def _gh_pr_view(num):
+    import subprocess
+    p = subprocess.run(["gh", "pr", "view", str(num),
+                        "--json", ",".join(PR_FIELDS)],
+                       capture_output=True, text=True)
+    if p.returncode != 0:
+        raise ValueError("gh pr view %s failed: %s"
+                         % (num, (p.stderr or "").strip()))
+    return json.loads(p.stdout or "{}")
+
+
+def pr_sync(num, fetch=None):
+    """Live PR metadata -> the pr/<num> sidecar. -> the sidecar dict.
+
+    The network call lives HERE and never in the renderer: `ia-render
+    --check` regenerates and byte-diffs, so a renderer that reached the
+    network would flap against mutable remote state. Same split as link_pr:
+    a command writes a committed file, render reads it off disk.
+
+    Files are flattened to paths — the sidecar's YAML subset inlines lists
+    on one line, and a comma inside an inline `{...}` would not round-trip.
+    """
+    raw = (fetch or _gh_pr_view)(int(num))
+    meta = {
+        "number": int(num),
+        "title": raw.get("title") or "",
+        "url": raw.get("url") or "",
+        "state": (raw.get("state") or "unknown").lower(),
+        "review": (raw.get("reviewDecision") or "none").lower(),
+        "checks": rollup_checks(raw.get("statusCheckRollup")),
+        "merged_at": raw.get("mergedAt") or None,
+        "files": sorted(f.get("path") for f in raw.get("files") or []
+                        if isinstance(f, dict) and f.get("path")),
+    }
+    ia.write_sidecar("pr/%s" % int(num), meta)
+    return meta
+
+
+def pr_meta(num):
+    """The pr/<num> sidecar, or {} when pr-sync has never run for it."""
+    return ia.read_sidecar("pr/%s" % num)
+
+
+def in_trace_scope(item):
+    """Is this item evidence for a release? (plan 2026-08-02-trace-check-scope)
+
+    Scope is the released-milestone set: an item with no milestone has not
+    shipped in anything named, so there is no release for it to be evidence
+    of. `kind:ops` is exempt outright -- release cuts, status reports, log
+    compactions and worktree cleanup have no plan, ticket or PR by design,
+    and the release skill states release items are deliberately never given
+    an external ticket.
+
+    Until 2026-08-02 this scope was computed as a label, interpolated into
+    every message, and filtered on nothing, so the gate swept all 267 closed
+    items instead of the 39 it claimed -- 401 gaps, 323 of them out of scope.
+    """
+    # The second clause looks redundant and is not: CLOSED_STATUSES is
+    # ("done", "cancelled"), so cancelled work passes the first test and is
+    # excluded only here. Cancelled work shipped nothing, so it is evidence
+    # of nothing. Carried verbatim from the pre-2026-08-02 trace_check; kept
+    # as-is because tests/test_trace_scope.py pins the behaviour either way.
+    if item.get("status") not in CLOSED_STATUSES or item.get("status") == "cancelled":
+        return False
+    return bool(item.get("milestone")) and item.get("kind") != "ops"
+
+
 def trace_check(graph=None, items=None, strict=False):
     """Unlinked-evidence report (§9.6): every item in a released milestone
     should trace to a plan, a ticket, and a PR; verified-by stays advisory
-    (a test link is proposed, never assumed). -> list of gaps."""
+    (a test link is proposed, never assumed). -> list of gaps.
+
+    `unplanned` items are excused the PLAN check alone: the taxonomy defines
+    them as arriving without one. They still owe a ticket and a PR -- being
+    discovered mid-flight excuses the plan, not the evidence.
+    """
     if items is None:
         items = fold((".work/todo.jsonl", ".work/done.jsonl")).items
     graph = graph or build_graph(items=items)
@@ -175,17 +291,16 @@ def trace_check(graph=None, items=None, strict=False):
     gaps = []
     for iid in sorted(items):
         it = items[iid]
-        if it.get("status") not in CLOSED_STATUSES or it.get("status") == "cancelled":
+        if not in_trace_scope(it):
             continue
-        key = item_key(iid)
-        have = out_edges.get(key, set())
-        scope = "released" if it.get("milestone") else "closed"
-        if "produced-by" not in have and not it.get("plan"):
-            gaps.append("%s (%s): no plan link" % (iid, scope))
+        have = out_edges.get(item_key(iid), set())
+        if ("produced-by" not in have and not it.get("plan")
+                and not it.get("unplanned")):
+            gaps.append("%s: no plan link" % iid)
         if "references" not in have:
-            gaps.append("%s (%s): no external ticket" % (iid, scope))
+            gaps.append("%s: no external ticket" % iid)
         if strict and "lands-in" not in have:
-            gaps.append("%s (%s): no PR/commit link" % (iid, scope))
+            gaps.append("%s: no PR/commit link" % iid)
     return gaps
 
 
@@ -300,3 +415,134 @@ def seed_edges(records=None):
                 fh.write(json.dumps(rec, separators=(",", ":"),
                                     sort_keys=True) + "\n")
     return proposed
+
+
+# --- read-only search over the generated model (#272) ---------------------
+#
+# There was no way to ask the content model a question from the command line.
+# Everything an answer needs is already generated and on disk -- every
+# document with its type and truth state in the inventory, every typed edge
+# between documents, items, tickets and PRs in the graph. So this is a reader,
+# not an index: no network call, no new store, nothing written.
+
+def load_graph():
+    """The generated graph, or a clear instruction when it isn't there yet."""
+    try:
+        with open(GRAPH, encoding="utf-8") as fh:
+            return json.load(fh)
+    except FileNotFoundError:
+        raise SystemExit("worklog find: no graph yet — run: worklog ia-graph")
+    except json.JSONDecodeError as e:
+        raise SystemExit(f"worklog find: {GRAPH} is unreadable ({e}); "
+                         "regenerate with: worklog ia-graph")
+
+
+def search_nodes(graph, query=None, doc_type=None, truth=None):
+    """Nodes matching a case-insensitive substring over key, title and source.
+
+    Substring rather than tokens or fuzzy matching: the keys are structured
+    (`adr/0005-...`, `item/01KY...`), so a plain substring already answers
+    "show me the ADRs" and "show me this item" without a query language to
+    learn or maintain.
+    """
+    q = (query or "").lower()
+    out = []
+    for key, node in graph.get("nodes", {}).items():
+        if doc_type and node.get("doc_type") != doc_type:
+            continue
+        if truth and node.get("truth_state") != truth:
+            continue
+        if q and q not in " ".join(
+                str(node.get(f) or "") for f in ("title", "source")).lower() \
+                and q not in key.lower():
+            continue
+        out.append((key, node))
+    return sorted(out)
+
+
+def resolve_node(graph, key):
+    """Exact key, else unique substring match. Ambiguity is an error, never a
+    silent pick -- the same rule `worklog show` uses for item prefixes."""
+    nodes = graph.get("nodes", {})
+    if key in nodes:
+        return key
+    hits = sorted(k for k in nodes if key.lower() in k.lower())
+    if not hits:
+        raise SystemExit(f"worklog find: no node matching {key!r}")
+    if len(hits) > 1:
+        raise SystemExit("worklog find: %r is ambiguous — matches %d nodes:\n  %s"
+                         % (key, len(hits), "\n  ".join(hits[:10])))
+    return hits[0]
+
+
+def node_links(graph, key):
+    """(outbound, inbound) edges for one node, each [(type, other_key)].
+
+    Both directions, because the questions this exists to answer run each way:
+    "which plan decided this?" is inbound, "what did this supersede?" is
+    outbound.
+    """
+    fwd, back = build_adjacency(graph)
+    return sorted(fwd.get(key, [])), sorted(back.get(key, []))
+
+
+def edges_of_type(graph, edge_type):
+    known = sorted(REVERSE)
+    if edge_type not in known:
+        raise SystemExit("worklog find: unknown edge type %r; known: %s"
+                         % (edge_type, ", ".join(known)))
+    return sorted((e["from"], e["to"]) for e in graph.get("edges", [])
+                  if e["type"] == edge_type)
+
+
+def _label(graph, key):
+    node = graph.get("nodes", {}).get(key) or {}
+    title = node.get("title")
+    return f"{key} — {title}" if title else key
+
+
+def find(query=None, doc_type=None, truth=None, links=None, edge=None,
+         as_json=False):
+    """The `worklog find` command. Returns an exit code."""
+    graph = load_graph()
+
+    if links:
+        key = resolve_node(graph, links)
+        out, back = node_links(graph, key)
+        if as_json:
+            print(json.dumps({"node": key, "outbound": out, "inbound": back},
+                             indent=2, sort_keys=True))
+            return 0
+        print(_label(graph, key))
+        if not out and not back:
+            print("  (no edges)")
+        for typ, other in out:
+            print(f"  -> {typ}: {_label(graph, other)}")
+        for typ, other in back:
+            print(f"  <- {typ}: {_label(graph, other)}")
+        return 0
+
+    if edge:
+        pairs = edges_of_type(graph, edge)
+        if as_json:
+            print(json.dumps([{"from": a, "to": b} for a, b in pairs],
+                             indent=2, sort_keys=True))
+            return 0
+        for a, b in pairs:
+            print(f"{a}  --{edge}->  {b}")
+        print(f"\n{len(pairs)} {edge} edge(s)")
+        return 0 if pairs else 1
+
+    hits = search_nodes(graph, query, doc_type, truth)
+    if as_json:
+        print(json.dumps([dict(key=k, **n) for k, n in hits],
+                         indent=2, sort_keys=True))
+        return 0
+    for key, node in hits:
+        bits = [node.get("doc_type") or "?"]
+        if node.get("truth_state"):
+            bits.append(node["truth_state"])
+        print("%-14s %s" % ("[" + "/".join(bits) + "]", _label(graph, key)))
+    print(f"\n{len(hits)} node(s)")
+    # Non-zero on no matches so a script can branch on it, the way grep does.
+    return 0 if hits else 1

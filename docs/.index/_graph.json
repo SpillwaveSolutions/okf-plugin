@@ -541,6 +541,51 @@
    "type": "targets"
   },
   {
+   "from": "item/01KZD823EH6PBMN2DRD9WAX52F",
+   "to": "item/01KZD823EG6R5E1FXFX416RQ0G",
+   "type": "belongs-to"
+  },
+  {
+   "from": "item/01KZD823EHAFN2YF6WCG2T7XN8",
+   "to": "item/01KZD823EG6R5E1FXFX416RQ0G",
+   "type": "belongs-to"
+  },
+  {
+   "from": "item/01KZD823EHGFVX6NSM2ZT057SY",
+   "to": "item/01KZD823EG6R5E1FXFX416RQ0G",
+   "type": "belongs-to"
+  },
+  {
+   "from": "item/01KZD823EHMC16WZNM4W193VVX",
+   "to": "item/01KZD823EG6R5E1FXFX416RQ0G",
+   "type": "belongs-to"
+  },
+  {
+   "from": "item/01KZD823EHMRAZH978P0EYQFB1",
+   "to": "item/01KZD823EG6R5E1FXFX416RQ0G",
+   "type": "belongs-to"
+  },
+  {
+   "from": "item/01KZD823EHQRBSGQ76C4EK1TXT",
+   "to": "item/01KZD823EG6R5E1FXFX416RQ0G",
+   "type": "belongs-to"
+  },
+  {
+   "from": "item/01KZD823EHXEV8Z72ZCNZA8VZH",
+   "to": "item/01KZD823EG6R5E1FXFX416RQ0G",
+   "type": "belongs-to"
+  },
+  {
+   "from": "item/01KZD823EHZ7W4HG9N5CV4SRMT",
+   "to": "item/01KZD823EG6R5E1FXFX416RQ0G",
+   "type": "belongs-to"
+  },
+  {
+   "from": "item/01KZD84S62B5TWKQSX4XV9848M",
+   "to": "item/01KZD823EG6R5E1FXFX416RQ0G",
+   "type": "belongs-to"
+  },
+  {
    "from": "plan/2026-07-29-wiki-ticket-adoption",
    "to": "item/01KYQZ4PAMK1ND4XKH8A1VHMFN",
    "type": "produces"
@@ -673,6 +718,51 @@
   {
    "from": "plan/2026-08-02-v031-correctness-and-traceability",
    "to": "item/01KZ2CAAT6Z9Q09MMFFWD7XH1R",
+   "type": "produces"
+  },
+  {
+   "from": "plan/2026-08-07-worklog-0-22-2-upgrade",
+   "to": "item/01KZD823EG6R5E1FXFX416RQ0G",
+   "type": "produces"
+  },
+  {
+   "from": "plan/2026-08-07-worklog-0-22-2-upgrade",
+   "to": "item/01KZD823EH6PBMN2DRD9WAX52F",
+   "type": "produces"
+  },
+  {
+   "from": "plan/2026-08-07-worklog-0-22-2-upgrade",
+   "to": "item/01KZD823EHAFN2YF6WCG2T7XN8",
+   "type": "produces"
+  },
+  {
+   "from": "plan/2026-08-07-worklog-0-22-2-upgrade",
+   "to": "item/01KZD823EHGFVX6NSM2ZT057SY",
+   "type": "produces"
+  },
+  {
+   "from": "plan/2026-08-07-worklog-0-22-2-upgrade",
+   "to": "item/01KZD823EHMC16WZNM4W193VVX",
+   "type": "produces"
+  },
+  {
+   "from": "plan/2026-08-07-worklog-0-22-2-upgrade",
+   "to": "item/01KZD823EHMRAZH978P0EYQFB1",
+   "type": "produces"
+  },
+  {
+   "from": "plan/2026-08-07-worklog-0-22-2-upgrade",
+   "to": "item/01KZD823EHQRBSGQ76C4EK1TXT",
+   "type": "produces"
+  },
+  {
+   "from": "plan/2026-08-07-worklog-0-22-2-upgrade",
+   "to": "item/01KZD823EHXEV8Z72ZCNZA8VZH",
+   "type": "produces"
+  },
+  {
+   "from": "plan/2026-08-07-worklog-0-22-2-upgrade",
+   "to": "item/01KZD823EHZ7W4HG9N5CV4SRMT",
    "type": "produces"
   },
   {
@@ -1029,6 +1119,56 @@
    "status": "done",
    "title": "Release v0.3.2"
   },
+  "item/01KZD823EG6R5E1FXFX416RQ0G": {
+   "doc_type": "item",
+   "status": "todo",
+   "title": "Upgrade the vendored worklog tooling to 0.22.2"
+  },
+  "item/01KZD823EH6PBMN2DRD9WAX52F": {
+   "doc_type": "item",
+   "status": "done",
+   "title": "Complete the three manual steps the upgrade requires"
+  },
+  "item/01KZD823EHAFN2YF6WCG2T7XN8": {
+   "doc_type": "item",
+   "status": "todo",
+   "title": "Backfill document provenance"
+  },
+  "item/01KZD823EHGFVX6NSM2ZT057SY": {
+   "doc_type": "item",
+   "status": "todo",
+   "title": "Republish and confirm the plan banners are fixed"
+  },
+  "item/01KZD823EHMC16WZNM4W193VVX": {
+   "doc_type": "item",
+   "status": "done",
+   "title": "Baseline the citation verifier and fix real defects only"
+  },
+  "item/01KZD823EHMRAZH978P0EYQFB1": {
+   "doc_type": "item",
+   "status": "todo",
+   "title": "Restore merge commits as the pull request merge style"
+  },
+  "item/01KZD823EHQRBSGQ76C4EK1TXT": {
+   "doc_type": "item",
+   "status": "done",
+   "title": "Upgrade the vendored tooling to 0.22.2"
+  },
+  "item/01KZD823EHXEV8Z72ZCNZA8VZH": {
+   "doc_type": "item",
+   "status": "todo",
+   "title": "File the missing-module gap upstream"
+  },
+  "item/01KZD823EHZ7W4HG9N5CV4SRMT": {
+   "doc_type": "item",
+   "status": "done",
+   "title": "Install the doc-verify modules the upgrade leaves out"
+  },
+  "item/01KZD84S62B5TWKQSX4XV9848M": {
+   "doc_type": "item",
+   "status": "done",
+   "title": "Restore the repo-local test gates the upgrade removed from pre-commit"
+  },
   "plan/2026-07-29-wiki-ticket-adoption": {
    "doc_type": "plan",
    "source": "docs/plans/2026-07-29-wiki-ticket-adoption.md",
@@ -1045,6 +1185,12 @@
    "doc_type": "plan",
    "source": "docs/plans/2026-08-02-v031-correctness-and-traceability.md",
    "title": "v0.3.1 \u2014 correctness cleanup and traceability backfill",
+   "truth_state": "current"
+  },
+  "plan/2026-08-07-worklog-0-22-2-upgrade": {
+   "doc_type": "plan",
+   "source": "docs/plans/2026-08-07-worklog-0-22-2-upgrade.md",
+   "title": "Upgrade the vendored worklog tooling to 0.22.2",
    "truth_state": "current"
   },
   "pr/25": {

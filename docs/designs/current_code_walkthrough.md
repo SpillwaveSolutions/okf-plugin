@@ -335,7 +335,9 @@ like `2024/notes.md` gets an `n` prefix). Both are asserted directly:
         assert mid.replace("_", "").isalnum(), mid
         assert not mid[0].isdigit(), mid
 ```
-`tests/test_okf_graph.py — test_mermaid_ids_are_unique_per_path(), lines 153–156`
+`tests/test_okf_graph.py — test_mermaid_ids_are_unique_per_path(), lines 146–158`
+(the excerpt above is the safety loop at 153–156; the citation names the whole
+test, which is the unit the contract resolves)
 
 `render_mermaid()` (174–190) makes two passes: declare each node once with its
 title as the label, then emit the edges, labelling only relations other than the

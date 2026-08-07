@@ -23,13 +23,37 @@ Nothing else in the repo may write to .work/*.jsonl (invariant 15.4).
 import argparse, glob, json, os, re, sys, time
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import ulid
+import item_fields
 from fold import (fold, FoldResult, read_lines, dedupe_and_sort, external_owners,
                   OPEN_STATUSES, CLOSED_STATUSES, LEGACY_TYPE_MAP)
 
 LOG = ".work/todo.jsonl"
 PATHS = (".work/todo.jsonl", ".work/done.jsonl")
 MAX_BODY = 2048  # derived from PIPE_BUF (section 8.3). Not a setting.
-VERSION = "0.18.0"  # kept in step with plugin/.claude-plugin/plugin.json by tests/test_plugin.py
+VERSION = "0.22.2"  # kept in step with plugin/.claude-plugin/plugin.json by tests/test_plugin.py
+
+
+_warned_concurrent = False
+
+
+def _warn_concurrent_sessions():
+    """Advisory (#236). Once per process, on stderr, never blocking.
+
+    Sits in append() rather than in each command: every write in the system
+    funnels through here, so one guard covers add/update/close/link/ingest
+    and anything added later, and no caller can forget it.
+    """
+    global _warned_concurrent
+    if _warned_concurrent or os.environ.get("WORKLOG_NO_SESSION_WARN"):
+        return
+    _warned_concurrent = True
+    try:
+        import session
+        note = session.warning()
+    except Exception:
+        return          # an advisory must never break a write
+    if note:
+        print(f"worklog: WARNING — {note}", file=sys.stderr)
 
 
 def append(event):
@@ -41,6 +65,7 @@ def append(event):
     """
     if len(event.get("set", {}).get("body", "")) > MAX_BODY:
         sys.exit(f"worklog: body exceeds {MAX_BODY}B; put prose in the plan doc")
+    _warn_concurrent_sessions()
     line = json.dumps(event, separators=(",", ":"), sort_keys=True) + "\n"
     fd = os.open(LOG, os.O_WRONLY | os.O_APPEND | os.O_CREAT, 0o644)
     try:
@@ -59,8 +84,21 @@ def append(event):
 
 
 def base(item, op, actor):
-    return {"ev": ulid.new(), "ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-            "actor": actor, "item": item, "op": op}
+    """Every event the CLI writes starts here.
+
+    `git` is provenance: the short HEAD sha this event was authored at, so
+    two agents in different worktrees or branches produce traceably different
+    events (01KYZNG520). It is a separate field on purpose -- the id must
+    keep its full entropy, and an item's id is minted once, so only a
+    per-event field can name where each event actually came from. Omitted
+    entirely outside a git repo rather than written empty.
+    """
+    ev = {"ev": ulid.new(), "ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+          "actor": actor, "item": item, "op": op}
+    sha = ulid.git_commit()
+    if sha:
+        ev["git"] = sha
+    return ev
 
 
 LEVELS = ("epic", "story", "task", "subtask")
@@ -78,6 +116,50 @@ def check_taxonomy(level, kind, milestone):
                      "derived (taxonomy §2.5)")
 
 
+ULID_RE = re.compile(r"^[0-9A-HJKMNP-TV-Z]{26}$")
+ESTIMATES = ("XS", "S", "M", "L", "XL")
+
+
+def parse_depends_on(raw, self_id=None):
+    """Comma-separated ULIDs -> sorted list (worklog#256, spec §3.3).
+
+    Shape is validated, existence is NOT: --parent does not check either, and
+    an append-only log must stay writable when the thing you depend on is
+    filed a minute later. Shape still matters -- five readers resolve these to
+    titles, and a typo would render as a silent missing blocker rather than an
+    error.
+
+    Self-dependency IS rejected: an item that blocks itself can never be
+    scheduled, and no ordering of the log makes it true later.
+    """
+    if not raw:
+        return []
+    out = []
+    for tok in (t.strip() for t in raw.split(",")):
+        if not tok:
+            continue
+        if not ULID_RE.match(tok):
+            sys.exit(f"worklog: --depends-on {tok!r} is not a 26-char ULID; "
+                     "dependencies are item ids, not ticket numbers or titles")
+        if self_id and tok == self_id:
+            sys.exit(f"worklog: {tok} cannot depend on itself")
+        out.append(tok)
+    return sorted(set(out))
+
+
+def warn_ticket_refs(title):
+    """Advisory only (worklog#242): a title cannot know its own ticket number
+    -- the tracker mints that at the next sync -- so a `#123` in one is either
+    a reference to a different ticket or a guess that will be wrong. Never a
+    refusal: legitimate titles do cite other tickets."""
+    import plan_capture
+    refs = plan_capture.ticket_refs(title)
+    if refs:
+        print("worklog: WARNING — title cites %s; this item's own ticket "
+              "number is assigned at sync, so cite the ULID instead if you "
+              "meant this item" % ", ".join(refs), file=sys.stderr)
+
+
 def cmd_add(a):
     if a.unplanned and not a.discovered_during:
         sys.exit("worklog: --unplanned requires --discovered-during (section 5.4)")
@@ -88,6 +170,7 @@ def cmd_add(a):
         lvl, knd = LEGACY_TYPE_MAP[a.legacy_type]
         a.level, a.kind = lvl, a.kind or knd
     check_taxonomy(a.level, a.kind, a.milestone)
+    warn_ticket_refs(a.title)
     item = ulid.new()
     ev = base(item, "create", a.actor)
     # kind is only written when given: an omitted kind folds to triage (§2.3),
@@ -100,6 +183,12 @@ def cmd_add(a):
         "unplanned": True if a.unplanned else None,
         "discovered_during": a.discovered_during,
     }.items() if v is not None}
+    # Optional fields (#108): only the ones this repo has switched on, and
+    # only those the caller actually passed.
+    ev["set"].update(item_fields.collect(a))
+    deps = parse_depends_on(a.depends_on)
+    if deps:
+        ev["set"]["depends_on"] = deps
     if a.labels:
         ev["set"]["labels"] = a.labels.split(",")
     append(ev)
@@ -107,9 +196,20 @@ def cmd_add(a):
 
 
 def _require_item(item):
-    """Reject empty/whitespace item ids before any log write (worklog 01KXXMCG41)."""
+    """Reject empty/whitespace item ids before any log write (worklog 01KXXMCG41).
+
+    Whitespace inside an id is rejected too. `item` is a single positional, so
+    `close "$id1 $id2"` writes an event against a composite key matching no
+    item — a silent no-op that also renders a junk sidecar path. A real id
+    never contains whitespace, so the same guard catches an error message
+    captured into the id by mistake, which is how one of these arose.
+    """
     if not item or not item.strip():
         sys.exit("worklog: empty item id")
+    if len(item.split()) > 1:
+        sys.exit(f"worklog: item id contains whitespace: {item[:60]!r}\n"
+                 "  one item per invocation — loop instead: "
+                 "for i in $ids; do worklog close \"$i\"; done")
 
 
 def _resolve(item, r=None):
@@ -148,10 +248,22 @@ def cmd_update(a):
                   "body": a.body,
                   "kind": a.kind, "milestone": a.milestone}.items()
                  if v is not None}
-    if a.add_label:
-        ev["add"] = {"labels": a.add_label.split(",")}
-    if a.del_label:
-        ev["del"] = {"labels": a.del_label.split(",")}
+    ev["set"].update(item_fields.collect(a))
+    # depends_on is SET_VALUED in the fold, exactly like labels, so it takes
+    # the same add/del shape rather than whole-field replacement -- two
+    # branches each adding a blocker must both survive a union merge.
+    add = {k: v for k, v in {
+        "labels": a.add_label.split(",") if a.add_label else None,
+        "depends_on": parse_depends_on(a.add_depends_on, cur["id"]) or None,
+    }.items() if v}
+    dele = {k: v for k, v in {
+        "labels": a.del_label.split(",") if a.del_label else None,
+        "depends_on": parse_depends_on(a.del_depends_on, None) or None,
+    }.items() if v}
+    if add:
+        ev["add"] = add
+    if dele:
+        ev["del"] = dele
     if not (ev.get("set") or ev.get("add") or ev.get("del")):
         sys.exit("worklog: nothing to update")
     append(ev)
@@ -283,10 +395,21 @@ def cmd_ingest(a):
     print(ev["ev"])
 
 
+def _check_conflictable_field(field):
+    """#240: `id` is identity, not data, and `external` is a structured link
+    (system/key/url/rev), not a string -- writing either through conflict/
+    resolve corrupts the next sync. Reuse INGEST_FIELDS: it is already the
+    set of fields a remote is allowed to disagree about."""
+    if field not in INGEST_FIELDS:
+        sys.exit(f"worklog: field {field!r} cannot be used with conflict/resolve "
+                 f"(allowed: {', '.join(INGEST_FIELDS)})")
+
+
 def cmd_conflict(a):
     """Record a both-sides-changed field (section 10.6). State never changes;
     the fold files it under _conflicts until a later write clears it."""
     _require_item(a.item)
+    _check_conflictable_field(a.field)
     ev = base(a.item, "conflict", "sync")
     ev["set"] = {"field": a.field, "local": a.local, "remote": a.remote,
                  "remote_rev": a.remote_rev}
@@ -296,6 +419,7 @@ def cmd_conflict(a):
 def cmd_resolve(a):
     """Resolve the last open conflict on a field with a normal update event.
     The update outsorts the conflict, so the fold clears it (section 10.6)."""
+    _check_conflictable_field(a.field)
     item = _resolve(a.item)
     open_c = [c for c in item.get("_conflicts", []) if c.get("field") == a.field]
     if not open_c:
@@ -372,9 +496,26 @@ def cmd_roadmap_render(a):
 
 
 def cmd_roadmap_snapshot(a):
+    import re
     import shutil
     if not os.path.exists("docs/roadmap.md"):
         sys.exit("worklog: docs/roadmap.md not found; run roadmap-render first")
+    with open("docs/roadmap.md", encoding="utf-8") as fh:
+        on_disk = fh.read()
+    # #221: a snapshot freezes docs/roadmap.md forever, so a stale copy stays
+    # wrong forever. render() is a pure/deterministic function of the log
+    # (render_roadmap.py docstring), so regenerating is a no-op when the file
+    # is already fresh and self-healing when the log moved on since the last
+    # `roadmap-render`. Only do this for a file that carries our own
+    # source_hash marker -- anything else was never ours to regenerate.
+    m = re.search(r"^source_hash: (\S+)$", on_disk, re.MULTILINE)
+    if m:
+        import render_roadmap
+        fresh = render_roadmap.render()
+        fresh_hash = re.search(r"^source_hash: (\S+)$", fresh, re.MULTILINE).group(1)
+        if fresh_hash != m.group(1):
+            with open("docs/roadmap.md", "w", encoding="utf-8") as fh:
+                fh.write(fresh)
     date = time.strftime("%Y-%m-%d", time.gmtime())
     name = f"{date}_{a.name}" if a.name else date
     path = f"docs/roadmap/{name}.md"
@@ -401,6 +542,8 @@ def cmd_plan_capture(a):
     tasks = plan_capture.parse_tasks(draft)
     if not tasks:
         sys.exit("worklog: no '- [ ]' tasks found under a '## Tasks' heading")
+    for t in tasks:
+        warn_ticket_refs(t["title"])
     date = time.strftime("%Y-%m-%d", time.gmtime())
     path = f"docs/plans/{date}-{a.slug}.md"
     # Invariant 15.8 is about the SLUG, not the filename: "pick a new slug to
@@ -453,7 +596,8 @@ def cmd_plan_capture(a):
 
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w", encoding="utf-8") as fh:
-        fh.write(plan_capture.front_matter(date, a.slug, a.title, epic_id, item_ids))
+        fh.write(plan_capture.front_matter(date, a.slug, a.title, epic_id,
+                                           item_ids, ulid.git_commit_full()))
         fh.write(draft)
     print(path)
     print(epic_id)
@@ -529,7 +673,7 @@ def cmd_adr_new(a):
         a.title, nid, slug, date, status=a.status,
         deciders=a.deciders.split(",") if a.deciders else None,
         tags=a.tags.split(",") if a.tags else None,
-        supersedes=a.supersedes)
+        supersedes=a.supersedes, git_hash=ulid.git_commit_full())
     if os.path.exists(path):
         sys.exit(f"worklog: {path} exists")
     if a.supersedes is not None:
@@ -652,11 +796,56 @@ def cmd_ia_ticket(a):
 
 def cmd_link_pr(a):
     import ia_graph
+    # Resolve first (01KYZFMZ5C). Writing the sidecar under the raw string
+    # silently files docs/.index/item/<prefix>.yml, so the edge never reaches
+    # the graph and the release evidence gate still calls the item unlinked --
+    # with no error, because the write itself succeeded. Same class already
+    # fixed for close/update, which minted phantom orphans from the short ids
+    # that `list` and `show` print.
+    item = _resolve(a.item)["id"]
     try:
-        entry = ia_graph.link_pr(a.item, pr=a.pr, commit=a.commit)
+        entry = ia_graph.link_pr(item, pr=a.pr, commit=a.commit)
     except ValueError as e:
         sys.exit(f"worklog: {e}")
-    print(f"linked {a.item} -> {entry}")
+    print(f"linked {item} -> {entry}")
+
+
+def cmd_pr_sync(a):
+    import ia_graph
+    try:
+        meta = ia_graph.pr_sync(a.pr)
+    except ValueError as e:
+        sys.exit(f"worklog: {e}")
+    print(f"pr/{meta['number']}: {meta['state']} · review {meta['review']} "
+          f"· checks {meta['checks']} · {len(meta['files'])} file(s)")
+
+
+def cmd_provenance_backfill(a):
+    """Stamp `merged_in` on frozen docs that have landed (plan
+    2026-08-03-doc-provenance-and-verification). Imported lazily: this is
+    the one provenance path that shells out to git, and keeping it out of
+    module scope keeps the import graph of the render plane clean."""
+    import provenance
+    changed = provenance.backfill(check=a.check)
+    provenance.report(changed, check=a.check)
+    if a.check and changed:
+        sys.exit(1)
+
+
+def cmd_doc_verify(a):
+    """Resolve each document's code citations at the commit it was written
+    against (#294). Lazy import: doc_verify shells out to git, and the
+    render plane must not grow that dependency."""
+    import doc_verify
+    findings, summary = doc_verify.verify(strict=a.strict)
+    doc_verify.report(findings, summary)
+    if a.strict:
+        bad = doc_verify.failing(findings)
+        if bad:
+            print("doc-verify: %d finding(s) fail --strict "
+                  "(fabricated anywhere, or drift on a doc claiming to "
+                  "describe HEAD)" % len(bad))
+            sys.exit(1)
 
 
 def cmd_trace_check(a):
@@ -698,6 +887,29 @@ def cmd_compact(a):
     import compact
     wm = compact.compact()
     print(f"compacted through {wm}" if wm else "nothing to compact")
+
+
+def cmd_changelog_draft(a):
+    import changelog
+    sys.exit(changelog.main(["changelog-draft"]
+                            + (["--version", a.version] if a.version else [])
+                            + (["--since", a.since] if a.since else [])))
+
+
+def cmd_fields(a):
+    for line in item_fields.describe():
+        print(line)
+
+
+def cmd_merge_rescue(a):
+    import compact
+    compact.report_rescue(*compact.merge_rescue())
+
+
+def cmd_find(a):
+    import ia_graph
+    sys.exit(ia_graph.find(query=a.query, doc_type=a.type, truth=a.truth,
+                           links=a.links, edge=a.edge, as_json=a.json))
 
 
 def _rfc3339(ms):
@@ -822,16 +1034,42 @@ def _status_facts(kind, now_ms, since=None, until=None):
                 "through": render_roadmap.max_ev(PATHS),
                 "days": [days[k] for k in sorted(days)]}
 
+    def closed_in(evs):
+        """Did this item close inside the window?
+
+        The obvious test -- a `close` event in range -- goes silently wrong
+        after a compaction. Compaction folds an item's history into ONE
+        snapshot, so the close event no longer exists and the item vanishes
+        from the report even though it closed inside the window. Nightly
+        compaction runs on the default branch, so this quietly emptied the
+        weekly report of everything closed more than a day earlier: the
+        artifact whose entire job is to span a week.
+
+        The time is not lost. A snapshot carries `through`, the highest event
+        it folded for that item, and for a closed item that is the close. So
+        fall back to the snapshot's watermark rather than reporting nothing.
+        """
+        if any(e["op"] == "close" and in_window(e) for e in evs):
+            return True
+        return any(e["op"] == "snapshot" and e.get("through")
+                   and lo <= ulid.timestamp_ms(e["through"]) <= hi
+                   for e in evs)
+
     closed, opened, unplanned = [], [], []
     for iid, evs in per.items():
         it = items.get(iid, {})
-        if (it.get("status") in CLOSED_STATUSES
-                and any(e["op"] == "close" and in_window(e) for e in evs)):
+        if it.get("status") in CLOSED_STATUSES and closed_in(evs):
             closed.append({"id": iid, "title": it.get("title", ""),
                            "status": it.get("status"),
                            "resolution": it.get("resolution"),
                            "unplanned": bool(it.get("unplanned")),
                            "epic": epic_title(iid)})
+        # No equivalent rescue exists for `opened`, and the asymmetry is real
+        # rather than an oversight: a snapshot's watermark is the LAST event
+        # it folded, so it recovers a close and can never recover a create.
+        # After a compaction, opened-in-window and the unplanned rollup built
+        # from it under-report. Prefer the unplanned share of CLOSED items,
+        # which is now exact, whenever the two disagree.
         if any(e["op"] == "create" and in_window(e) for e in evs):
             opened.append({"id": iid, "title": it.get("title", ""),
                            "type": it.get("level"), "epic": epic_title(iid)})
@@ -891,6 +1129,11 @@ def cmd_status(a):
     date = (facts["window"]["to"][:10] if a.kind == "timecard"
             else time.strftime("%Y-%m-%d", time.gmtime(now_ms / 1000)))
     path = f"docs/status/{date}-{a.kind}.md"
+    # Omitted when there is no git (or WORKLOG_NO_GIT_PROVENANCE), never
+    # written empty -- an empty value opens a block list in
+    # ia.parse_front_matter and swallows the closing fence. Quoted so an
+    # all-digit sha is not read back as an int.
+    sha = ulid.git_commit_full()
     doc = ("---\n"
            f"kind: {a.kind}\n"
            f"date: {date}\n"
@@ -898,6 +1141,7 @@ def cmd_status(a):
            f"to: {facts['window']['to']}}}\n"
            f"through: {facts['through'] or 'null'}\n"
            f"generated_at: {_rfc3339(now_ms)}\n"
+           + (f'git_hash: "{sha}"\n' if sha else "") +
            "---\n\n" + prose.rstrip("\n") + "\n")
     if a.dry_run:
         sys.stdout.write(doc)
@@ -1052,6 +1296,10 @@ a.add_argument("--body", help="description readable by a junior dev/PM: what "
                               "and why, no ULIDs (spec §13.4)")
 a.add_argument("--unplanned", action="store_true")
 a.add_argument("--discovered-during", dest="discovered_during")
+item_fields.add_arguments(a)
+a.add_argument("--depends-on", dest="depends_on", metavar="ULID[,ULID...]",
+               help="items that block this one — scheduling, not hierarchy "
+                    "(spec §3.3); the roadmap renders these as blockers")
 
 u = sub.add_parser("update"); u.set_defaults(fn=cmd_update)
 u.add_argument("item")
@@ -1064,6 +1312,11 @@ u.add_argument("--body", help="description readable by a junior dev/PM: what "
                               "and why, no ULIDs (spec §13.4)")
 u.add_argument("--add-label", dest="add_label")
 u.add_argument("--del-label", dest="del_label")
+item_fields.add_arguments(u)
+u.add_argument("--add-depends-on", dest="add_depends_on",
+               metavar="ULID[,ULID...]", help="add blocking items")
+u.add_argument("--del-depends-on", dest="del_depends_on",
+               metavar="ULID[,ULID...]", help="remove blocking items")
 
 c = sub.add_parser("close"); c.set_defaults(fn=cmd_close)
 c.add_argument("item")
@@ -1142,6 +1395,45 @@ rs = sub.add_parser("roadmap-snapshot"); rs.set_defaults(fn=cmd_roadmap_snapshot
 rs.add_argument("--name")
 co = sub.add_parser("compact"); co.set_defaults(fn=cmd_compact)
 co.add_argument("--yes", action="store_true")
+
+cd = sub.add_parser(
+    "changelog-draft",
+    description="Draft the unreleased CHANGELOG section from git log since "
+                "the last tag, grouped by commit type, with log/index-only "
+                "commits excluded. Markdown on stdout, exclusions on stderr. "
+                "A starting point for release notes, not the notes (#136).")
+cd.set_defaults(fn=cmd_changelog_draft)
+cd.add_argument("--version", help="version for the heading (default: X.Y.Z)")
+cd.add_argument("--since", metavar="REF", help="default: the last tag")
+
+fd = sub.add_parser(
+    "find",
+    description="Search the generated inventory and graph: documents by "
+                "text/type/truth-state, a node's edges in both directions, "
+                "or every edge of one type. Read-only, no network (#272).")
+fd.set_defaults(fn=cmd_find)
+fd.add_argument("query", nargs="?", help="case-insensitive substring")
+fd.add_argument("--type", help="doc_type filter, e.g. plan, adr, item, pr")
+fd.add_argument("--truth", help="truth_state filter, e.g. current, frozen")
+fd.add_argument("--links", metavar="KEY",
+                help="show edges into and out of one node")
+fd.add_argument("--edge", metavar="TYPE",
+                help="list every edge of one type, e.g. supersedes")
+fd.add_argument("--json", action="store_true")
+
+sub.add_parser(
+    "fields",
+    description="Show the item field model: the fixed core, and which "
+                "optional fields this repo has switched on, with what each "
+                "one means (#108).").set_defaults(fn=cmd_fields)
+
+sub.add_parser(
+    "merge-rescue",
+    description="Resolve a merge the resurrection guard blocked: keep the "
+                "compacted side's log and re-apply this branch's own events "
+                "above the watermark, so none are dropped on read. Run it "
+                "from the blocked merge (ADR-0005).").set_defaults(
+    fn=cmd_merge_rescue)
 
 pm = sub.add_parser(
     "promote",
@@ -1254,12 +1546,44 @@ lp.add_argument("item")
 lp.add_argument("--pr", type=int)
 lp.add_argument("--commit")
 
+ps = sub.add_parser(
+    "pr-sync",
+    description="Fetch live PR metadata (state, files, review, checks) into "
+                "the pr/<N> sidecar. The one network step in the IA "
+                "pipeline — render stays offline and reads the sidecar.")
+ps.set_defaults(fn=cmd_pr_sync)
+ps.add_argument("pr", type=int)
+
 tc = sub.add_parser(
     "trace-check",
     description="Unlinked-evidence report: closed items missing plan/ticket/"
                 "PR links. Warn by default; --strict exits 1 (pre-release).")
 tc.set_defaults(fn=cmd_trace_check)
 tc.add_argument("--strict", action="store_true")
+
+dv = sub.add_parser(
+    "doc-verify",
+    description="Check each document's code citations against the commit it "
+                "was written against, not against HEAD. Separates a "
+                "FABRICATED citation (wrong even in the tree the author had "
+                "open) from DRIFT (right then, moved since) — a frozen doc "
+                "is allowed to drift; one claiming to describe HEAD is not. "
+                "Never falls back to HEAD: an unstamped or unresolvable "
+                "document is reported and skipped.")
+dv.set_defaults(fn=cmd_doc_verify)
+dv.add_argument("--strict", action="store_true",
+                help="exit 1 on fabrication, or on drift in a live document")
+
+pb = sub.add_parser(
+    "provenance-backfill",
+    description="Stamp `merged_in` on frozen documents that have landed on "
+                "the default branch — the merge commit a document cannot "
+                "know when it is written. Frozen only: a live doc has been "
+                "edited since it landed, so the merge that first carried it "
+                "would name a version that no longer exists.")
+pb.set_defaults(fn=cmd_provenance_backfill)
+pb.add_argument("--check", action="store_true",
+                help="report what would be stamped and exit 1, writing nothing")
 
 ii = sub.add_parser(
     "ia-inventory",

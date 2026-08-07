@@ -8,9 +8,18 @@ No git commands (CI checkouts lack tags), no wall clock.
 The manifest closes the legacy-banner gap: a frozen page's `source_hash`
 never changes, so the ledger's hash-skip would keep already-published pages
 banner-less forever. Each manifest page therefore carries a `render_hash`
-(source bytes + banner + renderer); wiki-publish republishes when the
+(source BODY + banner + renderer); wiki-publish republishes when the
 ledger's `render_hash` differs. Frozen still means the SOURCE never changes
 — only the rendered overlay may.
+
+Body, not whole file, and that word is load-bearing. Publish strips front
+matter for Gollum wikis (wiki-publish §3), so a front-matter-only edit —
+the normalizer stamping `wiki_key`, `adr.mark_superseded`, a provenance
+backfill — produces byte-identical published output. Hashing the file made
+all three look like content edits: they moved `render_hash`, republished
+pages whose text had not changed, and tripped the publisher's frozen-source
+guard. Hashing the body makes that guard mean "the prose changed", which is
+the invariant §15.8/§15.9 actually protects.
 """
 import hashlib
 import json
@@ -21,7 +30,27 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import ia
 import ia_graph
+import render_roadmap
+import wiki_flavor
 from fold import fold, CLOSED_STATUSES
+
+# The platform seam (#271). Prose below writes links in the canonical
+# [[Page]] notation; the flavor translates every page once, at the output
+# boundary (render_all and banner), so a second wiki engine is a new class in
+# wiki_flavor.FLAVORS rather than an edit to forty link sites here.
+FLAVOR = wiki_flavor.get()
+
+
+def use_flavor(system=None):
+    """Swap the render flavor. Tests use it; a repo picks one via
+    wiki.system in .work/config.yml."""
+    global FLAVOR
+    FLAVOR = wiki_flavor.get(system)
+    return FLAVOR
+
+
+def _links(text):
+    return wiki_flavor.render_links(text, FLAVOR)
 
 RENDERED = os.path.join(ia.INDEX_DIR, "rendered")
 MANIFEST = os.path.join(ia.INDEX_DIR, "publish-manifest.json")
@@ -59,7 +88,7 @@ def page_name(rec):
         base = ("Design-Doc" if "design_doc" in stem else "Code-Walkthrough")
         m = re.match(r"(\d{4}-\d{2}-\d{2}_.+?)_(?:design_doc|code_walkthrough)$", stem)
         return base + ("-" + m.group(1) if m else "")
-    return rec.get("title", stem).replace(" ", "-")
+    return FLAVOR.sanitize(rec.get("title", stem))
 
 
 def item_page_name(iid):
@@ -79,14 +108,61 @@ def pr_page_name(pr_num):
 
 
 def banner(rec, by_key):
-    """Reader-visible truth banner (§6.1), one blockquote line."""
+    """Reader-visible truth banner (§6.1), one blockquote line.
+
+    Wraps _banner_text so banner links get flavor-translated too: banners
+    reach the reader through the MANIFEST, not through `rendered`, so the
+    boundary in render_all() never sees them."""
+    return _links(_banner_text(rec, by_key))
+
+
+PLAN_STATE = {"completed": "completed plan",
+              "active": "plan in flight",
+              "planned": "plan not yet started"}
+
+
+def _plan_state(rec):
+    """A plan's banner label, from the leading word of its status (#292).
+
+    `status` on a plan is free prose, not an enum. Real values run from
+    "completed" to "planned — not yet scheduled; implementation tasks attach
+    to the epic when work starts" — a whole sentence that cannot be dropped
+    into a one-line banner. Only the leading word carries the state; the rest
+    is detail that belongs in the page.
+
+    Unknown prose returns None and the caller falls back to saying nothing
+    about state. That is deliberate: inventing a label for prose we cannot
+    read is how the banner came to announce plans as status reports in the
+    first place. Silence beats a confident guess.
+    """
+    first = (rec.get("status") or "").split()[:1]
+    return PLAN_STATE.get(first[0].lower()) if first else None
+
+
+def _banner_text(rec, by_key):
     ts = rec["truth_state"]
     if ts == "current" and ia.is_frozen(rec):
-        # e.g. the newest status report: current truth, but frozen — it will
-        # be archived by its successor, never regenerated
-        return ("> **Current** — the latest %s report. Reports freeze once "
-                "published; corrections appear in later reports."
-                % rec.get("kind", "status"))
+        # is_frozen() covers plan/roadmap-snapshot/status/dated-design (#137)
+        # — only status is a "report"; the rest need their own wording.
+        if rec["doc_type"] == "status":
+            # e.g. the newest status report: current truth, but frozen — it
+            # will be archived by its successor, never regenerated.
+            # rec["kind"], not .get(..., "status"): kind is REQUIRED on a
+            # status record (ia.py schema), so a missing one is a schema
+            # violation and must raise. The old default silently rendered
+            # plausible prose over broken data (#292).
+            return ("> **Current** — the latest %s report. Reports freeze "
+                    "once published; corrections appear in later reports."
+                    % rec["kind"])
+        if rec["doc_type"] == "plan":
+            return ("> **Current** — %s; plans are frozen "
+                    "once written, a changed design gets a new plan."
+                    % (_plan_state(rec) or "the current plan"))
+        if rec["doc_type"] == "roadmap-snapshot":
+            return ("> **Current** — the current roadmap snapshot; frozen "
+                    "once published, a new snapshot supersedes it.")
+        return ("> **Current** — the current design record; frozen once "
+                "written, an updated design gets a new dated copy.")
     if ts == "current":
         gen = rec.get("generated_at")
         src = " regenerated at %s" % gen if gen else ""
@@ -498,16 +574,35 @@ def render_release_page(tag, items, fwd, back):
 
 def render_pr_page(pr_num, items, fwd, back):
     """A PR page (§ artifact-pages plan): linked tickets + related release
-    from existing graph edges; no live GitHub data exists anywhere in this
-    repo today (no `gh pr view` integration), so files-changed/review/CI
-    status render as 'not tracked' pending a separately-scoped follow-up."""
+    from existing graph edges, plus live state/files/review from the
+    `pr/<N>` sidecar that `worklog pr-sync` writes. The sidecar is a
+    committed file, so this stays a pure function of the working tree; a PR
+    that has never been synced degrades to the original 'not tracked'."""
     pr_key = "pr/%s" % pr_num
+    meta = ia.read_sidecar(pr_key)
     linked = sorted(frm.split("/", 1)[1] for typ, frm in back.get(pr_key, [])
                     if typ == "delivers")
-    lines = ["# PR #%s" % pr_num, "",
-             "`%s` · status: **not tracked**" % pr_key, "",
-             "Changed files: not tracked. Test/Review status: not tracked "
-             "(see the deferred PR live-metadata sync item).", ""]
+    title = meta.get("title")
+    lines = ["# PR #%s%s" % (pr_num, " — %s" % title if title else ""), ""]
+    if meta:
+        lines += ["`%s` · status: **%s**" % (pr_key, meta.get("state", "?")),
+                  "",
+                  "- Review: %s" % meta.get("review", "none"),
+                  "- Checks: %s" % meta.get("checks", "none")]
+        if meta.get("merged_at"):
+            lines.append("- Merged: %s" % meta["merged_at"])
+        if meta.get("url"):
+            lines.append("- Source: %s" % meta["url"])
+        lines += [""]
+        files = [f for f in meta.get("files") or [] if f]
+        lines += ["## Changed Files", ""]
+        lines += ["- `%s`" % f for f in files] if files else \
+                 ["_No files recorded._"]
+        lines += [""]
+    else:
+        lines += ["`%s` · status: **not tracked**" % pr_key, "",
+                  "Changed files: not tracked. Test/Review status: not "
+                  "tracked — run `worklog pr-sync %s`." % pr_num, ""]
 
     if linked:
         lines += ["## Linked Tickets", ""]
@@ -553,6 +648,19 @@ def _file_hash(path):
         return _hash_bytes(fh.read())
 
 
+def _body_hash(path):
+    """Hash of the doc BELOW its front matter — what a reader actually gets.
+
+    Publish strips front matter, so two files differing only there publish
+    identically. Hashing the body is therefore both cheaper (no needless
+    republish) and stricter in the way that matters: a change to this hash
+    means the prose changed, which is the only thing the frozen-doc rule
+    was ever protecting.
+    """
+    with open(path, encoding="utf-8") as fh:
+        return _hash_bytes(ia.parse_front_matter(fh.read())[1].encode())
+
+
 def build_manifest(records, rendered, items=None):
     """The intended publish set (§10.2): every rendered page + every doc the
     default set publishes, each with its banner and render_hash. Also one
@@ -581,7 +689,10 @@ def build_manifest(records, rendered, items=None):
         elif fname.startswith("prs/"):
             num = fname[len("prs/"):-3]
             wiki_key, pname = "pr/" + num, pr_page_name(num)
-            title, ts = "PR #%s" % num, "not tracked"
+            meta = ia.read_sidecar(wiki_key)
+            title = "PR #%s%s" % (num, " — %s" % meta["title"]
+                                  if meta.get("title") else "")
+            ts = meta.get("state") or "not tracked"
         else:
             continue
         pages.append({"wiki_key": wiki_key,
@@ -595,17 +706,38 @@ def build_manifest(records, rendered, items=None):
             continue  # the home SOURCE is the intro; the PAGE is rendered
         b = banner(rec, records)
         frozen = ia.is_frozen(rec)
+        body = _body_hash(rec["source"])
         pages.append({
             "wiki_key": key, "source": rec["source"],
             "title": rec.get("title", key), "page_name": page_name(rec),
             "truth_state": rec["truth_state"], "banner": b,
+            # source_hash is the FROZEN-DOC GUARD's input: the publisher
+            # compares it against the ledger and stops when a frozen doc's
+            # prose changed. Carried here so the publisher never has to hash
+            # files itself — and so it cannot accidentally hash the wrong
+            # thing and mistake a metadata stamp for an edit.
+            "source_hash": body,
             "render": "doc+banner", "frozen": frozen,
-            "render_hash": _hash_bytes(
-                (_file_hash(rec["source"]) + b).encode())})
-    return {"version": 1, "pages": pages,
-            "sidebar": {"source": "%s/_Sidebar.md" % RENDERED,
-                        "render_hash": _hash_bytes(
-                            rendered["_Sidebar.md"].encode())}}
+            "render_hash": _hash_bytes((body + b).encode())})
+    out = {"version": 1, "pages": pages,
+           "sidebar": {"source": "%s/_Sidebar.md" % RENDERED,
+                       "render_hash": _hash_bytes(
+                           rendered["_Sidebar.md"].encode())}}
+    # Build provenance, recorded ONCE here rather than on every rendered
+    # page. Each page under docs/.index/rendered/ is a projection of the
+    # whole log by one build, so "the commit" is a property of the build,
+    # not of any page. Stamping all ~344 of them would be 344 copies of one
+    # fact, would move every render_hash at once, and would be invisible to
+    # every reader anyway — publish strips front matter (wiki-publish §3).
+    #
+    # From the newest event's `git` field, never `git rev-parse`: write_all
+    # regenerates and byte-compares this file, so a HEAD-derived value would
+    # differ from the committed one on the very next run. Omitted when the
+    # log carries no sha; never written empty.
+    top = render_roadmap.top_event(render_roadmap.PATHS)
+    if top and top.get("git"):
+        out["git_hash"] = top["git"]
+    return out
 
 
 def build_aliases(records):
@@ -641,6 +773,10 @@ def render_all():
             num = key.split("/", 1)[1]
             rendered["prs/%s.md" % num] = render_pr_page(
                 num, fr.items, fwd, back)
+    # The link boundary: translate canonical [[Page]] notation into the
+    # configured wiki's syntax BEFORE the manifest hashes the bytes, so
+    # render_hash always describes what actually gets published.
+    rendered = {name: _links(text) for name, text in rendered.items()}
     manifest = build_manifest(records, rendered, fr.items)
     aliases = build_aliases(records)
     return rendered, manifest, aliases, graph

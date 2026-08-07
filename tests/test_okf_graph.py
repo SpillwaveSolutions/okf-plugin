@@ -421,6 +421,25 @@ def test_version_is_consistent_across_manifests():
     assert len(set(found.values())) == 1, f"version drift: {found}"
 
 
+def test_pre_commit_keeps_the_local_gates():
+    """hooks/pre-commit is vendored — `worklog init` rewrites it wholesale on
+    every upgrade, and doing so silently deleted both of these lines going
+    0.18.0 -> 0.22.2 (01KZD84S62B5TWKQSX4XV9848M). There is no extension point
+    to move them to, so the loss cannot be prevented; this makes it loud.
+
+    CI runs this file directly, not through the hook, so this assert still
+    fires in the very case where the hook itself has been clobbered."""
+    hook = REPO / "hooks" / "pre-commit"
+    if not hook.exists():
+        return
+    body = hook.read_text()
+    for suite in ("tests/test_okf_graph.py", "tests/test_okf_curate.sh"):
+        assert suite in body, (
+            f"{suite} is not gated in hooks/pre-commit — a worklog upgrade "
+            "likely overwrote the file. Restore the okf-plugin local gates block."
+        )
+
+
 def main() -> int:
     quiet = "-q" in sys.argv
     tests = [v for k, v in sorted(globals().items()) if k.startswith("test_") and callable(v)]

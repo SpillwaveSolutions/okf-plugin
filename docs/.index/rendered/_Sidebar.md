@@ -2,6 +2,7 @@
 
 - [[Roadmap]]
 - [[Design-Doc]] · [[Code-Walkthrough]]
+- Plan: [[Plan-worklog-0-22-2-upgrade]]
 
 ### History
 
