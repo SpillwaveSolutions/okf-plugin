@@ -1,6 +1,6 @@
 # Republish and confirm the plan banners are fixed
 
-`01KZD823EHGFVX6NSM2ZT057SY` · task/feature · **open**
+`01KZD823EHGFVX6NSM2ZT057SY` · task/feature · **done**
 
 Publish first and then converge the index, because publishing rewrites the
 published ledger that the normalizer self-describes.

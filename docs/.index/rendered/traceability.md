@@ -32,7 +32,7 @@ _The evidence chain: plan → item → ticket → code → release, forward and 
 - produced-by: [[Plan-worklog-0-22-2-upgrade]]
 
 ### Republish and confirm the plan banners are fixed
-`01KZD823EHGFVX6NSM2ZT057SY` · status: todo
+`01KZD823EHGFVX6NSM2ZT057SY` · status: done
 - belongs-to: Upgrade the vendored worklog tooling to 0.22.2
 - produced-by: [[Plan-worklog-0-22-2-upgrade]]
 
@@ -47,7 +47,7 @@ _The evidence chain: plan → item → ticket → code → release, forward and 
 - produced-by: [[Plan-worklog-0-22-2-upgrade]]
 
 ### Upgrade the vendored worklog tooling to 0.22.2
-`01KZD823EG6R5E1FXFX416RQ0G` · status: todo
+`01KZD823EG6R5E1FXFX416RQ0G` · status: done
 - contains: Complete the three manual steps the upgrade requires
 - contains: Backfill document provenance
 - contains: Republish and confirm the plan banners are fixed

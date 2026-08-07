@@ -1121,7 +1121,7 @@
   },
   "item/01KZD823EG6R5E1FXFX416RQ0G": {
    "doc_type": "item",
-   "status": "todo",
+   "status": "done",
    "title": "Upgrade the vendored worklog tooling to 0.22.2"
   },
   "item/01KZD823EH6PBMN2DRD9WAX52F": {
@@ -1136,7 +1136,7 @@
   },
   "item/01KZD823EHGFVX6NSM2ZT057SY": {
    "doc_type": "item",
-   "status": "todo",
+   "status": "done",
    "title": "Republish and confirm the plan banners are fixed"
   },
   "item/01KZD823EHMC16WZNM4W193VVX": {
