@@ -3,6 +3,29 @@
 Notable changes to **okf-graph-eng**. Newest first. Released sections are
 frozen — corrections go in the next release's notes.
 
+## 0.4.1 — 2026-08-10
+
+### Fixed
+
+- **`KNOWN_RELS` didn't know 26 of the sibling `okf-agent-graph` (AGER)
+  plugin's 31 typed relations, so `validate` buried real typos in noise.**
+  AGER declares its typed-edge vocabulary in `docs/AGER_SPEC.md` and emits it
+  from its own shipped scaffold and capture code, but `okf-graph.py`'s
+  allow-list only recognized 11 relations (5 of which already overlapped
+  AGER's set). On a real AGER bundle this produced 15 `non-standard rel
+  (allowed but uncommon)` info lines, of which 13 were false positives —
+  correctly-named AGER relations this plugin simply didn't know about —
+  burying the 2 genuine typos (`hands_off_to`, `routes_from`). Added the
+  missing 26 relations (`aggregates_from`, `appends_to`, `binds_secret`,
+  `blocks`, `budgets`, `compensates_with`, `controlled_by`, `delegates_to`,
+  `derived_from`, `fans_in_from`, `fans_out_to`, `guards`, `handoffs_to`,
+  `isolates_context`, `judges`, `models_with`, `on_failure`, `output_of`,
+  `rate_limited_by`, `reads_from`, `records_to`, `retries_with`,
+  `retrieves_from`, `spawns`, `triggered_by`, `writes_to`) and a drift-guard
+  test (`test_known_rels_covers_ager_vocabulary`) asserting AGER's declared
+  vocabulary stays a subset of `KNOWN_RELS`, so a future AGER spec addition
+  fails loudly instead of degrading into more info-line noise. (#51)
+
 ## 0.4.0 — 2026-08-10
 
 ### Fixed

@@ -7,7 +7,7 @@
       "name": "okf-graph-eng",
       "source": "./",
       "description": "Graph engineering for OKF repos",
-      "version": "0.4.0"
+      "version": "0.4.1"
     }
   ]
 }

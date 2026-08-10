@@ -47,6 +47,37 @@ KNOWN_RELS = frozenset(
         "tracks",
         "maps_to",
         "released_in",
+        # okf-agent-graph (AGER) typed-edge vocabulary — AGER_SPEC.md
+        # "## Typed edges (AGER additions)". 5 of AGER's 31 rels already
+        # overlap the set above (depends_on, implements, related_to,
+        # routes_to, uses); these are the other 26. Kept in sync by
+        # test_known_rels_covers_ager_vocabulary in tests/test_okf_graph.py.
+        "aggregates_from",
+        "appends_to",
+        "binds_secret",
+        "blocks",
+        "budgets",
+        "compensates_with",
+        "controlled_by",
+        "delegates_to",
+        "derived_from",
+        "fans_in_from",
+        "fans_out_to",
+        "guards",
+        "handoffs_to",
+        "isolates_context",
+        "judges",
+        "models_with",
+        "on_failure",
+        "output_of",
+        "rate_limited_by",
+        "reads_from",
+        "records_to",
+        "retries_with",
+        "retrieves_from",
+        "spawns",
+        "triggered_by",
+        "writes_to",
     }
 )
 

@@ -501,6 +501,58 @@ def test_released_in_is_a_known_rel():
             assert "released_in" in f.read_text(), f"{rel} missing released_in"
 
 
+def test_known_rels_covers_ager_vocabulary():
+    """KNOWN_RELS must be a superset of AGER's declared typed-edge vocabulary.
+
+    Source: okf-agent-graph's docs/AGER_SPEC.md, "## Typed edges (AGER
+    additions)" section (same 31 rels also tabulated in
+    skills/ager-author/references/typed-edges.md). okf-plugin cannot import
+    the sibling plugin, so its vocabulary is pinned here as a literal
+    constant. A real AGER bundle previously produced 15 'non-standard rel'
+    info lines, of which 13 were false positives from rels this allow-list
+    didn't know about yet — noise that buried 2 genuine typos. Without this
+    guard, a future AGER spec addition silently regresses back into that
+    noise instead of failing a test."""
+    AGER_VOCAB = frozenset(
+        {
+            "routes_to",
+            "delegates_to",
+            "spawns",
+            "judges",
+            "aggregates_from",
+            "fans_out_to",
+            "fans_in_from",
+            "handoffs_to",
+            "guards",
+            "reads_from",
+            "writes_to",
+            "appends_to",
+            "records_to",
+            "models_with",
+            "isolates_context",
+            "uses",
+            "blocks",
+            "budgets",
+            "controlled_by",
+            "retries_with",
+            "compensates_with",
+            "on_failure",
+            "triggered_by",
+            "derived_from",
+            "output_of",
+            "retrieves_from",
+            "rate_limited_by",
+            "binds_secret",
+            "depends_on",
+            "implements",
+            "related_to",
+        }
+    )
+    assert len(AGER_VOCAB) == 31, f"AGER vocab drifted from spec: {len(AGER_VOCAB)}"
+    missing = AGER_VOCAB - g.KNOWN_RELS
+    assert not missing, f"KNOWN_RELS is missing AGER relations: {sorted(missing)}"
+
+
 def main() -> int:
     quiet = "-q" in sys.argv
     tests = [v for k, v in sorted(globals().items()) if k.startswith("test_") and callable(v)]
