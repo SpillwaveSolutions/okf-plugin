@@ -3,6 +3,29 @@
 Notable changes to **okf-graph-eng**. Newest first. Released sections are
 frozen — corrections go in the next release's notes.
 
+## 0.4.0 — unreleased
+
+### Fixed
+
+- **A bracketed link label dropped the edge, and nothing reported it.**
+  `LINK_RE`'s label class was `[^\]]+`, which stops at the first `]`, so
+  `- [[AREA NAME]](/requirements/area-name.md)` matched nothing. The result was
+  a *missing* edge rather than a broken one, and `validate` only reports broken
+  edges — the `orphan` check needs a concept to have neither inbound nor
+  outbound links, so any concept with one outbound link lost its catalog
+  backlink in silence. Bracketed titles are routine in exported wiki content
+  (`[AREA]` prefixes, `[DEPRECATED]` suffixes), and the capture plugins
+  interpolate titles into catalog links unescaped.
+
+  The label alternation now keeps `[^\]]` — the whole of the previous pattern's
+  language — and adds balanced `[...]` pairs, tried first. Keeping the old
+  branch is what makes it a superset: a label may legitimately end in a
+  backslash, which an escape-aware branch alone swallows. Two earlier drafts of
+  this fix regressed exactly that way, and on `*` vs `+` letting the empty label
+  start matching. Verified: 0 losses across 20k generated links, identical edge
+  sets on `sample-okf`, empty label still unmatched, no backtracking blowup.
+  (#48)
+
 ## 0.3.2 — 2026-08-03
 
 ### Fixed
