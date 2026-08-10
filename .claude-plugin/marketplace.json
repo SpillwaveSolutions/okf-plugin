@@ -11,7 +11,7 @@
       "name": "okf-graph-eng",
       "source": "./",
       "description": "Graph engineering for OKF repos \u2014 impact analysis, agent/harness graphs, progressive disclosure, typed edges, TicketLink/worklog bridges. Works in Claude Code and Grok Build.",
-      "version": "0.3.2",
+      "version": "0.4.0",
       "author": {
         "name": "Rick Hightower"
       },

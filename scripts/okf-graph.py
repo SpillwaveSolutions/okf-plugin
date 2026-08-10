@@ -26,7 +26,12 @@ from pathlib import Path
 from typing import Any
 
 FRONTMATTER_RE = re.compile(r"^---\s*\n(.*?)\n---\s*\n", re.DOTALL)
-LINK_RE = re.compile(r"\[([^\]]+)\]\(([^)]+)\)")
+# The label alternation keeps `[^\]]` — the entirety of the previous pattern's
+# label language — and *adds* balanced `[...]` pairs, tried first. Keeping the
+# old branch is what makes this a superset: a label may legitimately end in a
+# backslash (`[a\](/c.md)`), which an escape-aware branch alone would swallow.
+# The quantifier is `+`, not `*`, so an empty label stays unmatched as before.
+LINK_RE = re.compile(r"\[((?:\[[^\[\]]*\]|[^\]])+)\]\(([^)]+)\)")
 
 # Common typed-edge relations (non-breaking; Markdown links remain canonical)
 KNOWN_RELS = frozenset(
@@ -41,6 +46,7 @@ KNOWN_RELS = frozenset(
         "related_to",
         "tracks",
         "maps_to",
+        "released_in",
     }
 )
 

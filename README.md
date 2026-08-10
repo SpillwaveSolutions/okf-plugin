@@ -8,7 +8,7 @@ Works in **Claude Code** and **Grok Build** (zero-config: Grok Build reads Claud
 |---|---|
 | **Plugin name** | `okf-graph-eng` |
 | **Repo** | [SpillwaveSolutions/okf-plugin](https://github.com/SpillwaveSolutions/okf-plugin) |
-| **Version** | 0.3.2 |
+| **Version** | 0.4.0 |
 | **License** | MIT |
 
 ## Why this plugin
@@ -135,6 +135,7 @@ Generated live from WikiTicket worklog: [`docs/roadmap.md`](./docs/roadmap.md) �
 - **v0.2** — typed edges, TicketLink ↔ worklog helpers, GraphEngineer progressive-disclosure defaults, marketplace metadata  
 - **v0.3.0** — `graph` subcommand (mermaid/json/html), `validate --strict`, a slash command for every skill, first automated coverage of the graph engine, working post-edit hook  
 - **v0.3.1** — engine correctness: ambiguous concept lookups error instead of guessing, off-bundle links are reported by `validate`, unverified concepts escalate a criticality tier, curation finds bundles rooted anywhere, plus a shell test suite for the hook  
+- **v0.4.0** — bracketed link labels no longer drop the edge (`[[AREA]](/p.md)` matched nothing, and a missing edge is not a broken one, so `validate` never reported it); `released_in` added to `KNOWN_RELS`
 - **v0.3.2** — `validate` now link-checks the bundle's entry point: the root `index.md` and `log.md` were skipped by the whole validation loop, so a broken link there was the one broken link never reported. Their `type`/`title` exemption still stands  
 - **Later** — MCP server, richer agent-graph overlays  
 

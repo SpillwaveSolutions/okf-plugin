@@ -65,4 +65,4 @@ Never invent links. If tools are unavailable, crawl Markdown carefully and state
 
 ## Typed `rel` quick list
 
-`depends_on` · `routes_to` · `implements` · `documents` · `uses` · `owns` · `supersedes` · `related_to` · `tracks` · `maps_to`
+`depends_on` · `routes_to` · `implements` · `documents` · `uses` · `owns` · `supersedes` · `related_to` · `tracks` · `maps_to` · `released_in`

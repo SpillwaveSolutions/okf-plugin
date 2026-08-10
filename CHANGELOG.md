@@ -3,6 +3,45 @@
 Notable changes to **okf-graph-eng**. Newest first. Released sections are
 frozen — corrections go in the next release's notes.
 
+## 0.4.0 — 2026-08-10
+
+### Fixed
+
+- **A bracketed link label dropped the edge, and nothing reported it.**
+  `LINK_RE`'s label class was `[^\]]+`, which stops at the first `]`, so
+  `- [[AREA NAME]](/requirements/area-name.md)` matched nothing. The result was
+  a *missing* edge rather than a broken one, and `validate` only reports broken
+  edges — the `orphan` check needs a concept to have neither inbound nor
+  outbound links, so any concept with one outbound link lost its catalog
+  backlink in silence. Bracketed titles are routine in exported wiki content
+  (`[AREA]` prefixes, `[DEPRECATED]` suffixes), and the capture plugins
+  interpolate titles into catalog links unescaped.
+
+  The label alternation now keeps `[^\]]` — the whole of the previous pattern's
+  language — and adds balanced `[...]` pairs, tried first. Keeping the old
+  branch is what makes it a superset: a label may legitimately end in a
+  backslash, which an escape-aware branch alone swallows. Two earlier drafts of
+  this fix regressed exactly that way, and on `*` vs `+` letting the empty label
+  start matching. Verified: 0 losses across 20k generated links, identical edge
+  sets on `sample-okf`, empty label still unmatched, no backtracking blowup.
+  (#48)
+
+### Added
+
+- **`released_in` is now a known relation.** A bundle that models releases
+  previously emitted one `non-standard rel 'released_in' (allowed but uncommon)`
+  info per edge — one per shipped work item. The relation always worked (the
+  guard passes unknown non-empty rels through unchanged); only the vocabulary
+  was missing, and the noise made piping `validate` through a severity filter a
+  habit, which is how a real warning gets missed.
+
+  The repo already models a release axis on the worklog side: `milestone` is a
+  core work-item field and `bin/ia_graph.py` turns it into
+  `edge(key, "targets", "release/" + milestone)`. This gives bundles a way to
+  express the same idea. Whether the two should be unified is left open. The
+  relation list is duplicated in three prose files, so those are updated too and
+  a test now pins them together. (#49)
+
 ## 0.3.2 — 2026-08-03
 
 ### Fixed

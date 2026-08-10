@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import re
 import subprocess
 import sys
 import tempfile
@@ -438,6 +439,66 @@ def test_pre_commit_keeps_the_local_gates():
             f"{suite} is not gated in hooks/pre-commit — a worklog upgrade "
             "likely overwrote the file. Restore the okf-plugin local gates block."
         )
+
+
+def test_link_re_accepts_bracketed_labels():
+    """A bracketed label must still yield an edge.
+
+    Regression: `[^\\]]+` stopped at the first `]`, so `[[AREA]](/p.md)` matched
+    nothing. That produced no edge rather than a broken one, and validate only
+    reports broken edges — so the missing backlink was invisible. Bracketed
+    titles are routine in exported wiki content (`[AREA]`, `[DEPRECATED]`)."""
+    cases = [
+        ("- [[AREA NAME]](/requirements/area-name.md)", "/requirements/area-name.md"),
+        ("- [Title [DEPRECATED]](/x/y.md)", "/x/y.md"),
+        ("- [nested [a] and [b]](/z.md)", "/z.md"),
+    ]
+    for line, target in cases:
+        found = g.LINK_RE.findall(line)
+        assert found, f"no match for {line!r}"
+        assert found[0][1] == target, found
+
+
+def test_link_re_is_a_superset_of_the_plain_form():
+    """Everything the previous pattern matched must still match.
+
+    The two easy ways to get this wrong, both of which shipped in drafts of the
+    fix: an escape-aware branch swallows a label ending in a backslash, and `*`
+    instead of `+` starts matching the empty label."""
+    prior = re.compile(r"\[([^\]]+)\]\(([^)]+)\)")
+    for line in [
+        "- [Plain](/a/b.md)",
+        r"- [ends with backslash \](/c.md)",
+        r"- [C:\dir\](/x.md)",
+        "- [a](b) and [c](d)",
+        "text with ] stray and [ok](/p.md)",
+    ]:
+        assert {t for _l, t in prior.findall(line)} <= {t for _l, t in g.LINK_RE.findall(line)}, line
+
+    # Empty label: unmatched before, and must stay unmatched.
+    assert not g.LINK_RE.findall("- [](/empty.md)")
+
+
+def test_released_in_is_a_known_rel():
+    """The release axis needs a vocabulary entry.
+
+    A bundle modelling releases previously emitted one `non-standard rel` info
+    per edge, which is one per shipped work item — enough noise to make filtering
+    validate output a habit, which is how a real warning gets missed. The repo
+    already models releases on the worklog side (`milestone` -> `targets
+    release/*` in bin/ia_graph.py); this gives bundles a way to say the same
+    thing."""
+    assert "released_in" in g.KNOWN_RELS
+
+    # The list is duplicated in prose; drift here is the failure mode.
+    for rel in (
+        "skills/okf-author/references/typed-edges.md",
+        "skills/okf-author/SKILL.md",
+        "agents/graph-engineer.md",
+    ):
+        f = REPO / rel
+        if f.exists():
+            assert "released_in" in f.read_text(), f"{rel} missing released_in"
 
 
 def main() -> int:
