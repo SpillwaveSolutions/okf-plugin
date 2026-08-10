@@ -479,6 +479,28 @@ def test_link_re_is_a_superset_of_the_plain_form():
     assert not g.LINK_RE.findall("- [](/empty.md)")
 
 
+def test_released_in_is_a_known_rel():
+    """The release axis needs a vocabulary entry.
+
+    A bundle modelling releases previously emitted one `non-standard rel` info
+    per edge, which is one per shipped work item — enough noise to make filtering
+    validate output a habit, which is how a real warning gets missed. The repo
+    already models releases on the worklog side (`milestone` -> `targets
+    release/*` in bin/ia_graph.py); this gives bundles a way to say the same
+    thing."""
+    assert "released_in" in g.KNOWN_RELS
+
+    # The list is duplicated in prose; drift here is the failure mode.
+    for rel in (
+        "skills/okf-author/references/typed-edges.md",
+        "skills/okf-author/SKILL.md",
+        "agents/graph-engineer.md",
+    ):
+        f = REPO / rel
+        if f.exists():
+            assert "released_in" in f.read_text(), f"{rel} missing released_in"
+
+
 def main() -> int:
     quiet = "-q" in sys.argv
     tests = [v for k, v in sorted(globals().items()) if k.startswith("test_") and callable(v)]

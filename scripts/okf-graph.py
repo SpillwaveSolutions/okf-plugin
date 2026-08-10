@@ -46,6 +46,7 @@ KNOWN_RELS = frozenset(
         "related_to",
         "tracks",
         "maps_to",
+        "released_in",
     }
 )
 

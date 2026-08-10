@@ -32,6 +32,7 @@ links:
 | `related_to` | Soft association |
 | `tracks` | TicketLink tracks this work/concept |
 | `maps_to` | Ticket/external id maps to concept |
+| `released_in` | Shipped in the target release |
 
 ## Rules
 

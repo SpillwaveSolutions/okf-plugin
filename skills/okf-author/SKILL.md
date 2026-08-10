@@ -48,7 +48,7 @@ links:
     rel: tracks
 ```
 
-Common `rel` values: `depends_on`, `routes_to`, `implements`, `documents`, `uses`, `owns`, `supersedes`, `related_to`, `tracks`, `maps_to`.
+Common `rel` values: `depends_on`, `routes_to`, `implements`, `documents`, `uses`, `owns`, `supersedes`, `related_to`, `tracks`, `maps_to`, `released_in`.
 
 Deep reference: `references/typed-edges.md`.
 
