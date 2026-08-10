@@ -7,24 +7,29 @@ frozen — corrections go in the next release's notes.
 
 ### Fixed
 
-- **`KNOWN_RELS` didn't know 26 of the sibling `okf-agent-graph` (AGER)
-  plugin's 31 typed relations, so `validate` buried real typos in noise.**
-  AGER declares its typed-edge vocabulary in `docs/AGER_SPEC.md` and emits it
-  from its own shipped scaffold and capture code, but `okf-graph.py`'s
-  allow-list only recognized 11 relations (5 of which already overlapped
-  AGER's set). On a real AGER bundle this produced 15 `non-standard rel
-  (allowed but uncommon)` info lines, of which 13 were false positives —
-  correctly-named AGER relations this plugin simply didn't know about —
-  burying the 2 genuine typos (`hands_off_to`, `routes_from`). Added the
-  missing 26 relations (`aggregates_from`, `appends_to`, `binds_secret`,
-  `blocks`, `budgets`, `compensates_with`, `controlled_by`, `delegates_to`,
-  `derived_from`, `fans_in_from`, `fans_out_to`, `guards`, `handoffs_to`,
-  `isolates_context`, `judges`, `models_with`, `on_failure`, `output_of`,
-  `rate_limited_by`, `reads_from`, `records_to`, `retries_with`,
-  `retrieves_from`, `spawns`, `triggered_by`, `writes_to`) and a drift-guard
-  test (`test_known_rels_covers_ager_vocabulary`) asserting AGER's declared
-  vocabulary stays a subset of `KNOWN_RELS`, so a future AGER spec addition
-  fails loudly instead of degrading into more info-line noise. (#51)
+- **`KNOWN_RELS` only knew 11 of the ~170 typed relations the four sibling
+  capture plugins declare, so `validate` buried real typos in noise on any
+  bundle built with them.** Each of `okf-agent-graph` (AGER),
+  `project-knowledge-capture` (PKC), `system-architecture-capture` (SAC),
+  and `data-engineering-knowledge-capture` (DEKC) declares its own
+  typed-edge vocabulary — in `docs/AGER_SPEC.md` / `docs/typed-edges.md`,
+  cross-checked against each plugin's own `DEFAULT_RELATIONS` constant and,
+  for SAC, its `schemas/types.json` relation registry (the one
+  `sac_validate.py` actually loads at runtime, which turned out to be more
+  complete than SAC's own prose doc — it was missing the entire C4 vocabulary
+  and 6 code-structure relations). `KNOWN_RELS` is now `CORE_RELS |
+  AGER_RELS | PKC_RELS | SAC_RELS | DEKC_RELS` (11 + 26 + 15 + 84 + 38 = 161
+  after de-duplication), each a named, source-cited `frozenset` instead of
+  one flat literal. On the field-ops-knowledge-base project's two live
+  bundles this took `non-standard rel (allowed but uncommon)` info lines
+  from 8 → 0 (`knowledge/`, mostly PKC's `originates_from`) and 14 → 0
+  (`agent-graph/`, AGER — already fixed by the first half of this change).
+  The drift-guard test now parses each installed sibling plugin's live
+  vocabulary source at test time (`test_known_rels_covers_sibling_plugin_vocabularies`)
+  instead of comparing two hardcoded literals, so a future plugin release
+  adding a relation fails the test instead of silently degrading back into
+  info-line noise; it falls back to a subset sanity check when the sibling
+  plugins aren't installed (e.g. in CI). (#51)
 
 ## 0.4.0 — 2026-08-10
 
