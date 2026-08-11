@@ -33,8 +33,13 @@ FRONTMATTER_RE = re.compile(r"^---\s*\n(.*?)\n---\s*\n", re.DOTALL)
 # The quantifier is `+`, not `*`, so an empty label stays unmatched as before.
 LINK_RE = re.compile(r"\[((?:\[[^\[\]]*\]|[^\]])+)\]\(([^)]+)\)")
 
-# Common typed-edge relations (non-breaking; Markdown links remain canonical)
-KNOWN_RELS = frozenset(
+# Common typed-edge relations (non-breaking; Markdown links remain canonical).
+#
+# Split by declaring plugin so provenance stays legible and adding a plugin's
+# next release is a one-frozenset diff instead of a search through a 150+
+# entry flat literal. KNOWN_RELS itself is the union — that's the only name
+# other code should reference.
+CORE_RELS = frozenset(
     {
         "depends_on",
         "routes_to",
@@ -49,6 +54,219 @@ KNOWN_RELS = frozenset(
         "released_in",
     }
 )
+
+# okf-agent-graph (AGER) 0.5.0, docs/AGER_SPEC.md "## Typed edges (AGER
+# additions)" (same 31 rels also tabulated in
+# skills/ager-author/references/typed-edges.md). 5 of AGER's 31 rels already
+# overlap CORE_RELS (depends_on, implements, related_to, routes_to, uses);
+# these are the other 26. Kept in sync by
+# test_known_rels_covers_ager_vocabulary in tests/test_okf_graph.py.
+AGER_RELS = frozenset(
+    {
+        "aggregates_from",
+        "appends_to",
+        "binds_secret",
+        "blocks",
+        "budgets",
+        "compensates_with",
+        "controlled_by",
+        "delegates_to",
+        "derived_from",
+        "fans_in_from",
+        "fans_out_to",
+        "guards",
+        "handoffs_to",
+        "isolates_context",
+        "judges",
+        "models_with",
+        "on_failure",
+        "output_of",
+        "rate_limited_by",
+        "reads_from",
+        "records_to",
+        "retries_with",
+        "retrieves_from",
+        "spawns",
+        "triggered_by",
+        "writes_to",
+    }
+)
+
+# project-knowledge-capture (PKC) 0.6.0, docs/typed-edges.md. Extensions
+# beyond CORE_RELS only (`released_in` is already in CORE_RELS, listed there
+# as an alias of PKC's `lands_in`). Matches pkc_common.py DEFAULT_RELATIONS
+# exactly — no doc/code drift found for this plugin.
+PKC_RELS = frozenset(
+    {
+        "answers",
+        "assumes",
+        "blocks",
+        "decides",
+        "designed_by",
+        "discovered_in",
+        "exposes",
+        "informs",
+        "invalidates",
+        "lands_in",
+        "mitigates",
+        "originates_from",
+        "satisfies",
+        "validates",
+        "verified_by",
+    }
+)
+
+# system-architecture-capture (SAC) 0.3.0, schemas/types.json
+# relations.sac (the structured registry sac_validate.py itself loads at
+# runtime as its known-rels source), not docs/typed-edges.md. The prose doc
+# undercounts by 12: it omits the whole C4 vocabulary (c4_contains,
+# c4_delivers, c4_implements, c4_uses, c4_view_of, zooms_into — documented
+# instead in docs/c4-integration.md) and a handful of code-structure rels
+# (defines, has_field, invokes, owns_capability, source_of, syncs_with) that
+# only appear in sac_common.py DEFAULT_RELATIONS / schemas/types.json.
+# schemas/types.json's "sac" bucket is a strict superset of both the doc
+# table and DEFAULT_RELATIONS (after subtracting the rels SAC inherits from
+# PKC, which PKC_RELS above already covers), so it's used as-is here.
+SAC_RELS = frozenset(
+    {
+        "alerts_on",
+        "authenticates_via",
+        "authorizes_with",
+        "backed_by",
+        "backs_up",
+        "belongs_to_domain",
+        "builds",
+        "c4_contains",
+        "c4_delivers",
+        "c4_implements",
+        "c4_uses",
+        "c4_view_of",
+        "caches",
+        "calls",
+        "calls_function",
+        "complies_with",
+        "configures",
+        "connects_to",
+        "consumes_api",
+        "consumes_event",
+        "contains",
+        "contains_module",
+        "controls",
+        "declared_in",
+        "defines",
+        "depends_on_package",
+        "deploys_to",
+        "diagrams",
+        "dlq_for",
+        "emits",
+        "encrypts_with",
+        "exposes_api",
+        "exposes_ui",
+        "extends",
+        "flagged_by",
+        "flows_to",
+        "for_channel",
+        "has_class",
+        "has_field",
+        "has_function",
+        "has_method",
+        "hosted_on",
+        "illustrated_by",
+        "impacts",
+        "implements_interface",
+        "in_context",
+        "indexes",
+        "instantiates",
+        "integrates_with",
+        "invokes",
+        "journeys_through",
+        "measured_by",
+        "migrates",
+        "models",
+        "observed_by",
+        "owned_by",
+        "owns_capability",
+        "part_of",
+        "produces_artifact",
+        "provisions",
+        "publishes_event",
+        "publishes_to",
+        "reads_from",
+        "registers_schema",
+        "replicates_to",
+        "runs_in",
+        "schedules",
+        "secured_by",
+        "secured_by_waf",
+        "served_by",
+        "served_by_cdn",
+        "source_of",
+        "stores_in",
+        "streams_to",
+        "subscribes",
+        "subscribes_to",
+        "syncs_with",
+        "tested_by",
+        "triggers",
+        "trusts",
+        "visualizes",
+        "wireframes",
+        "writes_to",
+        "zooms_into",
+    }
+)
+
+# data-engineering-knowledge-capture (DEKC) 0.2.0, docs/typed-edges.md UNION
+# dekc_common.py DEFAULT_RELATIONS — the two disagree in both directions and
+# neither is a superset, so this is the union rather than a pick. The doc
+# has 4 rels the code doesn't (documented_by, has_wireframe, validated_by,
+# wireframes); the code (which dekc_link.py's own CLI help calls "documented
+# relations") has 4 the doc doesn't (aggregates, computes, documents_diagram,
+# joins).
+DEKC_RELS = frozenset(
+    {
+        "aggregates",
+        "belongs_to_domain",
+        "businessizes",
+        "cataloged_in",
+        "computes",
+        "consumes_stream",
+        "contains",
+        "defines",
+        "derived_from",
+        "documented_by",
+        "documents_diagram",
+        "feeds",
+        "glosses",
+        "has_wireframe",
+        "implements_contract",
+        "ingested_by",
+        "ingests_from",
+        "joins",
+        "lands_as",
+        "lands_into",
+        "layered_as",
+        "measures",
+        "models",
+        "part_of_lake",
+        "part_of_mart",
+        "promotes_to",
+        "publishes",
+        "quality_of",
+        "queries",
+        "reads_from",
+        "sourced_from",
+        "stored_in",
+        "transforms_to",
+        "validated_by",
+        "validates",
+        "visualizes",
+        "wireframes",
+        "writes_to",
+    }
+)
+
+KNOWN_RELS = CORE_RELS | AGER_RELS | PKC_RELS | SAC_RELS | DEKC_RELS
 
 HIGH_IMPACT_TYPES = frozenset({"AgentNode", "Workflow", "Harness", "SharedState"})
 MEDIUM_IMPACT_TYPES = frozenset({"Dataset", "Table", "Metric", "API", "ToolCapability"})

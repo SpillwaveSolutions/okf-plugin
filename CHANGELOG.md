@@ -3,6 +3,34 @@
 Notable changes to **okf-graph-eng**. Newest first. Released sections are
 frozen — corrections go in the next release's notes.
 
+## 0.4.1 — 2026-08-10
+
+### Fixed
+
+- **`KNOWN_RELS` only knew 11 of the ~170 typed relations the four sibling
+  capture plugins declare, so `validate` buried real typos in noise on any
+  bundle built with them.** Each of `okf-agent-graph` (AGER),
+  `project-knowledge-capture` (PKC), `system-architecture-capture` (SAC),
+  and `data-engineering-knowledge-capture` (DEKC) declares its own
+  typed-edge vocabulary — in `docs/AGER_SPEC.md` / `docs/typed-edges.md`,
+  cross-checked against each plugin's own `DEFAULT_RELATIONS` constant and,
+  for SAC, its `schemas/types.json` relation registry (the one
+  `sac_validate.py` actually loads at runtime, which turned out to be more
+  complete than SAC's own prose doc — it was missing the entire C4 vocabulary
+  and 6 code-structure relations). `KNOWN_RELS` is now `CORE_RELS |
+  AGER_RELS | PKC_RELS | SAC_RELS | DEKC_RELS` (11 + 26 + 15 + 84 + 38 = 161
+  after de-duplication), each a named, source-cited `frozenset` instead of
+  one flat literal. On the field-ops-knowledge-base project's two live
+  bundles this took `non-standard rel (allowed but uncommon)` info lines
+  from 8 → 0 (`knowledge/`, mostly PKC's `originates_from`) and 14 → 0
+  (`agent-graph/`, AGER — already fixed by the first half of this change).
+  The drift-guard test now parses each installed sibling plugin's live
+  vocabulary source at test time (`test_known_rels_covers_sibling_plugin_vocabularies`)
+  instead of comparing two hardcoded literals, so a future plugin release
+  adding a relation fails the test instead of silently degrading back into
+  info-line noise; it falls back to a subset sanity check when the sibling
+  plugins aren't installed (e.g. in CI). (#51)
+
 ## 0.4.0 — 2026-08-10
 
 ### Fixed

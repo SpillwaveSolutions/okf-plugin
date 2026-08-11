@@ -501,6 +501,168 @@ def test_released_in_is_a_known_rel():
             assert "released_in" in f.read_text(), f"{rel} missing released_in"
 
 
+def test_known_rels_covers_ager_vocabulary():
+    """KNOWN_RELS must be a superset of AGER's declared typed-edge vocabulary.
+
+    Source: okf-agent-graph's docs/AGER_SPEC.md, "## Typed edges (AGER
+    additions)" section (same 31 rels also tabulated in
+    skills/ager-author/references/typed-edges.md). okf-plugin cannot import
+    the sibling plugin, so its vocabulary is pinned here as a literal
+    constant. A real AGER bundle previously produced 15 'non-standard rel'
+    info lines, of which 13 were false positives from rels this allow-list
+    didn't know about yet — noise that buried 2 genuine typos. Without this
+    guard, a future AGER spec addition silently regresses back into that
+    noise instead of failing a test."""
+    AGER_VOCAB = frozenset(
+        {
+            "routes_to",
+            "delegates_to",
+            "spawns",
+            "judges",
+            "aggregates_from",
+            "fans_out_to",
+            "fans_in_from",
+            "handoffs_to",
+            "guards",
+            "reads_from",
+            "writes_to",
+            "appends_to",
+            "records_to",
+            "models_with",
+            "isolates_context",
+            "uses",
+            "blocks",
+            "budgets",
+            "controlled_by",
+            "retries_with",
+            "compensates_with",
+            "on_failure",
+            "triggered_by",
+            "derived_from",
+            "output_of",
+            "retrieves_from",
+            "rate_limited_by",
+            "binds_secret",
+            "depends_on",
+            "implements",
+            "related_to",
+        }
+    )
+    assert len(AGER_VOCAB) == 31, f"AGER vocab drifted from spec: {len(AGER_VOCAB)}"
+    missing = AGER_VOCAB - g.KNOWN_RELS
+    assert not missing, f"KNOWN_RELS is missing AGER relations: {sorted(missing)}"
+
+
+PLUGIN_CACHE_ROOT = Path.home() / ".claude" / "plugins" / "cache"
+
+_BACKTICK_REL_RE = re.compile(r"`([a-z][a-z0-9_]*)`")
+
+
+def _newest_installed_version(plugin_root: Path) -> Path | None:
+    """Highest-numbered `<plugin_root>/<X.Y.Z>/` dir, or None if not installed."""
+    if not plugin_root.is_dir():
+        return None
+    versions = [
+        d for d in plugin_root.iterdir() if d.is_dir() and re.fullmatch(r"\d+\.\d+\.\d+", d.name)
+    ]
+    if not versions:
+        return None
+    return max(versions, key=lambda d: tuple(int(p) for p in d.name.split(".")))
+
+
+def _rels_from_markdown(path: Path, noise: frozenset[str] = frozenset()) -> set[str]:
+    """Every backtick-quoted `snake_case` token in a doc, minus known non-rel noise
+    (CLI flag names, YAML field names, AGER's non-rel spec params like `deadline`)."""
+    if not path.exists():
+        return set()
+    return set(_BACKTICK_REL_RE.findall(path.read_text())) - noise
+
+
+def _rels_from_py_tuple(path: Path, varname: str) -> set[str]:
+    """String literals inside a top-level `varname = (...)` tuple, e.g. DEFAULT_RELATIONS."""
+    if not path.exists():
+        return set()
+    m = re.search(rf"{varname}\s*=\s*\((.*?)\n\)", path.read_text(), re.DOTALL)
+    if not m:
+        return set()
+    return set(re.findall(r'"([a-z][a-z0-9_]*)"', m.group(1)))
+
+
+def _rels_from_json_bucket(path: Path, key: str) -> set[str]:
+    if not path.exists():
+        return set()
+    data = json.loads(path.read_text())
+    return set((data.get("relations") or {}).get(key) or [])
+
+
+def test_known_rels_covers_sibling_plugin_vocabularies():
+    """Drift guard for PKC/SAC/DEKC, the three sibling plugins added on top of
+    AGER in this change.
+
+    When the plugins are installed locally (they are on a dev machine that's
+    used all four), this test PARSES each one's own declared-vocabulary
+    source at run time and asserts every relation it declares is in
+    KNOWN_RELS — a genuine check that fails the moment a plugin adds a
+    relation this file hasn't caught up with yet, not a literal-vs-literal
+    tautology.
+
+    Sources parsed (newest installed version of each, matching how
+    KNOWN_RELS was derived — see the comments above PKC_RELS/SAC_RELS/
+    DEKC_RELS in scripts/okf-graph.py):
+      - PKC:  docs/typed-edges.md (matches pkc_common.py DEFAULT_RELATIONS)
+      - SAC:  docs/typed-edges.md is a known undercount (missing the C4
+              vocabulary); schemas/types.json relations.sac is checked too,
+              since that's what sac_validate.py itself loads at runtime.
+      - DEKC: docs/typed-edges.md UNION dekc_common.py DEFAULT_RELATIONS —
+              the two disagree in both directions, so both are checked.
+
+    In CI, none of these plugin caches exist, so this falls back to
+    asserting the five embedded frozensets (CORE_RELS/AGER_RELS/PKC_RELS/
+    SAC_RELS/DEKC_RELS) are each a subset of KNOWN_RELS — trivially true by
+    construction, but it still catches a copy-paste slip where a rel was
+    added to a named set but the `|`-union wasn't updated to include it.
+    """
+    plugins = {
+        "PKC": PLUGIN_CACHE_ROOT / "pkc-plugin-marketplace" / "project-knowledge-capture",
+        "SAC": PLUGIN_CACHE_ROOT / "sac-plugin-marketplace" / "system-architecture-capture",
+        "DEKC": PLUGIN_CACHE_ROOT
+        / "dekc-plugin-marketplace"
+        / "data-engineering-knowledge-capture",
+    }
+    any_installed = False
+    for name, root in plugins.items():
+        version_dir = _newest_installed_version(root)
+        if version_dir is None:
+            continue
+        any_installed = True
+        declared: set[str] = set()
+        declared |= _rels_from_markdown(
+            version_dir / "docs" / "typed-edges.md",
+            noise=frozenset({"rel", "target", "capture_acceptance"}),
+        )
+        if name == "SAC":
+            declared |= _rels_from_json_bucket(version_dir / "schemas" / "types.json", "sac")
+        if name in ("PKC", "DEKC"):
+            common_file = version_dir / "scripts" / f"{name.lower()}_common.py"
+            declared |= _rels_from_py_tuple(common_file, "DEFAULT_RELATIONS")
+        declared -= g.CORE_RELS
+        missing = declared - g.KNOWN_RELS
+        assert not missing, (
+            f"KNOWN_RELS is missing {name} {version_dir.name} relations "
+            f"declared in {version_dir}: {sorted(missing)}"
+        )
+
+    if not any_installed:
+        for name, rels in (
+            ("CORE_RELS", g.CORE_RELS),
+            ("AGER_RELS", g.AGER_RELS),
+            ("PKC_RELS", g.PKC_RELS),
+            ("SAC_RELS", g.SAC_RELS),
+            ("DEKC_RELS", g.DEKC_RELS),
+        ):
+            assert rels <= g.KNOWN_RELS, f"{name} is not a subset of KNOWN_RELS"
+
+
 def main() -> int:
     quiet = "-q" in sys.argv
     tests = [v for k, v in sorted(globals().items()) if k.startswith("test_") and callable(v)]
