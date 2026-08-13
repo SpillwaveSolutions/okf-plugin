@@ -9,6 +9,7 @@ Usage:
   okf-graph.py edges <bundle> [--from PATH] [--rel REL]
   okf-graph.py graph <bundle> [--format mermaid|json|html] [--focus PATH] [--hops N]
   okf-graph.py validate <bundle> [--strict]
+  okf-graph.py schemas
   okf-graph.py orphans <bundle>
 """
 
@@ -24,6 +25,15 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+
+_SCRIPTS = Path(__file__).resolve().parent
+if str(_SCRIPTS) not in sys.path:
+    sys.path.insert(0, str(_SCRIPTS))
+try:
+    from okf_schema import load_default_registry  # type: ignore
+except ImportError:  # pragma: no cover — always present next to this file
+    load_default_registry = None  # type: ignore
+
 
 FRONTMATTER_RE = re.compile(r"^---\s*\n(.*?)\n---\s*\n", re.DOTALL)
 # The label alternation keeps `[^\]]` — the entirety of the previous pattern's
@@ -1044,6 +1054,7 @@ def cmd_graph(bundle: Path, fmt: str, focus: str | None, hops: int) -> int:
 def cmd_validate(bundle: Path, strict: bool = False) -> int:
     concepts = load_bundle(bundle)
     issues: list[dict[str, str]] = []
+    schema_registry = load_default_registry(start=bundle) if load_default_registry else None
     if not (bundle / "index.md").exists():
         issues.append({"severity": "error", "message": "missing root index.md"})
     for rel, c in concepts.items():
@@ -1083,6 +1094,14 @@ def cmd_validate(bundle: Path, strict: bool = False) -> int:
                         "message": "TicketLink missing external_id/worklog_id",
                     }
                 )
+        if schema_registry is not None and not structural:
+            for issue in schema_registry.validate_frontmatter(c.meta, path=rel):
+                # Avoid duplicating the type/title checks already emitted above.
+                if issue.message.startswith("missing required `type`"):
+                    continue
+                if issue.message.startswith("missing required `title`"):
+                    continue
+                issues.append(issue.as_dict())
     inbound = build_inbound(concepts)
     orphans = [
         rel
@@ -1115,6 +1134,7 @@ def cmd_validate(bundle: Path, strict: bool = False) -> int:
                 "error_count": errors,
                 "warn_count": warnings,
                 "strict": strict,
+                "schema_dirs": [str(d) for d in schema_registry.dirs] if schema_registry else [],
             },
             indent=2,
         )
@@ -1184,7 +1204,27 @@ def main() -> int:
     s = sub.add_parser("orphans")
     s.add_argument("bundle")
 
+    sub.add_parser("schemas", help="List merged concept schemas")
+
     args = p.parse_args()
+    if args.cmd == "schemas":
+        if load_default_registry is None:
+            print(json.dumps({"error": "okf_schema.py not found"}))
+            return 1
+        reg = load_default_registry()
+        print(
+            json.dumps(
+                {
+                    "dirs": [str(d) for d in reg.dirs],
+                    "types": sorted(reg.known_types),
+                    "base_required": (reg.base or {}).get("required"),
+                    "catalog_ownership": reg.catalog_ownership,
+                },
+                indent=2,
+            )
+        )
+        return 0
+
     bundle = Path(args.bundle).resolve()
     if not bundle.is_dir():
         print(json.dumps({"error": f"bundle not found: {bundle}"}))
