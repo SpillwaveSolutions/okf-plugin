@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spillwave.solutions/schemas/okf-concepts/ContextPack.schema.json",
+  "title": "ContextPack",
+  "description": "Generated progressive-disclosure view. May freely include nodes from any plugin. Not a catalog-owned type.",
+  "type": "object",
+  "required": ["type", "title"],
+  "properties": {
+    "type": { "const": "ContextPack" },
+    "title": { "type": "string", "minLength": 1 },
+    "description": { "type": "string" },
+    "timestamp": { "type": "string" },
+    "generated": { "type": "boolean" },
+    "tags": { "type": "array", "items": { "type": "string" } },
+    "links": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["target"],
+        "properties": {
+          "target": { "type": "string" },
+          "rel": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

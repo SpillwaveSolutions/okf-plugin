@@ -3,6 +3,24 @@
 Notable changes to **okf-graph-eng**. Newest first. Released sections are
 frozen — corrections go in the next release's notes.
 
+## 0.5.0 — 2026-08-13
+
+### Added
+
+- **Shared concept schema pack** at `schemas/okf-concepts/`. Canonical
+  `BaseConcept` (required: `type` + `title` only; `additionalProperties: true`)
+  plus TicketLink, Feature, DecisionRecord, Project, Catalog, ContextPack.
+- `scripts/okf_schema.py` — stdlib subset validator. Soft by default. Merges
+  sibling plugin schema directories so a mixed second brain validates as one.
+- `okf-graph.py schemas` lists the merged registry.
+- `okf-graph.py validate` now runs schema checks (unknown types fall back to
+  BaseConcept as info; missing recommended fields are warnings).
+- `truth_state` union: `current | snapshot | superseded | archived | historical | proposed`.
+- TicketLink `kind=bug` refinement: warn unless the ticket links to a
+  Module/Package/Release/CodeChange or sets `branch`. Epic/story/task/bug
+  remain WikiTicket axes, not new concept types.
+- Catalog ownership map in `registry.json` so plugins do not rewrite foreign catalogs.
+
 ## 0.4.1 — 2026-08-10
 
 ### Fixed
