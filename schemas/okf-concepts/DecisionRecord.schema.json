@@ -4,6 +4,7 @@
   "title": "DecisionRecord",
   "type": "object",
   "required": ["type", "title"],
+  "x-recommended": ["status"],
   "properties": {
     "type": { "const": "DecisionRecord" },
     "title": { "type": "string", "minLength": 1 },

@@ -38,7 +38,7 @@ TRUTH_STATES = frozenset(
 )
 
 BUG_RECOMMENDED_RELS = frozenset(
-    {"affects", "reproduces_in", "fixed_in", "lands_in", "implements"}
+    {"affects", "reproduces_in", "fixed_in", "lands_in", "implements", "on_branch"}
 )
 
 
@@ -146,8 +146,8 @@ class SchemaRegistry:
                 Issue("warn", f"unusual truth_state `{ts}`", path, type_name)
             )
 
-        if type_name == "TicketLink" and fm.get("kind") == "bug":
-            issues.extend(_check_bug_refinement(fm, path=path))
+        if type_name == "Bug" or (type_name == "TicketLink" and fm.get("kind") == "bug"):
+            issues.extend(_check_bug_refinement(fm, path=path, type_name=type_name))
 
         return issues
 
@@ -188,6 +188,33 @@ def _check_schema(
                 continue
             sev = "error" if strict else "warn"
             issues.append(Issue(sev, f"missing required `{key}`", path, type_name))
+    for key in schema.get("x-recommended") or []:
+        if fm.get(key) in (None, ""):
+            sev = "error" if strict else "warn"
+            issues.append(Issue(sev, f"recommended field missing `{key}`", path, type_name))
+    for group in schema.get("x-recommended-any") or []:
+        if not any(fm.get(k) not in (None, "") for k in group):
+            sev = "error" if strict else "warn"
+            joined = " or ".join(f"`{k}`" for k in group)
+            issues.append(Issue(sev, f"recommended: set {joined}", path, type_name))
+    rec_rels = set(schema.get("x-recommended-link-rels") or [])
+    if rec_rels:
+        have = set()
+        links = fm.get("links") or []
+        if isinstance(links, list):
+            for link in links:
+                if isinstance(link, dict) and link.get("rel"):
+                    have.add(str(link["rel"]))
+        if not (have & rec_rels) and not fm.get("branch"):
+            sev = "error" if strict else "warn"
+            issues.append(
+                Issue(
+                    sev,
+                    f"recommended link rel in {sorted(rec_rels)} (or set `branch`)",
+                    path,
+                    type_name,
+                )
+            )
     for key, value in fm.items():
         if key not in props:
             continue
@@ -232,7 +259,7 @@ def _check_schema(
     return issues
 
 
-def _check_bug_refinement(fm: dict[str, Any], *, path: str) -> list[Issue]:
+def _check_bug_refinement(fm: dict[str, Any], *, path: str, type_name: str = "TicketLink") -> list[Issue]:
     links = fm.get("links") or []
     rels = set()
     if isinstance(links, list):
@@ -243,13 +270,14 @@ def _check_bug_refinement(fm: dict[str, Any], *, path: str) -> list[Issue]:
         return []
     if fm.get("branch"):
         return []
+    label = "Bug" if type_name == "Bug" else "kind=bug"
     return [
         Issue(
             "warn",
-            "kind=bug should link to a Module/Package/Release/CodeChange "
+            f"{label} should link to a Module/Package/Release/CodeChange/Branch "
             f"(rels {sorted(BUG_RECOMMENDED_RELS)}) or set `branch`",
             path,
-            "TicketLink",
+            type_name,
         )
     ]
 

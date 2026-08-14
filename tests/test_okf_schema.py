@@ -88,6 +88,54 @@ def test_schemas_subcommand_lists_base():
     assert out["base_required"] == ["type", "title"]
     assert "TicketLink" in out["types"]
     assert "Project" in out["types"]
+    assert "Epic" in out["types"]
+    assert "Bug" in out["types"]
+    assert "Branch" in out["types"]
+
+
+def test_first_class_work_types_are_known():
+    reg = load_default_registry()
+    for t in ("Epic", "Story", "Task", "Subtask", "Bug", "Branch"):
+        assert t in reg.known_types, t
+        issues = reg.validate_frontmatter({"type": t, "title": "x"})
+        assert not any(i.severity == "error" for i in issues), (t, issues)
+
+
+def test_recommended_fields_are_warnings_not_errors():
+    reg = load_default_registry()
+    issues = reg.validate_frontmatter({"type": "DecisionRecord", "title": "Use Postgres"})
+    assert any(i.severity == "warn" and "status" in i.message for i in issues)
+    assert not any(i.severity == "error" for i in issues)
+    issues = reg.validate_frontmatter(
+        {"type": "DecisionRecord", "title": "Use Postgres", "status": "accepted"}
+    )
+    assert not any("status" in i.message for i in issues)
+    issues = reg.validate_frontmatter({"type": "TicketLink", "title": "no id"})
+    assert any(i.severity == "warn" and "worklog_id" in i.message for i in issues)
+    assert not any(i.severity == "error" for i in issues)
+
+
+def test_bug_type_warns_without_structural_link():
+    reg = load_default_registry()
+    issues = reg.validate_frontmatter({"type": "Bug", "title": "crash", "status": "open"})
+    assert any(i.severity == "warn" and "Bug" in i.message for i in issues)
+    issues = reg.validate_frontmatter(
+        {
+            "type": "Bug",
+            "title": "crash",
+            "status": "open",
+            "links": [{"target": "/modules/auth.md", "rel": "affects"}],
+        }
+    )
+    assert not any("should link" in i.message or "recommended link" in i.message for i in issues)
+
+
+def test_strict_promotes_recommended_to_error():
+    reg = load_default_registry()
+    issues = reg.validate_frontmatter(
+        {"type": "DecisionRecord", "title": "x"}, strict=True
+    )
+    assert any(i.severity == "error" and "status" in i.message for i in issues)
 
 
 

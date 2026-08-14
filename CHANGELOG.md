@@ -3,7 +3,21 @@
 Notable changes to **okf-graph-eng**. Newest first. Released sections are
 frozen — corrections go in the next release's notes.
 
+## 0.6.0 — 2026-08-14
+
+### Added
+
+- **First-class work items:** `Epic`, `Story`, `Task`, `Subtask`, `Bug` are
+  concept types (catalogs `epics/`, `stories/`, `tasks/`, `subtasks/`, `bugs/`).
+  `TicketLink` remains valid for existing files.
+- **`Branch` concept** (`branches/`). Prefer `on_branch` links from Bug/CodeChange
+  over a bare `branch:` string.
+- **Per-type recommended fields** via `x-recommended` / `x-recommended-any` /
+  `x-recommended-link-rels`. Soft (warn) by default; `--strict` promotes them
+  to errors. BaseConcept required fields stay `type` + `title` only.
+
 ## 0.5.0 — 2026-08-13
+
 
 ### Added
 
