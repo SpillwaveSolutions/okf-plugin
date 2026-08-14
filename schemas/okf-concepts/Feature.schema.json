@@ -2,9 +2,10 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://spillwave.solutions/schemas/okf-concepts/Feature.schema.json",
   "title": "Feature",
-  "description": "Product capability. Materialized from WikiTicket epic/story items.",
+  "description": "Product capability. Work-plane epic/story items are Epic/Story; this node is the product plane.",
   "type": "object",
   "required": ["type", "title"],
+  "x-recommended": ["status"],
   "properties": {
     "type": { "const": "Feature" },
     "title": { "type": "string", "minLength": 1 },

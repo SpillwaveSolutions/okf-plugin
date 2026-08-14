@@ -2,9 +2,10 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://spillwave.solutions/schemas/okf-concepts/TicketLink.schema.json",
   "title": "TicketLink",
-  "description": "Bridge node from WikiTicket work items into the knowledge graph. Epics/stories/tasks/bugs are NOT top-level types — they are level + kind on this node (and on Feature for epic/story).",
+  "description": "Generic work-item bridge. Prefer Epic/Story/Task/Subtask/Bug for new writes; TicketLink remains valid for existing files.",
   "type": "object",
   "required": ["type", "title"],
+  "x-recommended-any": [["worklog_id", "external_id"]],
   "properties": {
     "type": { "const": "TicketLink" },
     "title": { "type": "string", "minLength": 1 },
@@ -23,16 +24,16 @@
     "level": {
       "type": "string",
       "enum": ["epic", "story", "task", "subtask"],
-      "description": "WikiTicket level. Not a concept type."
+      "description": "WikiTicket level. Specialized types Epic/Story/Task/Subtask are preferred for new writes."
     },
     "kind": {
       "type": "string",
       "enum": ["feature", "bug", "ops", "triage"],
-      "description": "WikiTicket kind. Not a concept type."
+      "description": "WikiTicket kind. Specialized type Bug is preferred when kind=bug."
     },
     "branch": {
       "type": "string",
-      "description": "Source branch. Field, not a concept type."
+      "description": "Source branch name. Prefer a typed link (on_branch) to a Branch concept."
     },
     "links": {
       "type": "array",
@@ -55,8 +56,8 @@
         "required": ["kind"]
       },
       "then": {
-        "description": "Bugs should point at the thing they affect. Recommended (warn, not error): at least one of affects / reproduces_in / fixed_in / lands_in / implements targeting a Module, Package, Release, or CodeChange.",
-        "x-recommended-link-rels": ["affects", "reproduces_in", "fixed_in", "lands_in", "implements"]
+        "description": "Bugs should point at the thing they affect.",
+        "x-recommended-link-rels": ["affects", "reproduces_in", "fixed_in", "lands_in", "implements", "on_branch"]
       }
     }
   ]

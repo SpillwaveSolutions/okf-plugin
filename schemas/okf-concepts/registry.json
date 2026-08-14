@@ -1,6 +1,6 @@
 {
   "name": "okf-core-concept-schemas",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "okf_version": "0.2",
   "schema_version": 1,
   "description": "Shared OKF concept envelope and core types. Domain plugins add their own schemas/okf-concepts/ directories; validators merge registries.",
@@ -12,6 +12,12 @@
     "ContextPack",
     "Project",
     "TicketLink",
+    "Epic",
+    "Story",
+    "Task",
+    "Subtask",
+    "Bug",
+    "Branch",
     "DecisionRecord",
     "Feature",
     "AgentNode",
@@ -29,6 +35,12 @@
   ],
   "catalogs": {
     "tickets": { "owner": "okf-plugin", "types": ["TicketLink"] },
+    "epics": { "owner": "project-knowledge-capture", "types": ["Epic"] },
+    "stories": { "owner": "project-knowledge-capture", "types": ["Story"] },
+    "tasks": { "owner": "project-knowledge-capture", "types": ["Task"] },
+    "subtasks": { "owner": "project-knowledge-capture", "types": ["Subtask"] },
+    "bugs": { "owner": "project-knowledge-capture", "types": ["Bug"] },
+    "branches": { "owner": "project-knowledge-capture", "types": ["Branch"] },
     "decisions": { "owner": "project-knowledge-capture", "types": ["DecisionRecord"] },
     "features": { "owner": "project-knowledge-capture", "types": ["Feature"] },
     "projects": { "owner": "okf-plugin", "types": ["Project"] },
@@ -37,11 +49,12 @@
     "workflows": { "owner": "okf-plugin", "types": ["Workflow"] }
   },
   "catalog_ownership": {
-    "okf-plugin": ["tickets", "agents", "workflows"],
+    "okf-plugin": ["tickets", "agents", "workflows", "projects"],
     "project-knowledge-capture": [
       "meetings", "experiments", "discoveries", "decisions", "assumptions",
       "questions", "features", "requirements", "specs", "designs", "releases",
-      "code", "packages", "tickets", "risks", "acceptance"
+      "code", "packages", "tickets", "epics", "stories", "tasks", "subtasks",
+      "bugs", "branches", "projects", "risks", "acceptance"
     ],
     "system-architecture-capture": ["modules", "services", "systems", "apis", "environments"],
     "data-engineering-knowledge-capture": [
@@ -53,6 +66,7 @@
     "Module": "In a shared second brain, Module lives in modules/ (SAC convention). PKC historically aliased Module → packages/; new writes should use modules/.",
     "Package": "Build unit. Always packages/.",
     "Dashboard": "DEKC = BI dashboard. SAC = observability dashboard. Same type name, different catalogs (dashboards/ vs observability/).",
-    "required_fields": "BaseConcept v1 requires only type + title. Never tighten without a major schema_version and a migration."
+    "required_fields": "BaseConcept v1 requires only type + title. Per-type extras live in x-recommended and warn (error only with --strict).",
+    "work_items": "Epic/Story/Task/Subtask/Bug are first-class. TicketLink remains the generic/legacy projection. Branch is the source-control concept."
   }
 }
