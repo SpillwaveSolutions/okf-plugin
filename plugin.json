@@ -1,0 +1,28 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "okf-graph-eng",
+  "version": "0.7.0",
+  "description": "Graph engineering for OKF repositories — impact analysis, agent/harness graphs, progressive disclosure, typed edges, TicketLink/worklog bridges, and write isolation bindings for multi-host agents.",
+  "author": {
+    "name": "Rick Hightower",
+    "url": "https://github.com/RichardHightower"
+  },
+  "homepage": "https://github.com/SpillwaveSolutions/okf-plugin",
+  "repository": "https://github.com/SpillwaveSolutions/okf-plugin",
+  "license": "MIT",
+  "keywords": [
+    "okf",
+    "graph-engineering",
+    "knowledge-graph",
+    "agent-graph",
+    "harness",
+    "impact-analysis",
+    "isolation",
+    "agent-plugins",
+    "claude-code",
+    "grok-build",
+    "codex",
+    "deep-agents",
+    "grok-bot"
+  ]
+}
