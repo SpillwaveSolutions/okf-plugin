@@ -3,6 +3,17 @@
 Notable changes to **okf-graph-eng**. Newest first. Released sections are
 frozen — corrections go in the next release's notes.
 
+## 0.7.1 — 2026-08-16
+
+### Changed
+
+- Post-edit hook is **fail-closed**. `scripts/okf-curate.sh` now propagates
+  `okf-graph.py validate` (or `okf` / `okfcli` on PATH) instead of swallowing
+  the exit code.
+- Matcher includes Codex `apply_patch` as well as Claude `Write|Edit|MultiEdit`.
+- Hook parses `apply_patch` payloads. Writes outside an OKF bundle stay a
+  silent no-op. No SessionStart reminder.
+
 ## 0.7.0 — 2026-08-15
 
 ### Added

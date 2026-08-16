@@ -95,15 +95,21 @@ bin/worklog fold | python3 scripts/okf-ticket-link.py emit --bundle sample-okf -
 
 ### Hooks
 
-Post-edit (`Write|Edit|MultiEdit`) runs `scripts/okf-curate.sh`: `okf validate`/`okf lint` when the official CLI is present, otherwise this repo's own `okf-graph.py validate`. It reads the tool payload from stdin, so it fires on every matching edit.
+Post-edit (`apply_patch|Write|Edit|MultiEdit`) runs `scripts/okf-curate.sh`:
+`okf validate` when the official CLI is present, otherwise this repo's own
+`okf-graph.py validate`. It reads the tool payload from stdin (Claude
+`file_path` or Codex `apply_patch` text), so it fires on every matching edit.
 
-The bundle it curates is found by walking up from the edited file for an `index.md` containing `okf_version` (or a `.okf/` directory) — so a bundle rooted anywhere works, not just `.okf/`, `knowledge/` or `sample-okf/`. Edits outside any bundle are a silent no-op.
+The bundle is found by walking up from the edited file for an `index.md`
+containing `okf_version` (or a `.okf/` directory). Edits outside any bundle
+are a silent no-op. **Validate is fail-closed:** a broken bundle exits
+non-zero so the host cannot treat a bad write as success.
 
 ### Tests
 
 ```bash
 python3 tests/test_okf_graph.py -q      # graph engine — 25 cases
-bash tests/test_okf_curate.sh           # post-edit hook — 5 checks
+bash tests/test_okf_curate.sh           # post-edit hook — fail-closed checks
 ```
 
 Plain asserts, no framework. Run in CI alongside `okf-graph.py validate sample-okf --strict`, and as a guarded pre-commit check.

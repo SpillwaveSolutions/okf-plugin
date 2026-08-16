@@ -1,7 +1,7 @@
 {
   "name": "okf-graph-eng",
-  "version": "0.7.0",
-  "description": "Graph engineering for OKF repositories — impact analysis, progressive disclosure, typed edges, and post-edit curation. Codex-compatible packaging for the same skills and hooks used by Claude Code and Grok Build.",
+  "version": "0.7.1",
+  "description": "Graph engineering for OKF repositories — impact analysis, progressive disclosure, typed edges, and fail-closed post-edit validate. Codex-compatible packaging for the same skills and hooks used by Claude Code and Grok Build.",
   "author": {
     "name": "Rick Hightower",
     "url": "https://github.com/RichardHightower"
