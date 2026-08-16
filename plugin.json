@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "okf-graph-eng",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "Graph engineering for OKF repositories — impact analysis, agent/harness graphs, progressive disclosure, typed edges, TicketLink/worklog bridges, and write isolation bindings for multi-host agents.",
   "author": {
     "name": "Rick Hightower",
