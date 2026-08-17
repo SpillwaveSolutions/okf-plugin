@@ -403,9 +403,11 @@ def test_strict_validate_flags_warnings():
 
 
 def test_version_is_consistent_across_manifests():
-    """The version lives in four manifests and has drifted before."""
+    """Root plugin.json is source of truth. Host labels have drifted before."""
     manifests = {
+        "plugin.json": ("version",),
         ".claude-plugin/plugin.json": ("version",),
+        ".codex-plugin/plugin.json": ("version",),
         "marketplace.json": ("plugins", 0, "version"),
         ".claude-plugin/marketplace.json": ("plugins", 0, "version"),
         ".grok-plugin/marketplace.json": ("plugins", 0, "version"),
@@ -419,6 +421,7 @@ def test_version_is_consistent_across_manifests():
         for key in path:
             node = node[key]
         found[rel] = node
+    assert found.get("plugin.json"), "root plugin.json missing version"
     assert len(set(found.values())) == 1, f"version drift: {found}"
 
 

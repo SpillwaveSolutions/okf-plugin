@@ -3,6 +3,12 @@
 Notable changes to **okf-graph-eng**. Newest first. Released sections are
 frozen — corrections go in the next release's notes.
 
+## Unreleased
+
+- Host manifests (`.claude-plugin/plugin.json` and marketplace copies) now
+  match root `plugin.json` **0.7.2**. Claude Code was still labeled 0.5.0
+  so `claude plugin update` reported "already current."
+
 ## 0.7.2 — 2026-08-17
 
 ### Changed
