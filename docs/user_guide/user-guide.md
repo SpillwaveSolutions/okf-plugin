@@ -128,17 +128,18 @@ python3 scripts/okf-graph.py edges <bundle> --rel routes_to
 # or /okf-maintain
 ```
 
-### Curation on save
+### Validate on save
 
-The post-edit hook (`Write|Edit|MultiEdit`) runs `scripts/okf-curate.sh` on
-every Markdown edit. The script walks up from the edited file looking for a
-bundle root — the nearest ancestor with an `index.md` containing `okf_version`,
-or a `.okf/` directory — and validates that bundle. A bundle rooted anywhere
-qualifies, not just `.okf/`, `knowledge/` or `sample-okf/`.
+The post-edit hook (`apply_patch|Write|Edit|MultiEdit`) runs
+`scripts/okf-hook-validate.sh` on every Markdown edit. The script walks up from
+the edited file looking for a bundle root — the nearest ancestor with an
+`index.md` containing `okf_version`, or a `.okf/` directory — and **validates**
+that bundle. This pack does not curate. A bundle rooted anywhere qualifies,
+not just `.okf/`, `knowledge/` or `sample-okf/`.
 
 Edit a Markdown file that is in no bundle and the hook does nothing and says
-nothing: there is no fallback to some other bundle in the repo. It reports; it
-never blocks the edit.
+nothing: there is no fallback to some other bundle in the repo. Inside a
+bundle a failed validate is fail-closed (non-zero).
 
 ### Tickets (WikiTicket / worklog)
 

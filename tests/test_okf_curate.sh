@@ -5,7 +5,7 @@
 set -uo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-CURATE="$ROOT/scripts/okf-curate.sh"
+CURATE="$ROOT/scripts/okf-hook-validate.sh"
 HOOKS_JSON="$ROOT/hooks/hooks.json"
 TMP="$(mktemp -d "${TMPDIR:-/tmp}/okf-curate-test.XXXXXX")"
 trap 'rm -rf "$TMP"' EXIT
@@ -129,7 +129,8 @@ case "$out" in
   *) fail "apply_patch payload not validated" "$out" ;;
 esac
 
-# 8. Manifest is PostToolUse fail-closed, not a SessionStart reminder.
+# 8. Manifest is PostToolUse fail-closed validate, not a SessionStart reminder
+#    and not a curate-after-Write.
 if ! python3 - "$HOOKS_JSON" <<'PY'
 import json, sys
 p = sys.argv[1]
@@ -141,9 +142,18 @@ post = hooks.get("PostToolUse") or []
 matchers = " ".join(e.get("matcher") or "" for e in post)
 if "apply_patch" not in matchers or "Write" not in matchers:
     raise SystemExit("matcher must include apply_patch and Write")
+commands = []
+for entry in post:
+    for hook in entry.get("hooks") or []:
+        commands.append(hook.get("command") or "")
+joined = " ".join(commands)
+if "okf-hook-validate.sh" not in joined:
+    raise SystemExit("hooks.json must invoke okf-hook-validate.sh")
+if "okf-curate.sh" in joined:
+    raise SystemExit("hooks.json still invokes okf-curate.sh")
 PY
 then
-  fail "hooks.json is not fail-closed PostToolUse"
+  fail "hooks.json is not fail-closed PostToolUse validate"
 fi
 
 exit $FAILED

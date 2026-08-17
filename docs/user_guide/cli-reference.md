@@ -78,28 +78,30 @@ python3 scripts/okf-ticket-link.py emit --bundle <bundle> --dry-run   # preview 
 
 Default GitHub project: `SpillwaveSolutions/okf-plugin`.
 
-## `scripts/okf-curate.sh`
+## `scripts/okf-hook-validate.sh`
 
-Post-edit hook helper, wired to `Write|Edit|MultiEdit` in `hooks/hooks.json`.
+Post-edit hook helper, wired to `apply_patch|Write|Edit|MultiEdit` in
+`hooks/hooks.json`. This pack **validates**. It does not curate.
 Takes a file path as `$1`, or reads the `PostToolUse` payload as JSON on stdin
-(`.tool_input.file_path`) — which is how Claude Code actually delivers it.
+(`.tool_input.file_path` or a Codex `apply_patch` patch).
 
 A Markdown extension (`.md`/`.markdown`) is the only pre-check; **bundle
 membership decides the rest**. It walks up from the edited file for the nearest
 ancestor holding an `index.md` containing `okf_version`, or a `.okf/` directory
-with an `index.md`. That root is what gets curated, so a bundle rooted anywhere
-— not just `.okf/`, `knowledge/` or `sample-okf/` — is covered.
+with an `index.md`. That root is what gets validated, so a bundle rooted
+anywhere — not just `.okf/`, `knowledge/` or `sample-okf/` — is covered.
 
 Finding no bundle root is a **silent** no-op: there is no fallback to the repo's
 own `.okf/` or `sample-okf/`, so editing an unrelated Markdown file neither
-curates the wrong bundle nor prints anything.
+validates the wrong bundle nor prints anything.
 
-Inside a bundle it runs `okf validate` (plus `okf lint` if available), `okfcli
-validate`, or — with no external CLI — `okf-graph.py validate` from this repo.
-Never fails the edit: every branch exits `0`.
+Inside a bundle it runs `okf validate`, `okfcli validate`, or — with no
+external CLI — `okf-graph.py validate` from this repo. **Fail-closed:** a
+broken bundle exits non-zero. `scripts/okf-curate.sh` is a compatibility shim
+that execs this script.
 
 ```bash
-scripts/okf-curate.sh sample-okf/knowledge/tool-okf-graph-py.md
+scripts/okf-hook-validate.sh sample-okf/knowledge/tool-okf-graph-py.md
 ```
 
 ## `scripts/substack_okf.py`

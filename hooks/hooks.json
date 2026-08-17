@@ -1,4 +1,5 @@
 {
+  "description": "Fail-closed validate after knowledge writes. This pack does not curate. No SessionStart reminders.",
   "hooks": {
     "PostToolUse": [
       {
@@ -6,7 +7,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "\"${CLAUDE_PLUGIN_ROOT}/scripts/okf-curate.sh\"",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}/scripts/okf-hook-validate.sh\"",
             "timeout": 45
           }
         ]

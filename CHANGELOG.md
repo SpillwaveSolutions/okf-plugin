@@ -3,6 +3,18 @@
 Notable changes to **okf-graph-eng**. Newest first. Released sections are
 frozen — corrections go in the next release's notes.
 
+## 0.7.2 — 2026-08-17
+
+### Changed
+
+- PostToolUse hook is **fail-closed validate**, named that way.
+  `hooks/hooks.json` now runs `scripts/okf-hook-validate.sh`.
+- This pack **validates**. It does not curate (no catalog rewrite after Write).
+- `scripts/okf-curate.sh` remains a one-line exec shim for old skill text.
+- Codex `.codex-plugin/plugin.json` still points at `hooks/hooks.json`; the
+  command behind that file is now the validate script.
+- Implements the hook close-bar on [okf-plugin#55](https://github.com/SpillwaveSolutions/okf-plugin/issues/55).
+
 ## 0.7.1 — 2026-08-16
 
 ### Changed

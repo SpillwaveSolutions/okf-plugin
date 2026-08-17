@@ -40,7 +40,7 @@ Metadata: `.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json`.
 - **Skills** — `skills/*/SKILL.md`  
 - **Commands** — `commands/*.md` (`/okf-init`, `/okf-impact`, …)  
 - **Agent** — `agents/graph-engineer.md`  
-- **Hooks** — `hooks/hooks.json` → post-edit curate  
+- **Hooks** — `hooks/hooks.json` → fail-closed `okf-hook-validate.sh` 
 
 Use `${CLAUDE_PLUGIN_ROOT}` for script paths inside skills/hooks.
 
