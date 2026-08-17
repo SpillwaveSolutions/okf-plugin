@@ -8,7 +8,7 @@ Works in **Claude Code** and **Grok Build** (zero-config: Grok Build reads Claud
 |---|---|
 | **Plugin name** | `okf-graph-eng` |
 | **Repo** | [SpillwaveSolutions/okf-plugin](https://github.com/SpillwaveSolutions/okf-plugin) |
-| **Version** | 0.5.0 |
+| **Version** | 0.7.2 |
 | **License** | MIT |
 
 ## Why this plugin
