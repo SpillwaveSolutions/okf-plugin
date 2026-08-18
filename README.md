@@ -2,13 +2,13 @@
 
 **Graph engineering for [OKF](https://github.com/topics/okf) repositories** — impact analysis, agent/harness graphs, progressive disclosure, and curation.
 
-Works in **Claude Code** and **Grok Build** (zero-config: Grok Build reads Claude plugins natively).
+Works in **Claude Code**, **Grok Build** (zero-config: Grok Build reads Claude plugins natively), and **Cursor** (Agent Plugins 1.0 + `.cursor-plugin`).
 
 | | |
 |---|---|
 | **Plugin name** | `okf-graph-eng` |
 | **Repo** | [SpillwaveSolutions/okf-plugin](https://github.com/SpillwaveSolutions/okf-plugin) |
-| **Version** | 0.7.2 |
+| **Version** | 0.7.3 |
 | **License** | MIT |
 
 ## Why this plugin
@@ -45,7 +45,19 @@ Grok Build discovers Claude-compatible plugins automatically — **no separate G
 
 Skills, agents, commands, and hooks under this tree load the same way as in Claude Code.
 
+### Cursor
+
+Cursor loads the root Agent Plugins 1.0 `plugin.json` and `.cursor-plugin/plugin.json`.
+
+```text
+/plugin marketplace add SpillwaveSolutions/second-brain-marketplace
+/plugin install okf-graph-eng
+```
+
+See [docs/CURSOR.md](docs/CURSOR.md). Grok Bot cloud agents that open a knowledge tree still follow the write protocol even without a plugin install.
+
 ### Optional: okf CLI
+
 
 For richer deterministic operations, install [`okfcli`](https://github.com/search?q=okfcli) / `okf` if available. If missing, the plugin falls back to `scripts/okf-graph.py`.
 
