@@ -1,6 +1,6 @@
 {
   "name": "okf-graph-eng",
-  "version": "0.7.3",
+  "version": "0.7.4",
   "description": "Graph engineering for OKF repositories \u2014 impact analysis, progressive disclosure, typed edges, and fail-closed post-edit validate. Codex-compatible packaging for the same skills and hooks used by Claude Code and Grok Build.",
   "author": {
     "name": "Rick Hightower",

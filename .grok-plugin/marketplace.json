@@ -1,13 +1,13 @@
 {
   "name": "okf-plugin-marketplace",
   "description": "Optional native Grok marketplace metadata. Grok Build already loads Claude plugins with zero config; this file pins identity for Grok marketplace listings.",
-  "version": "0.7.3",
+  "version": "0.7.4",
   "plugins": [
     {
       "name": "okf-graph-eng",
       "source": ".",
       "description": "OKF graph engineering \u2014 impact analysis, agent graphs, progressive disclosure. Claude-compatible.",
-      "version": "0.7.3",
+      "version": "0.7.4",
       "compatibility": {
         "claude_plugin": true,
         "zero_config": true

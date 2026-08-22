@@ -1,6 +1,6 @@
 {
   "name": "okf-graph-eng",
-  "version": "0.7.3",
+  "version": "0.7.4",
   "description": "Graph engineering for OKF repositories \u2014 impact analysis, agent/harness graphs, progressive disclosure, typed edges, TicketLink/worklog bridges, and write isolation bindings for multi-host agents.",
   "author": {
     "name": "Rick Hightower"
