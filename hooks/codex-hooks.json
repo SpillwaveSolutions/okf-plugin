@@ -1,0 +1,17 @@
+{
+  "description": "Fail-closed validate after knowledge writes. This pack does not curate. No SessionStart reminders.",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "apply_patch|Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}/scripts/okf-hook-validate.sh\"",
+            "timeout": 45
+          }
+        ]
+      }
+    ]
+  }
+}
