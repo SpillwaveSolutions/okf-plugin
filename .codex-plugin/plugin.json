@@ -16,5 +16,5 @@
     "agent-skills",
     "impact-analysis"
   ],
-  "hooks": "hooks/hooks.json"
+  "hooks": "./hooks/codex-hooks.json"
 }
