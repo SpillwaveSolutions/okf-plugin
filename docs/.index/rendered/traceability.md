@@ -2,6 +2,10 @@
 
 _The evidence chain: plan → item → ticket → code → release, forward and backward. Generated from `docs/.index/_graph.json`; do not edit._
 
+### Noun-ownership migration guide for existing second brains
+`01M0T3YW1JKDG62D34SJ5YKG4M` · status: done
+- targets: release/v0.8.1
+
 ### Split domain nouns out of okf-plugin (Catalog + ContextPack only)
 `01M0SZF33A0WAYMDR6QFEZ2AFH` · status: todo
 - targets: release/v0.8.0

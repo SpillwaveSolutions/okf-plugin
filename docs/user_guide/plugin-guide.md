@@ -15,7 +15,7 @@ Install and host notes for **okf-graph-eng**.
 | Field | Value |
 |-------|--------|
 | Name | `okf-graph-eng` |
-| Version | see root `plugin.json` (0.8.0) |
+| Version | see root `plugin.json` (0.8.1) |
 | Marketplace | `okf-plugin-marketplace` |
 | Repo | https://github.com/SpillwaveSolutions/okf-plugin |
 | Nouns | `Catalog`, `ContextPack` |
@@ -70,3 +70,5 @@ Do not add Grok-only features that break Claude Code.
 ## Project management plugin
 
 Work tracking uses the separate **worklog** tooling vendored into this repo (`bin/worklog`, hooks). That is WikiTicket SDD, not part of the Claude skill pack itself. See [[Worklog-Spec]]. TicketLink emission lives in PKC (`pkc_ticket_link.py`).
+
+Existing second brains upgrading to 0.8.0: [[Noun-ownership-migration]].

@@ -173,4 +173,5 @@ bin/worklog fold | python3 path/to/project-knowledge-capture/scripts/pkc_ticket_
 
 - [[CLI-Reference]] — scripts and flags
 - [[Plugin-Guide]] — install on Claude Code / Grok Build
+- [[Noun-ownership-migration]] — upgrade an existing second brain to the 0.8 family
 - [[Roadmap]] — generated from the worklog

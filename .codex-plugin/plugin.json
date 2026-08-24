@@ -1,6 +1,6 @@
 {
   "name": "okf-graph-eng",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "OKF graph engine: validate, walk, pack, and impact-analyze Git-native knowledge graphs. Owns Catalog and ContextPack. Domain nouns live in PKC, SAC, DEKC, and AGER.",
   "author": {
     "name": "Rick Hightower",

@@ -8,7 +8,7 @@ Works in **Claude Code**, **Grok Build** (zero-config), **Cursor**, **Codex**, *
 |---|---|
 | **Plugin name** | `okf-graph-eng` |
 | **Repo** | [SpillwaveSolutions/okf-plugin](https://github.com/SpillwaveSolutions/okf-plugin) |
-| **Version** | 0.8.0 |
+| **Version** | 0.8.1 |
 | **License** | MIT |
 | **Nouns this plugin owns** | `Catalog`, `ContextPack` |
 
@@ -167,7 +167,9 @@ python3 tests/test_okf_schema.py
 bash tests/test_okf_curate.sh
 ```
 
-`sample-okf/` is a self-describing **knowledge + Catalog** bundle for this engine (not an AGER graph).
+`sample-okf/` is a self-describing **Catalog + ContextPack** bundle for this engine (not an AGER graph).
+
+Existing second brains: [noun-ownership migration](docs/user_guide/noun-ownership-migration.md) (0.8 family).
 
 ## Related ecosystem
 

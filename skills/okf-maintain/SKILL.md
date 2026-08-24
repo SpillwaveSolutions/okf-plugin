@@ -16,7 +16,7 @@ Keep the knowledge graph healthy and reviewable. This plugin owns Catalog + Cont
 5. **Staleness** — nodes past `stale_after` or long-unchanged high-degree concepts.
 6. **Trust gaps** — schema-declared high-impact types (`x-impact: high` on the owning plugin) with `verified: false`.
 7. **Frontmatter completeness** — `type`, `title`, `description`, `timestamp`.
-8. **Migration** — if `okf_version` is missing or `0.1`, plan upgrade to `0.2`.
+8. **Migration** — if `okf_version` is missing or `0.1`, plan upgrade to `0.2`. Noun split (0.8 family): follow `docs/user_guide/noun-ownership-migration.md` — install owning plugins first; retype only DEKC pipeline `Workflow` → `IngestionJob`; do not invent domain nouns here.
 
 ## Process
 
@@ -40,6 +40,7 @@ Keep the knowledge graph healthy and reviewable. This plugin owns Catalog + Cont
    - Add `catalogs/`, `knowledge/`, `packs/` only if missing
    - Do not seed AgentNode / Workflow / TicketLink catalogs (those belong to AGER / PKC)
    - Do not delete legacy concepts
+6. For the 0.8 noun-ownership cut: do not retype files just because this plugin no longer ships their schema. Install the owning plugin. See `docs/user_guide/noun-ownership-migration.md`.
 
 ## Report template
 
