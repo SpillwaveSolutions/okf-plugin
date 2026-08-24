@@ -1,72 +1,89 @@
 {
   "name": "okf-core-concept-schemas",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "okf_version": "0.2",
-  "schema_version": 1,
-  "description": "Shared OKF concept envelope and core types. Domain plugins add their own schemas/okf-concepts/ directories; validators merge registries.",
+  "schema_version": 2,
+  "description": "Base OKF envelope plus the two infrastructure nouns this plugin owns: Catalog and ContextPack. Domain nouns live in PKC, SAC, DEKC, and AGER.",
   "base": "BaseConcept.schema.json",
   "plugin": "okf-plugin",
   "concepts": [
     "BaseConcept",
     "Catalog",
-    "ContextPack",
-    "Project",
-    "TicketLink",
-    "Epic",
-    "Story",
-    "Task",
-    "Subtask",
-    "Bug",
-    "Branch",
-    "DecisionRecord",
-    "Feature",
-    "AgentNode",
-    "Workflow",
-    "Harness",
-    "SharedState",
-    "ToolCapability",
-    "Dataset",
-    "Table",
-    "Metric",
-    "Playbook",
-    "Runbook",
-    "API",
-    "Reference"
+    "ContextPack"
   ],
   "catalogs": {
-    "tickets": { "owner": "okf-plugin", "types": ["TicketLink"] },
-    "epics": { "owner": "project-knowledge-capture", "types": ["Epic"] },
-    "stories": { "owner": "project-knowledge-capture", "types": ["Story"] },
-    "tasks": { "owner": "project-knowledge-capture", "types": ["Task"] },
-    "subtasks": { "owner": "project-knowledge-capture", "types": ["Subtask"] },
-    "bugs": { "owner": "project-knowledge-capture", "types": ["Bug"] },
-    "branches": { "owner": "project-knowledge-capture", "types": ["Branch"] },
-    "decisions": { "owner": "project-knowledge-capture", "types": ["DecisionRecord"] },
-    "features": { "owner": "project-knowledge-capture", "types": ["Feature"] },
-    "projects": { "owner": "okf-plugin", "types": ["Project"] },
-    "packs": { "owner": "shared", "types": ["ContextPack"], "indexed": false },
-    "agents": { "owner": "okf-plugin", "types": ["AgentNode"] },
-    "workflows": { "owner": "okf-plugin", "types": ["Workflow"] }
+    "packs": {
+      "owner": "okf-plugin",
+      "types": [
+        "ContextPack"
+      ],
+      "indexed": false
+    },
+    "catalogs": {
+      "owner": "okf-plugin",
+      "types": [
+        "Catalog"
+      ]
+    }
   },
   "catalog_ownership": {
-    "okf-plugin": ["tickets", "agents", "workflows", "projects"],
+    "okf-plugin": [
+      "packs",
+      "catalogs"
+    ],
     "project-knowledge-capture": [
-      "meetings", "experiments", "discoveries", "decisions", "assumptions",
-      "questions", "features", "requirements", "specs", "designs", "releases",
-      "code", "packages", "tickets", "epics", "stories", "tasks", "subtasks",
-      "bugs", "branches", "projects", "risks", "acceptance"
+      "meetings",
+      "experiments",
+      "discoveries",
+      "decisions",
+      "assumptions",
+      "questions",
+      "features",
+      "requirements",
+      "specs",
+      "designs",
+      "releases",
+      "code",
+      "packages",
+      "tickets",
+      "epics",
+      "stories",
+      "tasks",
+      "subtasks",
+      "bugs",
+      "branches",
+      "projects",
+      "risks",
+      "acceptance"
     ],
-    "system-architecture-capture": ["modules", "services", "systems", "apis", "environments"],
+    "system-architecture-capture": [
+      "modules",
+      "services",
+      "systems",
+      "apis",
+      "environments"
+    ],
     "data-engineering-knowledge-capture": [
-      "tables", "views", "streams", "lakes", "marts", "metrics", "dashboards"
+      "tables",
+      "views",
+      "streams",
+      "lakes",
+      "marts",
+      "metrics",
+      "dashboards"
     ],
-    "okf-agent-graph": ["runtime", "ops", "memory", "evaluation"]
+    "okf-agent-graph": [
+      "runtime",
+      "ops",
+      "memory",
+      "evaluation",
+      "agents",
+      "workflows"
+    ]
   },
   "notes": {
-    "Module": "In a shared second brain, Module lives in modules/ (SAC convention). PKC historically aliased Module → packages/; new writes should use modules/.",
-    "Package": "Build unit. Always packages/.",
-    "Dashboard": "DEKC = BI dashboard. SAC = observability dashboard. Same type name, different catalogs (dashboards/ vs observability/).",
-    "required_fields": "BaseConcept v1 requires only type + title. Per-type extras live in x-recommended and warn (error only with --strict).",
-    "work_items": "Epic/Story/Task/Subtask/Bug are first-class. TicketLink remains the generic/legacy projection. Branch is the source-control concept."
+    "nouns": "okf-plugin owns Catalog and ContextPack only. Unknown types fall back to BaseConcept for read-only envelope parsing; validate --strict rejects them.",
+    "impact": "Domain plugins declare x-impact on their schemas (high|medium). Core has none.",
+    "required_fields": "BaseConcept v1 requires only type + title."
   }
 }

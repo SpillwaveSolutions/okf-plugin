@@ -1,5 +1,5 @@
 ---
-type: DecisionRecord
+type: Catalog
 title: Ship as one Claude Code plugin
 description: Deliver okf-graph-eng as a single Claude Code plugin so Grok Build gets zero-config compatibility.
 status: accepted

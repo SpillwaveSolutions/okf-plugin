@@ -1,6 +1,6 @@
 ---
 name: okf-impact
-description: Compute the transitive impact (blast radius / ripple) of changing a concept in an OKF bundle. Use when the user asks what depends on a concept, what breaks if something changes, needs a ranked update list, or wants blast-radius / ripple analysis before editing agents, workflows, or knowledge nodes.
+description: Compute the transitive impact (blast radius / ripple) of changing a concept in an OKF bundle. Use when the user asks what depends on a concept, what breaks if something changes, needs a ranked update list, or wants blast-radius / ripple analysis before editing knowledge nodes.
 ---
 
 # OKF Impact Analysis
@@ -8,6 +8,8 @@ description: Compute the transitive impact (blast radius / ripple) of changing a
 ## Goal
 
 Given a concept ID/path (or a proposed change), return the full affected subgraph plus a practical update order.
+
+Criticality is **not** a hardcoded type list in this plugin. Domain plugins declare `x-impact: high|medium` on their schemas. Isolated, every type is `low`.
 
 ## Process
 
@@ -23,7 +25,7 @@ Given a concept ID/path (or a proposed change), return the full affected subgrap
    - **Outbound** closure — what the concept depends on / routes to
    - **Inbound** closure — who cites / depends on / routes through it
    - **Direct typed edges** — `direct_edges` in impact JSON (`routes_to`, `depends_on`, …)
-4. **Classify** nodes by type and trust/lifecycle (`verified`, `status`, `stale_after`).
+4. **Classify** nodes by type and trust/lifecycle (`verified`, `status`, `stale_after`) plus schema `x-impact`.
 5. **Produce two outputs:**
    - **Human report** — ranked list (critical → low), with reasons and suggested actions
    - **Structured JSON** (optional): `{ target, inbound, outbound, direct_edges, suggested_order }`
@@ -32,8 +34,9 @@ Given a concept ID/path (or a proposed change), return the full affected subgrap
 
 | Signal | Effect on rank |
 |--------|----------------|
-| Type `AgentNode`, `Workflow`, `Harness`, `SharedState` | Higher impact |
-| `verified: false` on high-type nodes | Escalate to critical |
+| Schema `x-impact: high` (owning plugin) | Higher impact |
+| `verified: false` on high-impact types | Escalate one level (`high` → `critical`, `medium` → `high`) |
+| `x-impact` unset / low | Never escalates |
 | `status: deprecated` | Flag for cleanup, lower urgency for feature work |
 | Shallow hop depth with many dependents | Higher priority |
 | Leaf knowledge nodes | Usually lower |
@@ -68,5 +71,5 @@ Given a concept ID/path (or a proposed change), return the full affected subgrap
 
 ## Related
 
-- Progressive disclosure packs: use `okf-query` / `okf-graph.py subgraph`
+- Progressive disclosure packs: use `okf-query` / `okf-graph.py pack`
 - Validation before big refactors: `okf-validate`

@@ -27,11 +27,11 @@ python3 scripts/okf-graph.py orphans <bundle>
 
 | Command | Output |
 |---------|--------|
-| `impact` | Inbound/outbound closures, typed `direct_edges`, suggested update order (JSON) |
+| `impact` | Inbound/outbound closures, typed `direct_edges`, suggested update order (JSON). Criticality from sibling schema `x-impact`. |
 | `backlinks` | Concepts linking *to* the target, with their rels (JSON) |
 | `subgraph` | Undirected N-hop neighborhood: nodes + edges (JSON) |
-| `pack` | Progressive disclosure pack; JSON includes ready-to-paste `markdown`. Outbound-only by default — `--undirected` also walks inbound edges, which can flood via hub indexes |
-| `edges` | Edge list; filter by `--rel routes_to` etc. |
+| `pack` | Progressive disclosure pack; JSON includes ready-to-paste `markdown`. Outbound-only by default — `--undirected` also walks inbound edges, which can flood via hub Catalog indexes |
+| `edges` | Edge list; filter by `--rel depends_on` etc. |
 | `graph` | Whole bundle or `--focus` neighborhood. `--format json` prints JSON; `mermaid` (default) and `html` print the artifact itself |
 | `validate` | Conformance + broken links + links pointing outside the bundle + unverified high-impact (JSON). Link checks cover the root `index.md`/`log.md` too — only their `type`/`title` is exempt. `--strict` also exits non-zero on warnings — used by CI |
 | `orphans` | Concepts with no inbound or outbound edges (JSON) |
@@ -40,7 +40,7 @@ The `html` view is fully self-contained: Mermaid source plus concept/edge
 tables, no CDN or network fetches.
 
 ```bash
-python3 scripts/okf-graph.py graph sample-okf --focus agents/graph-engineer.md --hops 1
+python3 scripts/okf-graph.py graph sample-okf --focus knowledge/plugin-architecture.md --hops 1
 python3 scripts/okf-graph.py graph sample-okf --format html > docs/okf-graph.html
 ```
 
@@ -50,33 +50,31 @@ Typed edges come from Markdown links plus optional frontmatter `links[].rel`.
 
 Every command taking a `<concept>` resolves it in tiers, most specific first:
 
-1. Exact bundle-relative path (`agents/graph-engineer.md`)
-2. File stem or frontmatter title (`graph-engineer`)
-3. Path suffix (`graph-engineer.md`)
+1. Exact bundle-relative path (`knowledge/plugin-architecture.md`)
+2. File stem or frontmatter title (`plugin-architecture`)
+3. Path suffix (`plugin-architecture.md`)
 
 A tier matching **more than one** concept is ambiguous: the command prints
 every candidate and exits `1` rather than picking one.
 
 ```console
 $ python3 scripts/okf-graph.py impact sample-okf index
-{"error": "ambiguous concept: index", "candidates": ["agents/index.md", "decisions/index.md", "index.md", ...]}
+{"error": "ambiguous concept: index", "candidates": ["knowledge/index.md", "index.md", ...]}
 ```
 
 Full paths — what the skills pass — are never ambiguous. Shorthand that used to
 resolve by iteration order now errors instead, so pass the full path when a stem
 is shared across directories.
 
-## `scripts/okf-ticket-link.py`
+## TicketLink (moved to PKC)
 
-Emit OKF `TicketLink` concepts from WikiTicket worklog items.
+`scripts/okf-ticket-link.py` is a stub as of 0.8.0. TicketLink is a **PKC** noun.
 
 ```bash
-bin/worklog fold | python3 scripts/okf-ticket-link.py emit --bundle <bundle> --open-only
-python3 scripts/okf-ticket-link.py emit --bundle <bundle> --id <ULID> --title "..." --github-issue N
-python3 scripts/okf-ticket-link.py emit --bundle <bundle> --dry-run   # preview paths
+bin/worklog fold | python3 path/to/project-knowledge-capture/scripts/pkc_ticket_link.py emit --bundle <bundle> --open-only
+python3 path/to/project-knowledge-capture/scripts/pkc_ticket_link.py emit --bundle <bundle> --id <ULID> --title "..." --github-issue N
+python3 path/to/project-knowledge-capture/scripts/pkc_ticket_link.py emit --bundle <bundle> --dry-run
 ```
-
-Default GitHub project: `SpillwaveSolutions/okf-plugin`.
 
 ## `scripts/okf-hook-validate.sh`
 
@@ -116,8 +114,9 @@ the subcommands.
 ## Tests
 
 ```bash
-python3 tests/test_okf_graph.py -q      # graph engine — 25 cases
-bash tests/test_okf_curate.sh           # post-edit hook — 5 checks
+python3 tests/test_okf_graph.py -q      # graph engine
+python3 tests/test_okf_schema.py        # Catalog / ContextPack / envelope
+bash tests/test_okf_curate.sh           # post-edit hook
 ```
 
 Both are plain asserts: no test framework, no dependencies. They run in CI
@@ -155,3 +154,4 @@ okf validate <bundle>
 okf graph <bundle>
 # okfcli variants if installed as okfcli
 ```
+

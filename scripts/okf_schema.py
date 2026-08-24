@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """Shared OKF concept-schema loader and subset validator.
 
-Stdlib only. Soft by default: missing recommended fields and unknown types
-are warnings. Required on BaseConcept v1 is type + title only.
+Stdlib only. Soft by default: missing recommended fields are warnings.
+Unknown types fall back to BaseConcept for *read-only* envelope parsing
+(type + title). That fallback does not authorize a write. ``strict=True``
+(``validate --strict``) is fail-closed: unknown types are errors.
 
 Domain plugins call:
 
@@ -126,11 +128,14 @@ class SchemaRegistry:
 
         schema = self.schema_for(type_name) if type_name else None
         if type_name and schema is None:
-            if type_name not in ("", "Unknown", "Index", "Catalog"):
+            # Read path: parse the BaseConcept envelope so pack/impact still
+            # walk the node. Write path: --strict rejects the unknown type.
+            # Fallback is never a write authorization.
+            if type_name not in ("", "Unknown"):
                 issues.append(
                     Issue(
-                        "info",
-                        f"unknown type `{type_name}` — falling back to BaseConcept",
+                        "error" if strict else "info",
+                        f"unknown type `{type_name}` — BaseConcept fallback is read-only",
                         path,
                         type_name,
                     )

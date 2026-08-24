@@ -1,5 +1,5 @@
 ---
-type: Playbook
+type: Catalog
 title: okf-impact skill
 description: Key differentiator — transitive impact / blast-radius analysis over OKF concepts.
 tags: [skill, impact, playbook]

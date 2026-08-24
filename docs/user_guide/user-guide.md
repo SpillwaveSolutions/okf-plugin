@@ -12,31 +12,50 @@ Day-to-day use of **okf-graph-eng** on an OKF repository.
 
 ## Concepts
 
-The plugin treats your OKF bundle as a **dual graph**:
+The plugin treats your OKF bundle as a **directed graph** of Markdown + YAML. It is a **read-path optimizer**, not a capture plugin.
 
-1. **Knowledge graph** — datasets, metrics, runbooks, APIs, references  
-2. **Agent / harness graph** — `AgentNode`, `Workflow`, `SharedState`, `DecisionRecord`, `ToolCapability`, `TicketLink`
+Nouns this plugin owns:
+
+| Noun | Role |
+|------|------|
+| `Catalog` | Directory index. Structural. Outbound-only pack walks skip flooding through hub catalogs. |
+| `ContextPack` | Generated progressive-disclosure view: ranked, hop-capped, node-capped subgraph. |
+
+Everything else (`AgentNode`, `TicketLink`, `Dataset`, `System`, …) is owned by PKC / SAC / DEKC / AGER. Unknown types fall back to `BaseConcept` for **read-only** envelope parsing (`type` + `title` only). That fallback does not authorize a write. `--strict` rejects unknown types.
 
 Edges are absolute Markdown links (`[Label](/path/to/concept.md)`). Optional typed relations live in frontmatter:
 
 ```yaml
 links:
-  - target: /agents/writer.md
-    rel: routes_to
+  - target: /knowledge/plugin-architecture.md
+    rel: depends_on
 ```
+
+## How ContextPacks optimize reads
+
+`okf-graph.py pack` (skill `okf-query`) is how a long-running agent should *read* an OKF tree. It is deliberately lossy.
+
+1. **Outbound-only walk.** Catalog indexes that link to every child are hubs. Walking them undirected dumps the whole bundle. `--undirected` exists for neighborhood exploration. Prefer `impact` for “what would break?”.
+2. **Hop cap (default 2).** Two hops is usually entry → collaborator → evidence. Hop 3 is a debug knob. Unlimited closure is `impact`, not `pack`.
+3. **Node cap (default 20).** Ranked overflow goes in `## Excluded (available on request)`.
+4. **Trust-first ranking.** Entry first, then verified, then schema-declared high-impact (`x-impact: high` on the owning plugin), then title. Isolated, this plugin has no high-impact types.
+5. **Read order ≠ inclusion order.** The model sees the question first, then dangerous neighbors, then supporting evidence.
+6. **Criticality for impact (not pack).** `x-impact: high` + unverified → **critical**. `medium` + unverified → **high**. Unset/low never escalates.
+
+Sibling PKC / DEKC / AGER packs wrap this graph with a **fail-closed token budget** (default ¼ of `SECOND_BRAIN_WINDOW_TOKENS`). Use this plugin’s `pack` for a portable subgraph. Use the domain pack when you must fit a model window.
 
 ## Common workflows
 
 ### Scaffold a bundle
 
-- Slash: `/okf-init`  
+- Slash: `/okf-init`
 - Or ask to initialize an OKF graph-engineering bundle (skill: `okf-init-graph`)
 
-Default tree: `.okf/` with `agents/`, `workflows/`, `knowledge/`, `decisions/`, `shared/`, `tickets/`, plus `index.md` and `log.md`.
+Default tree: `.okf/` with `catalogs/`, `knowledge/`, `packs/`, plus `index.md` and `log.md`. Do **not** seed AgentNode / Workflow / TicketLink here — those belong to AGER and PKC.
 
 ### Author concepts
 
-Use skill `okf-author` (or `/okf-author`). Every concept needs at least `type`, `title`, `description`, `timestamp`.
+Use skill `okf-author` (or `/okf-author`) for Catalog, ContextPack, and envelope files. Every concept needs at least `type`, `title`, `description`, `timestamp`. Domain nouns: use the owning plugin.
 
 ### Impact before structure changes
 
@@ -45,13 +64,9 @@ python3 scripts/okf-graph.py impact <bundle> <concept>
 # or /okf-impact
 ```
 
-Prefer this before renaming or splitting high-degree agents, workflows, or shared state.
+Prefer this before renaming or splitting high-degree concepts.
 
-Each affected concept carries a **criticality** tier derived from its type —
-`AgentNode`, `Workflow`, `Harness`, `SharedState` are high; `Dataset`, `Table`,
-`Metric`, `API`, `ToolCapability` are medium; everything else is low. A concept
-that is not `verified` escalates one level: `medium` → `high`, `high` →
-`critical`. `low` never escalates — an unverified `Reference` is not news.
+Criticality comes from the owning plugin’s schema `x-impact` field, not a hardcoded type list in this repo. A concept that is not `verified` escalates one level: `medium` → `high`, `high` → `critical`. `low` never escalates.
 
 `<concept>` is a bundle-relative path, a stem, or a title. If a shorthand
 matches several concepts the command lists every candidate and exits `1` instead
@@ -59,7 +74,7 @@ of guessing:
 
 ```console
 $ python3 scripts/okf-graph.py impact sample-okf index
-{"error": "ambiguous concept: index", "candidates": ["agents/index.md", "decisions/index.md", "index.md", ...]}
+{"error": "ambiguous concept: index", "candidates": ["knowledge/index.md", "index.md", ...]}
 ```
 
 Pass the full path to disambiguate.
@@ -105,8 +120,7 @@ exit non-zero. **Warnings** print but still exit `0`:
 - `link outside bundle → …` — a link whose target resolves above the bundle
   root, usually a mistyped `../../`. It is not an edge, so it used to vanish
   silently; it is now reported
-- an unverified high-impact concept
-- a `TicketLink` with no `external_id`/`worklog_id`
+- an unverified high-impact concept (from sibling `x-impact`, not a core type list)
 
 Use `--strict` to make warnings gate CI. Every skill and the post-edit hook call
 the lenient form.
@@ -124,7 +138,7 @@ still wants a `type` and `title`.
 
 ```bash
 python3 scripts/okf-graph.py orphans <bundle>    # concepts with no edges either way
-python3 scripts/okf-graph.py edges <bundle> --rel routes_to
+python3 scripts/okf-graph.py edges <bundle> --rel depends_on
 # or /okf-maintain
 ```
 
@@ -143,18 +157,20 @@ bundle a failed validate is fail-closed (non-zero).
 
 ### Tickets (WikiTicket / worklog)
 
-This repo is managed with [WikiTicket SDD](https://github.com/SpillwaveSolutions/wiki_ticket_sdd). Map work items into OKF:
+This repo is managed with [WikiTicket SDD](https://github.com/SpillwaveSolutions/wiki_ticket_sdd). Map work items into OKF with **PKC**:
 
 ```bash
-bin/worklog fold | python3 scripts/okf-ticket-link.py emit --bundle sample-okf --open-only
+bin/worklog fold | python3 path/to/project-knowledge-capture/scripts/pkc_ticket_link.py emit --bundle knowledge --open-only
 ```
+
+`scripts/okf-ticket-link.py` in this repo is a stub (moved in 0.8.0).
 
 ## Sample bundle
 
-`sample-okf/` models **this plugin** as both knowledge and agent graph. Use it as a template and for demos.
+`sample-okf/` is a self-describing **Catalog + ContextPack** bundle about this engine. It is not an AGER graph.
 
 ## See also
 
-- [[CLI-Reference]] — scripts and flags  
-- [[Plugin-Guide]] — install on Claude Code / Grok Build  
-- [[Roadmap]] — generated from the worklog  
+- [[CLI-Reference]] — scripts and flags
+- [[Plugin-Guide]] — install on Claude Code / Grok Build
+- [[Roadmap]] — generated from the worklog

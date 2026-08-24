@@ -1,13 +1,13 @@
 ---
 name: okf-visualize
-description: Visualize OKF bundles as Mermaid, HTML summaries, or JSON graphs with agent-graph overlays. Use when the user wants a diagram of knowledge or agent routing, an HTML map, export for docs, or to see harness topology.
+description: Visualize OKF bundles as Mermaid, HTML summaries, or JSON graphs. Use when the user wants a diagram of knowledge, an HTML map, or export for docs.
 ---
 
 # OKF Visualize
 
 ## Goal
 
-Produce readable graph views of the OKF dual graph, with optional **agent-graph overlays** (agents, workflows, routes).
+Produce readable graph views of an OKF bundle. Type styling comes from frontmatter `type` — this plugin does not special-case AgentNode or other domain nouns.
 
 ## Output modes
 
@@ -35,28 +35,26 @@ Produce readable graph views of the OKF dual graph, with optional **agent-graph 
    itself, so they pipe straight into a doc or a file. Node IDs come from the
    full concept path, so the bundle's many `index.md` files stay distinct.
 3. Choose layout:
-   - **Knowledge view** — hide pure harness types or style them differently
-   - **Agent view** — emphasize `AgentNode`, `Workflow`, `SharedState`, route edges
-   - **Combined** — full dual graph with type-based styling
+   - **Whole bundle** — default
+   - **Focus** — `--focus` + hops for a neighborhood
+   - **By type** — filter on frontmatter `type` when the user asks
 4. Emit artifact to the path the user requested (or inline Mermaid in chat).
 
 ## Mermaid conventions
 
 ```mermaid
 graph LR
-  subgraph Agents
-    R[Researcher]
-    W[Writer]
+  subgraph Catalogs
+    C[Knowledge catalog]
   end
   subgraph Knowledge
-    K[Orders Table]
+    K[Plugin architecture]
   end
-  R -->|routes_to| W
-  W -->|depends_on| K
+  C -->|related_to| K
 ```
 
 - Use node labels = titles; keep IDs filesystem-safe.
-- Edge labels optional (`routes_to`, `depends_on`).
+- Edge labels optional (`depends_on`, `related_to`).
 - Cap diagrams at ~40 nodes; otherwise filter or multi-diagram by subgraph.
 
 ## HTML
@@ -85,9 +83,9 @@ never re-add a CDN `<script>` to make it "render properly".
 
 - Never invent edges; only render discovered links.
 - State hop limits and filters in the diagram title/subtitle.
-- For huge bundles, default to agent-view or 2-hop focus rather than a hairball.
+- For huge bundles, default to 2-hop focus rather than a hairball.
 
 ## Done when
 
 - User has a Mermaid block and/or file artifact matching the requested mode
-- Legend or caption explains filters and dual-graph overlay
+- Legend or caption explains filters

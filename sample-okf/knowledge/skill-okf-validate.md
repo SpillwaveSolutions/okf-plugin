@@ -1,5 +1,5 @@
 ---
-type: Playbook
+type: Catalog
 title: okf-validate skill
 description: Validate OKF structural conventions and graph quality (links, orphans, trust gaps).
 tags: [skill, validate]

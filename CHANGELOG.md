@@ -1,5 +1,29 @@
 # Changelog
 
+## 0.8.0 — 2026-08-24
+
+### Changed
+
+- **Noun split.** Core owns `Catalog` and `ContextPack` only. Domain schemas
+  (`TicketLink`, `Feature`, `Epic`/`Story`/`Task`/`Subtask`/`Bug`/`Branch`/`Project`,
+  `DecisionRecord`, …) moved to PKC. Agent/harness types were never supposed to
+  live here; AGER owns them. DEKC keeps the data plane.
+- Impact criticality is loaded from sibling schema `x-impact` instead of a
+  hardcoded `AgentNode` / `Dataset` list. Isolated CI sees every type as `low`.
+- `scripts/okf-ticket-link.py` is a stub. Emission lives in PKC
+  (`scripts/pkc_ticket_link.py`).
+- `sample-okf/` is Catalog + ContextPack only (24 files / 89 edges). Unknown
+  types are not a write authorization; `validate --strict` rejects them.
+- README rewritten around OKF + how ContextPacks optimize reads
+  (outbound-only, hop cap, node cap, trust-first ranking, read order).
+- Domain templates (`agent-node`, `workflow`, `ticket-link`, `decision-record`,
+  `shared-state`) removed from `okf-author` / `okf-init-graph`.
+- Plugin description / keywords no longer claim agent-graph or TicketLink.
+
+### Added
+
+- Schema registry 2.0.0: `BaseConcept`, `Catalog`, `ContextPack`.
+
 ## 0.7.4
 
 - Three-host hooks: Codex + Cursor-native when Claude hooks exist.
