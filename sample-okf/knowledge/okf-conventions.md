@@ -20,8 +20,7 @@ This engine owns `Catalog` and `ContextPack` only. `validate --strict` rejects
 unknown types (fail-closed). BaseConcept fallback is read-only envelope
 parsing — it does not authorize writing an unregistered type.
 
-Domain types (`AgentNode`, `TicketLink`, `DecisionRecord`, `Dataset`, `System`,
-…) are authored by AGER, PKC, DEKC, and SAC.
+Domain types are authored by AGER, PKC, DEKC, and SAC — not this plugin.
 
 ## Links
 
