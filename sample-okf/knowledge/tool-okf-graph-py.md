@@ -31,7 +31,7 @@ python3 scripts/okf-graph.py orphans <bundle>
 other subcommands, while `mermaid` (default) and `html` print the artifact
 itself. The `html` view is self-contained — no CDN, no network fetches.
 
-Related: `scripts/okf-ticket-link.py` is a stub. TicketLink emission lives in PKC.
+Related: `scripts/okf-ticket-link.py` is a stub. Work-item emission lives in PKC.
 
 ## Used by
 

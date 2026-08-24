@@ -170,10 +170,10 @@ def test_strict_promotes_recommended_to_error():
 def test_strict_unknown_type_is_error_not_write_authorization():
     """Fallback parses the envelope; --strict must not treat that as a valid write."""
     reg = load_default_registry()
-    soft = reg.validate_frontmatter({"type": "AgentNode", "title": "x"})
+    soft = reg.validate_frontmatter({"type": "NotARegisteredType", "title": "x"})
     assert any(i.severity == "info" and "unknown type" in i.message for i in soft)
     assert not any(i.severity == "error" and "unknown type" in i.message for i in soft)
-    hard = reg.validate_frontmatter({"type": "AgentNode", "title": "x"}, strict=True)
+    hard = reg.validate_frontmatter({"type": "NotARegisteredType", "title": "x"}, strict=True)
     assert any(i.severity == "error" and "unknown type" in i.message for i in hard)
     assert any("read-only" in i.message for i in hard)
 
