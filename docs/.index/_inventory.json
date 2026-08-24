@@ -151,6 +151,15 @@
    "wiki_key": "cli-reference"
   },
   {
+   "canonical_key": "guide/noun-ownership-migration",
+   "doc_type": "guide",
+   "slug": "noun-ownership-migration",
+   "source": "docs/user_guide/noun-ownership-migration.md",
+   "title": "Noun-ownership migration",
+   "truth_state": "current",
+   "wiki_key": "noun-ownership-migration"
+  },
+  {
    "canonical_key": "guide/plugin-guide",
    "doc_type": "guide",
    "slug": "plugin-guide",
@@ -278,11 +287,11 @@
   {
    "canonical_key": "roadmap",
    "doc_type": "roadmap",
-   "generated_at": "2026-08-24T13:30:56Z",
-   "git_hash": "ef1ce4c",
+   "generated_at": "2026-08-24T15:55:50Z",
+   "git_hash": "5425b7b",
    "slug": "roadmap",
    "source": "docs/roadmap.md",
-   "source_hash": "f15935af",
+   "source_hash": "a739063a",
    "title": "Roadmap",
    "truth_state": "current",
    "wiki": "https://github.com/SpillwaveSolutions/okf-plugin/wiki/Roadmap",

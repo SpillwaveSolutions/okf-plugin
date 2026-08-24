@@ -11,7 +11,7 @@
       "name": "okf-graph-eng",
       "source": "./",
       "description": "OKF graph engine \u2014 Catalog, ContextPack, impact, progressive-disclosure packs.",
-      "version": "0.8.0",
+      "version": "0.8.1",
       "author": {
         "name": "Rick Hightower"
       },

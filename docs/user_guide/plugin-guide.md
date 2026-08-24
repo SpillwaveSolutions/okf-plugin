@@ -15,7 +15,7 @@ Install and host notes for **okf-graph-eng**.
 | Field | Value |
 |-------|--------|
 | Name | `okf-graph-eng` |
-| Version | see root `plugin.json` (0.8.0) |
+| Version | see root `plugin.json` (0.8.1) |
 | Marketplace | `okf-plugin-marketplace` |
 | Repo | https://github.com/SpillwaveSolutions/okf-plugin |
 | Nouns | `Catalog`, `ContextPack` |

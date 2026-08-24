@@ -1,5 +1,5 @@
 {
- "git_hash": "ef1ce4c",
+ "git_hash": "5425b7b",
  "pages": [
   {
    "frozen": false,
@@ -45,7 +45,7 @@
    "frozen": false,
    "page_name": "Index-Traceability",
    "render": "as-is",
-   "render_hash": "79c805f897e2",
+   "render_hash": "da2bef054ef5",
    "source": "docs/.index/rendered/traceability.md",
    "title": "Traceability Index",
    "truth_state": "current",
@@ -180,6 +180,16 @@
    "title": "Release v0.8.0",
    "truth_state": "shipped",
    "wiki_key": "release/v0.8.0"
+  },
+  {
+   "frozen": false,
+   "page_name": "Release-v0.8.1",
+   "render": "as-is",
+   "render_hash": "b9a065e08e5b",
+   "source": "docs/.index/rendered/releases/v0.8.1.md",
+   "title": "Release v0.8.1",
+   "truth_state": "shipped",
+   "wiki_key": "release/v0.8.1"
   },
   {
    "frozen": false,
@@ -772,6 +782,16 @@
    "wiki_key": "item/01M0SZF33A0WAYMDR6QFEZ2AFH"
   },
   {
+   "frozen": false,
+   "page_name": "Ticket-01M0T3YW1JKDG62D34SJ5YKG4M",
+   "render": "as-is",
+   "render_hash": "8e2a8df78a81",
+   "source": "docs/.index/rendered/tickets/01M0T3YW1JKDG62D34SJ5YKG4M.md",
+   "title": "Noun-ownership migration guide for existing second brains",
+   "truth_state": "done",
+   "wiki_key": "item/01M0T3YW1JKDG62D34SJ5YKG4M"
+  },
+  {
    "banner": "> **Snapshot** of release v0.3.0 (2026-08-01) \u2014 frozen record. The current version is [[Code-Walkthrough]].",
    "frozen": true,
    "page_name": "Code-Walkthrough-2026-08-01_v0.3.0-release",
@@ -882,11 +902,23 @@
   {
    "banner": "> **Current** \u2014 this is the living version. Historical snapshots are linked from [[Index-Releases]].",
    "frozen": false,
+   "page_name": "Noun-ownership-migration",
+   "render": "doc+banner",
+   "render_hash": "5b8b4ae38db1",
+   "source": "docs/user_guide/noun-ownership-migration.md",
+   "source_hash": "fb013cc423e3",
+   "title": "Noun-ownership migration",
+   "truth_state": "current",
+   "wiki_key": "guide/noun-ownership-migration"
+  },
+  {
+   "banner": "> **Current** \u2014 this is the living version. Historical snapshots are linked from [[Index-Releases]].",
+   "frozen": false,
    "page_name": "Plugin-Guide",
    "render": "doc+banner",
-   "render_hash": "6bd99bc8d7e7",
+   "render_hash": "e0a27ac728e3",
    "source": "docs/user_guide/plugin-guide.md",
-   "source_hash": "e1037f6567e2",
+   "source_hash": "5e6ff97e5a03",
    "title": "Plugin Guide",
    "truth_state": "current",
    "wiki_key": "guide/plugin-guide"
@@ -896,9 +928,9 @@
    "frozen": false,
    "page_name": "User-Guide",
    "render": "doc+banner",
-   "render_hash": "1922d07870ba",
+   "render_hash": "6d8b5ba054d8",
    "source": "docs/user_guide/user-guide.md",
-   "source_hash": "6d8f8be64526",
+   "source_hash": "c293a40bcb39",
    "title": "User Guide",
    "truth_state": "current",
    "wiki_key": "guide/user-guide"
@@ -952,11 +984,11 @@
    "wiki_key": "plan/2026-08-07-worklog-0-22-2-upgrade"
   },
   {
-   "banner": "> **Current** \u2014 this is the living version; regenerated at 2026-08-24T13:30:56Z. Historical snapshots are linked from [[Index-Releases]].",
+   "banner": "> **Current** \u2014 this is the living version; regenerated at 2026-08-24T15:55:50Z. Historical snapshots are linked from [[Index-Releases]].",
    "frozen": false,
    "page_name": "Roadmap",
    "render": "doc+banner",
-   "render_hash": "d6cc8c93dbd6",
+   "render_hash": "78838fc07c3e",
    "source": "docs/roadmap.md",
    "source_hash": "e34b3272b2d1",
    "title": "Roadmap",
