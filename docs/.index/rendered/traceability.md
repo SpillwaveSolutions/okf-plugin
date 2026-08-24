@@ -2,6 +2,10 @@
 
 _The evidence chain: plan → item → ticket → code → release, forward and backward. Generated from `docs/.index/_graph.json`; do not edit._
 
+### Split domain nouns out of okf-plugin (Catalog + ContextPack only)
+`01M0SZF33A0WAYMDR6QFEZ2AFH` · status: todo
+- targets: release/v0.8.0
+
 ### Restore the repo-local test gates the upgrade removed from pre-commit
 `01KZD84S62B5TWKQSX4XV9848M` · status: done
 - belongs-to: Upgrade the vendored worklog tooling to 0.22.2

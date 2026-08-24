@@ -87,7 +87,18 @@ def test_sample_okf_has_zero_schema_errors():
     assert proc.returncode == 0, proc.stdout + proc.stderr
     out = json.loads(proc.stdout)
     assert out["error_count"] == 0, out["issues"]
-    assert out["concept_count"] == 22
+    assert out["concept_count"] == 24
+    proc = subprocess.run(
+        [sys.executable, str(REPO / "scripts/okf-graph.py"), "validate", "sample-okf", "--strict"],
+        cwd=REPO,
+        capture_output=True,
+        text=True,
+    )
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+    strict = json.loads(proc.stdout)
+    assert strict["error_count"] == 0 and strict["warn_count"] == 0, strict["issues"]
+    unknown = [i for i in strict["issues"] if "unknown type" in i.get("message", "")]
+    assert not unknown, unknown
 
 
 def test_schemas_subcommand_lists_base():
@@ -154,6 +165,17 @@ def test_strict_promotes_recommended_to_error():
         {"type": "DecisionRecord", "title": "x"}, strict=True
     )
     assert any(i.severity == "error" and "status" in i.message for i in issues)
+
+
+def test_strict_unknown_type_is_error_not_write_authorization():
+    """Fallback parses the envelope; --strict must not treat that as a valid write."""
+    reg = load_default_registry()
+    soft = reg.validate_frontmatter({"type": "AgentNode", "title": "x"})
+    assert any(i.severity == "info" and "unknown type" in i.message for i in soft)
+    assert not any(i.severity == "error" and "unknown type" in i.message for i in soft)
+    hard = reg.validate_frontmatter({"type": "AgentNode", "title": "x"}, strict=True)
+    assert any(i.severity == "error" and "unknown type" in i.message for i in hard)
+    assert any("read-only" in i.message for i in hard)
 
 
 

@@ -12,7 +12,7 @@ Author OKF concept files that the graph engine can pack and impact-analyze.
 1. Every concept file must have YAML frontmatter with at least `type` and `title`.
 2. Include `description` and `timestamp` (ISO-8601) when you have them.
 3. **Nouns this plugin owns:** `Catalog`, `ContextPack`.
-4. Any other `type` is valid (unknown types fall back to BaseConcept) but **should be authored by the plugin that owns that noun**.
+4. Unknown types fall back to BaseConcept for **read-only** envelope parsing. That fallback does **not** authorize a write. `validate --strict` rejects unknown types. Domain nouns must be authored by the plugin that owns them.
 5. For derived or agent-generated content, set `generated: true` and populate `sources`.
 6. Use **absolute** Markdown links: `[Label](/path/to/concept.md)`.
 7. After writing, offer to run validation and, for high-degree nodes, impact analysis.

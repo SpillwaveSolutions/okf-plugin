@@ -82,7 +82,7 @@
     ]
   },
   "notes": {
-    "nouns": "okf-plugin owns Catalog and ContextPack only. Unknown types fall back to BaseConcept.",
+    "nouns": "okf-plugin owns Catalog and ContextPack only. Unknown types fall back to BaseConcept for read-only envelope parsing; validate --strict rejects them.",
     "impact": "Domain plugins declare x-impact on their schemas (high|medium). Core has none.",
     "required_fields": "BaseConcept v1 requires only type + title."
   }

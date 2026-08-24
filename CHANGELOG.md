@@ -12,7 +12,8 @@
   hardcoded `AgentNode` / `Dataset` list. Isolated CI sees every type as `low`.
 - `scripts/okf-ticket-link.py` is a stub. Emission lives in PKC
   (`scripts/pkc_ticket_link.py`).
-- `sample-okf/` retyped to Catalog + Knowledge (same 22 files / 83 edges).
+- `sample-okf/` is Catalog + ContextPack only (24 files / 89 edges). Unknown
+  types are not a write authorization; `validate --strict` rejects them.
 - README rewritten around OKF + how ContextPacks optimize reads
   (outbound-only, hop cap, node cap, trust-first ranking, read order).
 - Domain templates (`agent-node`, `workflow`, `ticket-link`, `decision-record`,

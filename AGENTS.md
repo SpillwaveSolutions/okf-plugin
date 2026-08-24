@@ -27,7 +27,7 @@ This plugin does **not** own domain nouns. It owns the envelope (`BaseConcept`) 
 | `Catalog` | Directory index. Structural. Pack walks skip flooding through hub catalogs by using outbound-only BFS. |
 | `ContextPack` | Generated progressive-disclosure view of a ranked, hop-capped subgraph. |
 
-Domain types live in sibling plugins. Unknown `type` values fall back to `BaseConcept` (`type` + `title` only). Validators merge sibling `schemas/okf-concepts/` directories.
+Domain types live in sibling plugins. Unknown `type` values fall back to `BaseConcept` for read-only envelope parsing (`type` + `title` only). `validate --strict` rejects unknown types. Validators merge sibling `schemas/okf-concepts/` directories.
 
 | Plugin | Owns |
 |--------|------|
@@ -43,7 +43,7 @@ Domain types live in sibling plugins. Unknown `type` values fall back to `BaseCo
 - **Agent** — `agents/graph-engineer.md`
 - **Hooks** — `hooks/hooks.json` → `scripts/okf-hook-validate.sh` (fail-closed validate)
 - **CLI fallback** — `scripts/okf-graph.py`
-- **Sample** — `sample-okf/` (Catalog + Knowledge about this engine; not an AGER graph)
+- **Sample** — `sample-okf/` (Catalog + ContextPack about this engine; not an AGER graph)
 
 Plugin root variable in Claude/Grok plugin context: `${CLAUDE_PLUGIN_ROOT}`.
 

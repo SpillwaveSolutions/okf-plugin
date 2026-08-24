@@ -21,7 +21,7 @@ Nouns this plugin owns:
 | `Catalog` | Directory index. Structural. Outbound-only pack walks skip flooding through hub catalogs. |
 | `ContextPack` | Generated progressive-disclosure view: ranked, hop-capped, node-capped subgraph. |
 
-Everything else (`AgentNode`, `TicketLink`, `Dataset`, `System`, …) is owned by PKC / SAC / DEKC / AGER. Unknown types fall back to `BaseConcept` (`type` + `title` only).
+Everything else (`AgentNode`, `TicketLink`, `Dataset`, `System`, …) is owned by PKC / SAC / DEKC / AGER. Unknown types fall back to `BaseConcept` for **read-only** envelope parsing (`type` + `title` only). That fallback does not authorize a write. `--strict` rejects unknown types.
 
 Edges are absolute Markdown links (`[Label](/path/to/concept.md)`). Optional typed relations live in frontmatter:
 
@@ -167,7 +167,7 @@ bin/worklog fold | python3 path/to/project-knowledge-capture/scripts/pkc_ticket_
 
 ## Sample bundle
 
-`sample-okf/` is a self-describing **Catalog + Knowledge** bundle about this engine. It is not an AGER graph.
+`sample-okf/` is a self-describing **Catalog + ContextPack** bundle about this engine. It is not an AGER graph.
 
 ## See also
 

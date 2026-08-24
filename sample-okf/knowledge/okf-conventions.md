@@ -1,5 +1,5 @@
 ---
-type: Knowledge
+type: Catalog
 title: OKF conventions
 description: Frontmatter, types, absolute links, and dual-graph conventions used by okf-graph-eng.
 tags: [okf, conventions]
@@ -16,9 +16,12 @@ Minimum: `type`, `title`, `description`, `timestamp`. Recommended: `status`, `ve
 
 ## Types
 
-Knowledge: `Dataset`, `Table`, `Metric`, `Playbook`, `Runbook`, `API`, `Reference`
+This engine owns `Catalog` and `ContextPack` only. `validate --strict` rejects
+unknown types (fail-closed). BaseConcept fallback is read-only envelope
+parsing — it does not authorize writing an unregistered type.
 
-Harness: `AgentNode`, `Workflow`, `Harness`, `DecisionRecord`, `SharedState`, `ToolCapability`, `TicketLink`
+Domain types (`AgentNode`, `TicketLink`, `DecisionRecord`, `Dataset`, `System`,
+…) are authored by AGER, PKC, DEKC, and SAC.
 
 ## Links
 

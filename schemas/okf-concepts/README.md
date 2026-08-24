@@ -20,7 +20,7 @@ Domain plugins add types under **their own** `schemas/okf-concepts/`. The valida
 4. Soft validation is the default. Old files must produce **zero errors**.
 5. `truth_state` accepts the union of PKC/SAC and DEKC values:
    `current | snapshot | superseded | archived | historical | proposed`.
-6. Unknown `type` values fall back to BaseConcept (info, not error).
+6. Unknown `type` values fall back to BaseConcept for read-only envelope parsing (info). `--strict` rejects unknown types (error, fail-closed). Fallback is not a write authorization.
 7. Domain plugins declare blast-radius with `x-impact: high|medium` on **their** schemas. Core declares none.
 
 ## Catalog ownership

@@ -2,7 +2,7 @@
 type: Catalog
 okf_version: "0.2"
 title: OKF Graph Engineering Plugin
-description: Self-describing OKF bundle that models the okf-graph-eng plugin as both a knowledge graph and an agent/harness graph.
+description: Self-describing OKF bundle that documents the okf-graph-eng engine with Catalog and ContextPack only.
 timestamp: 2026-07-29T00:00:00Z
 tags: [okf, plugin, meta]
 ---
@@ -13,14 +13,15 @@ This sample bundle documents **okf-graph-eng** itself: the Claude Code / Grok Bu
 
 ## Dual purpose
 
-1. **Knowledge graph** — what the plugin is, its skills, scripts, and conventions
-2. **Agent graph** — how the GraphEngineer agent and skills collaborate in a harness
+1. **Engine docs** — what the plugin is, its skills, scripts, and conventions
+2. **ContextPacks** — hop-capped subgraphs the engine emits for long runs
 
 ## Catalogs
 
+- [Knowledge](/knowledge/index.md)
+- [Packs](/packs/index.md)
 - [Agents](/agents/index.md)
 - [Workflows](/workflows/index.md)
-- [Knowledge](/knowledge/index.md)
 - [Decisions](/decisions/index.md)
 - [Shared state](/shared/index.md)
 - [Tickets](/tickets/index.md)

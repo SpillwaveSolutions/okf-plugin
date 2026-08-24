@@ -1,5 +1,5 @@
 {
- "git_hash": "5a7ae07",
+ "git_hash": "ef1ce4c",
  "pages": [
   {
    "frozen": false,
@@ -45,7 +45,7 @@
    "frozen": false,
    "page_name": "Index-Traceability",
    "render": "as-is",
-   "render_hash": "b07c3c5172dd",
+   "render_hash": "79c805f897e2",
    "source": "docs/.index/rendered/traceability.md",
    "title": "Traceability Index",
    "truth_state": "current",
@@ -170,6 +170,16 @@
    "title": "Release v0.3.2",
    "truth_state": "shipped",
    "wiki_key": "release/v0.3.2"
+  },
+  {
+   "frozen": false,
+   "page_name": "Release-v0.8.0",
+   "render": "as-is",
+   "render_hash": "da6191e6e923",
+   "source": "docs/.index/rendered/releases/v0.8.0.md",
+   "title": "Release v0.8.0",
+   "truth_state": "shipped",
+   "wiki_key": "release/v0.8.0"
   },
   {
    "frozen": false,
@@ -752,6 +762,16 @@
    "wiki_key": "item/01KZD84S62B5TWKQSX4XV9848M"
   },
   {
+   "frozen": false,
+   "page_name": "Ticket-01M0SZF33A0WAYMDR6QFEZ2AFH",
+   "render": "as-is",
+   "render_hash": "3046cdf812bf",
+   "source": "docs/.index/rendered/tickets/01M0SZF33A0WAYMDR6QFEZ2AFH.md",
+   "title": "Split domain nouns out of okf-plugin (Catalog + ContextPack only)",
+   "truth_state": "open",
+   "wiki_key": "item/01M0SZF33A0WAYMDR6QFEZ2AFH"
+  },
+  {
    "banner": "> **Snapshot** of release v0.3.0 (2026-08-01) \u2014 frozen record. The current version is [[Code-Walkthrough]].",
    "frozen": true,
    "page_name": "Code-Walkthrough-2026-08-01_v0.3.0-release",
@@ -852,9 +872,9 @@
    "frozen": false,
    "page_name": "CLI-Reference",
    "render": "doc+banner",
-   "render_hash": "16b061c0a5a3",
+   "render_hash": "185810b3ed5e",
    "source": "docs/user_guide/cli-reference.md",
-   "source_hash": "b15752cebe01",
+   "source_hash": "6057ec8eaaed",
    "title": "CLI Reference",
    "truth_state": "current",
    "wiki_key": "guide/cli-reference"
@@ -864,9 +884,9 @@
    "frozen": false,
    "page_name": "Plugin-Guide",
    "render": "doc+banner",
-   "render_hash": "c64c3cd67135",
+   "render_hash": "6bd99bc8d7e7",
    "source": "docs/user_guide/plugin-guide.md",
-   "source_hash": "351f14bd5dec",
+   "source_hash": "e1037f6567e2",
    "title": "Plugin Guide",
    "truth_state": "current",
    "wiki_key": "guide/plugin-guide"
@@ -876,9 +896,9 @@
    "frozen": false,
    "page_name": "User-Guide",
    "render": "doc+banner",
-   "render_hash": "1d6bc732fdf8",
+   "render_hash": "1922d07870ba",
    "source": "docs/user_guide/user-guide.md",
-   "source_hash": "638e6d93d25a",
+   "source_hash": "6d8f8be64526",
    "title": "User Guide",
    "truth_state": "current",
    "wiki_key": "guide/user-guide"
@@ -932,13 +952,13 @@
    "wiki_key": "plan/2026-08-07-worklog-0-22-2-upgrade"
   },
   {
-   "banner": "> **Current** \u2014 this is the living version; regenerated at 2026-08-07T04:50:27Z. Historical snapshots are linked from [[Index-Releases]].",
+   "banner": "> **Current** \u2014 this is the living version; regenerated at 2026-08-24T13:30:56Z. Historical snapshots are linked from [[Index-Releases]].",
    "frozen": false,
    "page_name": "Roadmap",
    "render": "doc+banner",
-   "render_hash": "298318df917a",
+   "render_hash": "d6cc8c93dbd6",
    "source": "docs/roadmap.md",
-   "source_hash": "65538697716e",
+   "source_hash": "e34b3272b2d1",
    "title": "Roadmap",
    "truth_state": "current",
    "wiki_key": "roadmap"
@@ -984,9 +1004,9 @@
    "frozen": false,
    "page_name": "Worklog-Spec",
    "render": "doc+banner",
-   "render_hash": "5a9d038c92fc",
+   "render_hash": "16cec9812b6a",
    "source": "docs/worklog-spec.md",
-   "source_hash": "78aee81955ef",
+   "source_hash": "15f87ba07e98",
    "title": "Worklog Spec",
    "truth_state": "current",
    "wiki_key": "spec"

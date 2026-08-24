@@ -12,7 +12,7 @@ Works in **Claude Code**, **Grok Build** (zero-config), **Cursor**, **Codex**, *
 | **License** | MIT |
 | **Nouns this plugin owns** | `Catalog`, `ContextPack` |
 
-Domain types live in sibling plugins. This engine graphs whatever `type` you put in YAML frontmatter; unknown types fall back to `BaseConcept` (`type` + `title` only).
+Domain types live in sibling plugins. This engine **reads** whatever `type` you put in YAML frontmatter: unknown types fall back to `BaseConcept` (`type` + `title` only). That fallback is read-only envelope parsing — it does not authorize a write. `validate --strict` rejects unknown types (fail-closed).
 
 ## Nouns (this plugin)
 

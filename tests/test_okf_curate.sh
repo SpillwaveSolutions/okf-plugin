@@ -37,9 +37,9 @@ timestamp: 2026-01-01T00:00:00Z
 EOF
 cat > "$TMP/my-graph/agents/a.md" <<'EOF'
 ---
-type: AgentNode
+type: Catalog
 title: Agent A
-description: An agent node.
+description: A catalog page.
 timestamp: 2026-01-01T00:00:00Z
 ---
 
@@ -59,7 +59,7 @@ timestamp: 2026-01-01T00:00:00Z
 EOF
 cat > "$TMP/broken-graph/agents/b.md" <<'EOF'
 ---
-type: AgentNode
+type: Catalog
 title: Agent B
 description: Points at a file that does not exist.
 timestamp: 2026-01-01T00:00:00Z

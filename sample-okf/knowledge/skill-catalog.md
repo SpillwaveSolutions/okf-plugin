@@ -1,5 +1,5 @@
 ---
-type: Knowledge
+type: Catalog
 title: Skill catalog
 description: Inventory of okf-graph-eng skills and when they activate.
 tags: [skills, catalog]

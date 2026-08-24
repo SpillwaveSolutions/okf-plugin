@@ -1,5 +1,5 @@
 ---
-type: Knowledge
+type: Catalog
 title: Skill Runner
 description: Host-side agent role that loads and executes OKF graph-eng skills (init, author, impact, validate, etc.).
 resource: agents/skill-runner.md

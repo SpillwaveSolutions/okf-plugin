@@ -1,5 +1,5 @@
 ---
-type: Knowledge
+type: Catalog
 title: Harness session
 description: Cross-agent scratchpad for a graph-engineering harness run (goal, findings, open questions, artifacts).
 tags: [state, harness]

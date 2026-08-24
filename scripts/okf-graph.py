@@ -1140,7 +1140,9 @@ def cmd_validate(bundle: Path, strict: bool = False) -> int:
                     }
                 )
         if schema_registry is not None and not structural:
-            for issue in schema_registry.validate_frontmatter(c.meta, path=rel):
+            for issue in schema_registry.validate_frontmatter(
+                c.meta, path=rel, strict=strict
+            ):
                 # Avoid duplicating the type/title checks already emitted above.
                 if issue.message.startswith("missing required `type`"):
                     continue

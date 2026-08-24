@@ -19,7 +19,7 @@ commands/                    # slash command wrappers
 agents/graph-engineer.md     # specialist subagent
 hooks/hooks.json             # post-edit fail-closed validate
 scripts/                     # okf-hook-validate.sh, okf-graph.py
-sample-okf/                  # Catalog + Knowledge about this engine
+sample-okf/                  # Catalog + ContextPack about this engine
 schemas/okf-concepts/        # BaseConcept envelope + Catalog + ContextPack
 ```
 

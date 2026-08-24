@@ -1,5 +1,5 @@
 ---
-type: Knowledge
+type: Catalog
 title: Impact-first change
 description: Before editing a concept, compute blast radius and produce an ordered update plan.
 tags: [workflow, harness, impact]

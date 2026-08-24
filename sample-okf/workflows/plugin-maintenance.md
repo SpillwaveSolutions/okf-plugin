@@ -1,5 +1,5 @@
 ---
-type: Knowledge
+type: Catalog
 title: Plugin maintenance
 description: Curate the OKF sample bundle and plugin docs — validate, fix drift, update log.
 tags: [workflow, harness, maintenance]

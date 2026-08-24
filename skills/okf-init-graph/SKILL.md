@@ -31,7 +31,7 @@ Create a ready-to-use OKF bundle for **graph engineering** (validate, impact, Co
 
 3. Write root `index.md` with `okf_version: "0.2"`, `type: Catalog`, and a one-line description of the bundle.
 4. Do **not** seed `AgentNode`, `Workflow`, `DecisionRecord`, or `TicketLink`. Those nouns are owned by AGER and PKC.
-5. Optionally seed one knowledge file (`type` can be anything; unknown types fall back to BaseConcept) and one empty ContextPack stub.
+5. Optionally seed one Catalog page and one empty ContextPack stub. Do not seed unknown types — `--strict` rejects them. BaseConcept fallback is read-only.
 6. Initialize `log.md` with today’s date (ISO) and “Bundle created for OKF graph engine”.
 7. Prefer **absolute Markdown links**: `[Label](/knowledge/example.md)`.
 8. Run validation:

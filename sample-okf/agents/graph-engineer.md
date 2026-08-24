@@ -1,5 +1,5 @@
 ---
-type: Knowledge
+type: Catalog
 title: Graph Engineer
 description: Specialist agent for OKF impact analysis, multi-hop reasoning, progressive disclosure, and dual-graph curation.
 resource: agents/graph-engineer.md
