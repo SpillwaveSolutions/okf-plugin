@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Noun-ownership migration guide for existing second brains:
+  [`docs/user_guide/noun-ownership-migration.md`](docs/user_guide/noun-ownership-migration.md).
+
 ## 0.8.0 — 2026-08-24
 
 ### Changed
