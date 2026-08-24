@@ -427,7 +427,7 @@ def test_strict_rejects_unknown_types():
             "---\ntitle: Root\nokf_version: 0.2\ntype: Catalog\n---\n[n](/noun.md)\n"
         )
         (bundle / "noun.md").write_text(
-            "---\ntitle: Agent\ntype: AgentNode\ndescription: leaked\n"
+            "---\ntitle: Agent\ntype: NotARegisteredType\ndescription: leaked\n"
             "timestamp: 2026-01-01T00:00:00Z\n---\n"
         )
         code, out = run_script("validate", str(bundle))
