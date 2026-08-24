@@ -1,5 +1,5 @@
 ---
-type: Reference
+type: Knowledge
 title: Plugin architecture
 description: Layout and runtime model of the okf-graph-eng Claude Code / Grok Build plugin.
 tags: [architecture, plugin]

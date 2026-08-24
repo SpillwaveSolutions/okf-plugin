@@ -1,17 +1,16 @@
 ---
 name: okf-init-graph
-description: Scaffold a graph-engineering optimized OKF bundle with recommended directories, index.md, log.md, and templates for AgentNode, Workflow, DecisionRecord, knowledge concepts, and TicketLink. Use when starting a new OKF repo, initializing .okf/, converting a project for graph engineering, or setting up harness/agent graph scaffolding.
+description: Scaffold an OKF bundle for the graph engine — catalogs, knowledge, packs, index.md, log.md. Does not seed AgentNode, Workflow, TicketLink, or other domain nouns; those belong to PKC, SAC, DEKC, and AGER.
 ---
 
 # OKF Graph Init
 
-Create a ready-to-use OKF bundle optimized for **graph engineering** (knowledge graph + agent/harness graph).
+Create a ready-to-use OKF bundle for **graph engineering** (validate, impact, ContextPack). Domain capture plugins add their own catalogs later.
 
 ## When to use
 
 - User wants a new OKF bundle or `.okf/` tree
-- Project needs agent/workflow modeling alongside domain knowledge
-- Empty repo → graph-eng ready structure in under two minutes
+- Empty repo → pack-ready structure in under two minutes
 
 ## Steps
 
@@ -20,27 +19,21 @@ Create a ready-to-use OKF bundle optimized for **graph engineering** (knowledge 
 
 ```
 .okf/
-├── index.md
+├── index.md          # type: Catalog
 ├── log.md
-├── agents/
-│   └── index.md
-├── workflows/
-│   └── index.md
+├── catalogs/
+│   └── index.md      # type: Catalog
 ├── knowledge/
-│   └── index.md
-├── decisions/
-│   └── index.md
-├── shared/
-│   └── index.md
-└── tickets/          # optional TicketLink concepts
-    └── index.md
+│   └── index.md      # type: Catalog
+└── packs/
+    └── index.md      # type: Catalog (ContextPack outputs land here)
 ```
 
-3. Write root `index.md` with `okf_version: "0.2"` and a short dual-purpose description (knowledge + agent graph).
-4. Seed **one** example `AgentNode` and **one** `Workflow` from `templates/` in this skill.
-5. Optionally seed one `DecisionRecord` and one knowledge concept (`Reference` or `Playbook`).
-6. Initialize `log.md` with today’s date (ISO) and a “Bundle created for graph engineering” entry.
-7. Prefer **absolute Markdown links** from the start: `[Label](/agents/example.md)`.
+3. Write root `index.md` with `okf_version: "0.2"`, `type: Catalog`, and a one-line description of the bundle.
+4. Do **not** seed `AgentNode`, `Workflow`, `DecisionRecord`, or `TicketLink`. Those nouns are owned by AGER and PKC.
+5. Optionally seed one knowledge file (`type` can be anything; unknown types fall back to BaseConcept) and one empty ContextPack stub.
+6. Initialize `log.md` with today’s date (ISO) and “Bundle created for OKF graph engine”.
+7. Prefer **absolute Markdown links**: `[Label](/knowledge/example.md)`.
 8. Run validation:
    - Prefer `okf validate <bundle>` or `okfcli validate <bundle>`
    - Fallback: `python3 ${CLAUDE_PLUGIN_ROOT}/scripts/okf-graph.py validate <bundle>`
@@ -48,25 +41,22 @@ Create a ready-to-use OKF bundle optimized for **graph engineering** (knowledge 
 
 ## Rules
 
-- Do **not** invent domain content beyond scaffolding and one illustrative example per major type.
-- Every concept file needs YAML frontmatter with at least `type`, `title`, `description`, `timestamp`.
-- Keep subdirectory `index.md` files as lightweight catalogs linking to children.
+- Do **not** invent domain content beyond scaffolding.
+- Every concept file needs YAML frontmatter with at least `type`, `title`.
+- Keep subdirectory `index.md` files as `type: Catalog`.
 - If the target already has OKF content, merge carefully—do not overwrite existing concepts without confirmation.
 
 ## Templates
 
 Copy and fill from:
 
-- `templates/agent-node.md`
-- `templates/workflow.md`
-- `templates/decision-record.md`
-- `templates/knowledge-concept.md`
-- `templates/ticket-link.md`
 - `templates/index-root.md`
+- `templates/knowledge-concept.md`
 - `templates/log-entry.md`
+
+Agent/workflow/ticket templates were removed in 0.8.0. Use AGER (`ager-init`) or PKC (`pkc-init`) for those nouns.
 
 ## Done when
 
 - Bundle tree exists with root `index.md` + `log.md`
-- At least one AgentNode and one Workflow example exist and link correctly
 - Validation reports zero broken-link errors

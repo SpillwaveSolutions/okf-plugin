@@ -1,187 +1,189 @@
 # okf-graph-eng (okf-plugin)
 
-**Graph engineering for [OKF](https://github.com/topics/okf) repositories** — impact analysis, agent/harness graphs, progressive disclosure, and curation.
+**OKF graph engine** — validate, walk, pack, and impact-analyze Git-native knowledge graphs. This plugin does **not** own domain nouns. It owns the envelope and two infrastructure types: **Catalog** and **ContextPack**.
 
-Works in **Claude Code**, **Grok Build** (zero-config: Grok Build reads Claude plugins natively), and **Cursor** (Agent Plugins 1.0 + `.cursor-plugin`).
+Works in **Claude Code**, **Grok Build** (zero-config), **Cursor**, **Codex**, **Grok Bot**, and **LangChain Deep Agents**.
 
 | | |
 |---|---|
 | **Plugin name** | `okf-graph-eng` |
 | **Repo** | [SpillwaveSolutions/okf-plugin](https://github.com/SpillwaveSolutions/okf-plugin) |
-| **Version** | 0.7.3 |
+| **Version** | 0.8.0 |
 | **License** | MIT |
+| **Nouns this plugin owns** | `Catalog`, `ContextPack` |
 
-## Why this plugin
+Domain types live in sibling plugins. This engine graphs whatever `type` you put in YAML frontmatter; unknown types fall back to `BaseConcept` (`type` + `title` only).
 
-OKF already gives you a clean, Git-native knowledge graph (Markdown + YAML). Graph engineering is the next layer: treat the same portable graph as the model of **agents, workflows, shared state, and decisions** — then compute **blast radius** when anything changes.
+## Nouns (this plugin)
 
-This plugin specializes OKF workflows for:
+| Noun | Role |
+|------|------|
+| `Catalog` | Index page for a directory of concepts. Structural. Pack walks skip flooding through hub catalogs by using **outbound-only** BFS. |
+| `ContextPack` | Generated progressive-disclosure view: a ranked, hop-capped, node-capped subgraph ready to paste into an agent context window. |
 
-- First-class **impact / ripple analysis**
-- **Agent-graph modeling** inside the OKF repo
-- **Progressive disclosure** (minimal context packs for long-running agents)
-- **Validation & curation** hooks
-- Dual-host packaging: one install for Claude Code **and** Grok Build
+Everything else is **not** an okf-plugin noun:
+
+| Plugin | Owns |
+|--------|------|
+| [PKC](https://github.com/SpillwaveSolutions/project-knowledge-capture) | Meeting, Experiment, Discovery, Assumption, Question, Feature, Requirement, Specification, Design, Release, CodeChange, Package, Risk, Acceptance, DecisionRecord, TicketLink, Epic, Story, Task, Subtask, Bug, Branch, Project, Playbook, Runbook, Reference |
+| [SAC](https://github.com/SpillwaveSolutions/system-architecture-capture) | System, Service, Component, and the rest of the architecture/runtime topology set |
+| [DEKC](https://github.com/SpillwaveSolutions/data-engineering-knowledge-capture) | Dataset, Table, View, Metric, lineage, lakes, marts, streams, jobs, semantic layer, glossary |
+| [AGER](https://github.com/SpillwaveSolutions/okf-agent-graph) | AgentNode, Workflow, Harness, SharedState, ToolCapability, loop/runtime/ops/eval types |
+
+Validators **merge** sibling `schemas/okf-concepts/` directories. Isolated, this plugin only knows Catalog + ContextPack.
+
+## Why this plugin exists
+
+OKF is Markdown + YAML in Git. Agents cannot read a whole second brain. This plugin is the **read path optimizer**:
+
+1. Treat the bundle as a directed graph (absolute Markdown links + optional `links[].rel`).
+2. Compute **blast radius** (`impact`) before structural edits.
+3. Emit a **ContextPack** — the smallest subgraph that is still useful.
+
+It is not a capture plugin, not an agent runtime, and not a data catalog.
+
+## How ContextPacks optimize reads
+
+`okf-graph.py pack` (skill `okf-query`) is the default way a long-running agent should *read* an OKF tree. It is deliberately lossy.
+
+### 1. Outbound-only walk
+
+Default BFS follows **outbound** edges only. Catalog indexes that link to every child are hubs. Walking them undirected dumps the whole bundle into context. Outbound-from-a-concept stays inside a theme (agent → tools → knowledge, table → lineage → metric).
+
+`--undirected` exists for “what would break?” neighborhood exploration. It floods. Prefer `impact` for that.
+
+### 2. Hop cap (default 2)
+
+Two hops is usually agent → collaborator → evidence. Hop 3 is a debug knob, not a default. Unlimited closure is `impact`, not `pack`.
+
+### 3. Node cap (default 20)
+
+Fits a long-running agent’s working set. Ranked overflow goes in `## Excluded (available on request)` so the model can ask for a named follow-up instead of guessing.
+
+### 4. Trust-first ranking
+
+Inside the neighborhood, nodes sort as:
+
+1. The **entry** concept (always first, always included)
+2. **Verified** over unverified
+3. Domain-declared **high-impact** types (`x-impact: high` on the owning plugin’s schema — AGER `AgentNode` / `Workflow` / `Harness` / `SharedState`, etc.)
+4. Title
+
+Unverified high-impact nodes are flagged in the pack (`⚠ unverified high-impact`) so the model does not treat a draft harness node as truth.
+
+### 5. Read order ≠ inclusion order
+
+Inclusion ranking decides *who makes the cut*. **Read order** is how the markdown is presented: entry, then high-impact, then verified, then title. The model sees the question it asked first, then the dangerous neighbors, then the supporting evidence.
+
+### 6. Criticality for impact (not pack)
+
+`impact` ranks dependents with a criticality tier from the same `x-impact` field:
+
+| Schema `x-impact` | verified | unverified |
+|-------------------|----------|------------|
+| high | high | **critical** |
+| medium | medium | **high** |
+| (unset / low) | low | low (never escalates) |
+
+Core declares **no** impact tiers. If you run this plugin alone, every type is `low` — correct, because Catalog/ContextPack are not blast-radius hubs.
+
+### 7. Token-budgeted sibling packs
+
+PKC / DEKC / AGER ship their own `*_pack.py` that wrap this graph and add a **fail-closed token budget** (default ¼ of `SECOND_BRAIN_WINDOW_TOKENS`, 128000 → 32000). Those packs:
+
+- do not `--write` an over-budget ContextPack
+- omit neighbor **bodies** (title, type, path, `description` only) unless the node is the pack root
+- treat catalog `index.md` as non-concepts
+
+Use this plugin’s `pack` for a portable subgraph. Use the domain pack when you are already inside that second brain and must fit a model window.
+
+### Pack command
+
+```bash
+python3 scripts/okf-graph.py pack <bundle> <concept> --hops 2 --max-nodes 20
+```
+
+JSON includes `markdown` (ready to paste), `included`, `excluded`, and typed `edges`.
 
 ## Install
 
 ### Claude Code
 
 ```bash
-# Marketplace (from this repo)
 claude plugin marketplace add SpillwaveSolutions/okf-plugin
 claude plugin install okf-graph-eng@okf-plugin-marketplace
-
-# Or local path
-claude plugin marketplace add /path/to/okf-plugin
-claude plugin install okf-graph-eng@okf-plugin-marketplace
 ```
-
-Marketplace metadata: `.claude-plugin/marketplace.json`.
 
 ### Grok Build
 
-Grok Build discovers Claude-compatible plugins automatically — **no separate Grok-only config required**. Optional identity pin: `.grok-plugin/marketplace.json`.
+Zero-config Claude plugin load. Optional identity pin: `.grok-plugin/marketplace.json`.
 
-Skills, agents, commands, and hooks under this tree load the same way as in Claude Code.
+### Cursor / Codex
 
-### Cursor
+Root Agent Plugins 1.0 `plugin.json` plus `.cursor-plugin/` / `.codex-plugin/`. See [docs/CURSOR.md](docs/CURSOR.md).
 
-Cursor loads the root Agent Plugins 1.0 `plugin.json` and `.cursor-plugin/plugin.json`.
+### Optional CLI
 
-```text
-/plugin marketplace add SpillwaveSolutions/second-brain-marketplace
-/plugin install okf-graph-eng
-```
-
-See [docs/CURSOR.md](docs/CURSOR.md). Grok Bot cloud agents that open a knowledge tree still follow the write protocol even without a plugin install.
-
-### Optional: okf CLI
-
-
-For richer deterministic operations, install [`okfcli`](https://github.com/search?q=okfcli) / `okf` if available. If missing, the plugin falls back to `scripts/okf-graph.py`.
+Prefer [`okfcli`](https://github.com/okfcli/okf) / `okf` when present. Fallback: `scripts/okf-graph.py`.
 
 ## Quick start
-
-1. **Scaffold** a graph-eng OKF bundle:
-   - Slash: `/okf-init`
-   - Or ask: “Initialize an OKF graph engineering bundle”
-2. **Author** agents, workflows, or knowledge concepts (skill: `okf-author`)
-3. **Impact** before large edits: `/okf-impact agents/graph-engineer.md`
-4. **Validate**: `/okf-validate`
-
-Try the included self-describing sample:
 
 ```bash
 python3 scripts/okf-graph.py validate sample-okf
 python3 scripts/okf-graph.py impact sample-okf knowledge/skill-okf-impact.md
-python3 scripts/okf-graph.py pack sample-okf agents/graph-engineer.md --hops 2
-python3 scripts/okf-graph.py edges sample-okf --rel routes_to
-python3 scripts/okf-graph.py graph sample-okf --focus agents/graph-engineer.md --hops 2
+python3 scripts/okf-graph.py pack sample-okf knowledge/plugin-architecture.md --hops 2
 python3 scripts/okf-graph.py graph sample-okf --format html > okf-graph.html
-# TicketLink from worklog:
-bin/worklog fold | python3 scripts/okf-ticket-link.py emit --bundle sample-okf --open-only --dry-run
+```
+
+Scaffold a bundle with `/okf-init` (catalogs + knowledge + packs only). Author domain nouns with **PKC / SAC / DEKC / AGER**, not this plugin.
+
+TicketLink emission lives in PKC:
+
+```bash
+bin/worklog fold | python3 path/to/project-knowledge-capture/scripts/pkc_ticket_link.py emit --bundle knowledge --open-only
 ```
 
 ## What’s included
 
-### Skills
-
 | Skill | Purpose |
 |-------|---------|
-| `okf-init-graph` | Scaffold `.okf/` with agent/workflow/knowledge/decision catalogs |
-| `okf-author` | Create/update concepts with provenance, trust, absolute links |
+| `okf-init-graph` | Scaffold `.okf/` with catalogs, knowledge, packs |
+| `okf-author` | Envelope + Catalog / ContextPack (domain types: use the owning plugin) |
 | `okf-impact` | Transitive blast radius + ranked update order |
-| `okf-query` | Multi-hop subgraph / progressive disclosure packs |
-| `okf-maintain` | Indexes, log, drift, orphans, migration helpers |
+| `okf-query` | Multi-hop subgraph / ContextPack |
+| `okf-maintain` | Indexes, log, drift, orphans |
 | `okf-validate` | Conformance + graph quality |
-| `okf-visualize` | Mermaid / HTML / JSON with agent-graph overlays |
+| `okf-visualize` | Mermaid / HTML / JSON |
 
-### Commands
+Commands: `/okf-init` · `/okf-author` · `/okf-impact` · `/okf-query` · `/okf-validate` · `/okf-visualize` · `/okf-maintain`
 
-`/okf-init` · `/okf-author` · `/okf-impact` · `/okf-query` · `/okf-validate` · `/okf-visualize` · `/okf-maintain`
+**graph-engineer** agent: pack-first, impact-before-structure, no domain-noun authorship.
 
-### Agent
-
-- **graph-engineer** — specialist for dual-graph reasoning, impact, and curation
-
-### Hooks
-
-Post-edit (`apply_patch|Write|Edit|MultiEdit`) runs `scripts/okf-curate.sh`:
-`okf validate` when the official CLI is present, otherwise this repo's own
-`okf-graph.py validate`. It reads the tool payload from stdin (Claude
-`file_path` or Codex `apply_patch` text), so it fires on every matching edit.
-
-The bundle is found by walking up from the edited file for an `index.md`
-containing `okf_version` (or a `.okf/` directory). Edits outside any bundle
-are a silent no-op. **Validate is fail-closed:** a broken bundle exits
-non-zero so the host cannot treat a bad write as success.
-
-### Tests
+Post-edit hook is **fail-closed validate** (`scripts/okf-hook-validate.sh`).
 
 ```bash
-python3 tests/test_okf_graph.py -q      # graph engine — 25 cases
-bash tests/test_okf_curate.sh           # post-edit hook — fail-closed checks
+python3 tests/test_okf_graph.py -q
+python3 tests/test_okf_schema.py
+bash tests/test_okf_curate.sh
 ```
 
-Plain asserts, no framework. Run in CI alongside `okf-graph.py validate sample-okf --strict`, and as a guarded pre-commit check.
-
-### Sample OKF
-
-`sample-okf/` models **this plugin** as both a knowledge graph and an agent/harness graph — useful as a template and for demos.
-
-## Concept types
-
-**Knowledge:** `Dataset`, `Table`, `Metric`, `Playbook`, `Runbook`, `API`, `Reference`
-
-**Graph-engineering / harness:** `AgentNode`, `Workflow`, `Harness`, `DecisionRecord`, `SharedState`, `ToolCapability`, `TicketLink`
-
-Prefer absolute Markdown links: `[Graph Engineer](/agents/graph-engineer.md)`.
-
-## Host docs
-
-| File | Audience |
-|------|----------|
-| [CLAUDE.md](./CLAUDE.md) | Claude Code agent conventions for this repo |
-| [AGENTS.md](./AGENTS.md) | Grok Build / Codex-style agent conventions (same dual-host story) |
-
-## Roadmap
-
-Generated live from WikiTicket worklog: [`docs/roadmap.md`](./docs/roadmap.md) · [wiki Roadmap](https://github.com/SpillwaveSolutions/okf-plugin/wiki/Roadmap)
-
-- **v0.1 (MVP)** — skills, packaging, hooks, sample OKF, okfcli/Python wrappers  
-- **v0.2** — typed edges, TicketLink ↔ worklog helpers, GraphEngineer progressive-disclosure defaults, marketplace metadata  
-- **v0.3.0** — `graph` subcommand (mermaid/json/html), `validate --strict`, a slash command for every skill, first automated coverage of the graph engine, working post-edit hook  
-- **v0.3.1** — engine correctness: ambiguous concept lookups error instead of guessing, off-bundle links are reported by `validate`, unverified concepts escalate a criticality tier, curation finds bundles rooted anywhere, plus a shell test suite for the hook  
-- **v0.4.0** — bracketed link labels no longer drop the edge (`[[AREA]](/p.md)` matched nothing, and a missing edge is not a broken one, so `validate` never reported it); `released_in` added to `KNOWN_RELS`
-- **v0.3.2** — `validate` now link-checks the bundle's entry point: the root `index.md` and `log.md` were skipped by the whole validation loop, so a broken link there was the one broken link never reported. Their `type`/`title` exemption still stands  
-- **Later** — MCP server, richer agent-graph overlays  
+`sample-okf/` is a self-describing **knowledge + Catalog** bundle for this engine (not an AGER graph).
 
 ## Related ecosystem
 
-Complements general OKF tooling (okf-gem, okfcli, community skills) by focusing on impact analysis, harness graphs, and progressive disclosure — without replacing existing CLIs or visualizers.
-
+| Repo | Role |
+|------|------|
+| this | Graph engine, Catalog, ContextPack |
+| [project-knowledge-capture](https://github.com/SpillwaveSolutions/project-knowledge-capture) | Project memory + TicketLink |
+| [system-architecture-capture](https://github.com/SpillwaveSolutions/system-architecture-capture) | Runtime / architecture topology |
+| [data-engineering-knowledge-capture](https://github.com/SpillwaveSolutions/data-engineering-knowledge-capture) | Data plane |
+| [okf-agent-graph](https://github.com/SpillwaveSolutions/okf-agent-graph) | AGER multi-agent graphs |
+| [wiki_ticket_sdd](https://github.com/SpillwaveSolutions/wiki_ticket_sdd) | Worklog |
+| [second-brain-marketplace](https://github.com/SpillwaveSolutions/second-brain-marketplace) | Pack install |
 
 ## Project management (WikiTicket SDD)
 
-This repo is managed with [WikiTicket SDD / worklog](https://github.com/SpillwaveSolutions/wiki_ticket_sdd):
-
-| Artifact | Path |
-|----------|------|
-| Event log | `.work/todo.jsonl`, `.work/done.jsonl` |
-| Config | `.work/config.yml` |
-| Roadmap (generated) | `docs/roadmap.md` |
-| Plans | `docs/plans/` |
-| Status reports | `docs/status/` |
-| CLI | `bin/worklog` |
-
-```bash
-bin/worklog list
-bin/worklog roadmap-render
-bin/worklog plan-capture --slug my-plan --title "My plan" --file draft.md
-```
-
-GitHub Issues + GitHub wiki are configured as the ticket/wiki systems. Commit messages must reference a worklog ULID or `#issue`. Prefer feature branches (hooks block direct commits on `main`).
+See [wiki_ticket_sdd](https://github.com/SpillwaveSolutions/wiki_ticket_sdd). Commit messages must reference a worklog ULID or `#issue`. Prefer feature branches.
 
 ## License
 

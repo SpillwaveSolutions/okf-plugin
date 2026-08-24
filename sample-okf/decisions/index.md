@@ -1,4 +1,5 @@
 ---
+type: Catalog
 title: Decisions catalog
 description: Decision records for okf-graph-eng design choices.
 timestamp: 2026-07-29T00:00:00Z

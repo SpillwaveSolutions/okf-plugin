@@ -285,8 +285,43 @@ DEKC_RELS = frozenset(
 
 KNOWN_RELS = CORE_RELS | AGER_RELS | PKC_RELS | SAC_RELS | DEKC_RELS
 
-HIGH_IMPACT_TYPES = frozenset({"AgentNode", "Workflow", "Harness", "SharedState"})
-MEDIUM_IMPACT_TYPES = frozenset({"Dataset", "Table", "Metric", "API", "ToolCapability"})
+# Domain plugins declare `x-impact` on their schemas (high|medium). Core owns
+# none of those nouns — Catalog / ContextPack are infrastructure, not blast-radius
+# hubs. Loaded lazily from sibling schema packs so isolated CI stays type-agnostic.
+HIGH_IMPACT_TYPES: frozenset[str] = frozenset()
+MEDIUM_IMPACT_TYPES: frozenset[str] = frozenset()
+_IMPACT_LOADED = False
+
+
+def _load_impact_types() -> None:
+    """Fill HIGH_/MEDIUM_IMPACT_TYPES from merged schema `x-impact` fields."""
+    global HIGH_IMPACT_TYPES, MEDIUM_IMPACT_TYPES, _IMPACT_LOADED
+    if _IMPACT_LOADED:
+        return
+    _IMPACT_LOADED = True
+    high: set[str] = set()
+    medium: set[str] = set()
+    if load_default_registry is None:
+        HIGH_IMPACT_TYPES = frozenset(high)
+        MEDIUM_IMPACT_TYPES = frozenset(medium)
+        return
+    try:
+        reg = load_default_registry()
+    except Exception:
+        HIGH_IMPACT_TYPES = frozenset(high)
+        MEDIUM_IMPACT_TYPES = frozenset(medium)
+        return
+    for name, schema in (reg.schemas or {}).items():
+        impact = schema.get("x-impact")
+        if impact == "high":
+            high.add(name)
+        elif impact == "medium":
+            medium.add(name)
+    HIGH_IMPACT_TYPES = frozenset(high)
+    MEDIUM_IMPACT_TYPES = frozenset(medium)
+
+
+_load_impact_types()
 
 
 @dataclass
@@ -638,8 +673,9 @@ def criticality_of(c: Concept) -> str:
     """Impact tier, escalated one level while the concept is unverified.
 
     medium → high, high → critical. `low` never escalates: an unverified
-    Reference is not news.
+    generic node is not news. Tiers come from domain schema `x-impact`.
     """
+    _load_impact_types()
     criticality = "low"
     if c.type in HIGH_IMPACT_TYPES:
         criticality = "high"
@@ -836,13 +872,15 @@ def cmd_pack(bundle: Path, concept: str, hops: int, max_nodes: int, undirected: 
             if e.target in node_set:
                 edges.append({"from": n, "to": e.target, "rel": e.rel})
 
-    # read order: root, then high-impact, then by title
+    # read order: root first, then domain-declared high-impact, verified, title.
+    # SharedState used to be hardcoded here; it is now just another high-impact
+    # AGER type when that schema pack is loaded.
     read_order = sorted(
         included,
         key=lambda n: (
             0 if n == target else 1,
             0 if concepts[n].type in HIGH_IMPACT_TYPES else 1,
-            0 if concepts[n].type == "SharedState" else 1,
+            0 if concepts[n].verified else 1,
             concepts[n].title.lower(),
         ),
     )

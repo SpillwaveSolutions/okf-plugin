@@ -1,5 +1,5 @@
 ---
-type: Playbook
+type: Knowledge
 title: okf-query skill
 description: Multi-hop subgraph extraction for progressive disclosure context packs.
 tags: [skill, query, progressive-disclosure]

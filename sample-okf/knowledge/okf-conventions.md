@@ -1,5 +1,5 @@
 ---
-type: Reference
+type: Knowledge
 title: OKF conventions
 description: Frontmatter, types, absolute links, and dual-graph conventions used by okf-graph-eng.
 tags: [okf, conventions]

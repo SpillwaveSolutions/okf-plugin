@@ -13,48 +13,66 @@ This repo is intentionally **one plugin, two hosts**. Do not introduce Grok-only
 
 ## Mission
 
-Turn any OKF repository into a **graph engineering** workspace:
+Turn any OKF repository into a **graph engine** workspace:
 
-- Knowledge concepts (datasets, runbooks, APIs, …)
-- Agent/harness concepts (`AgentNode`, `Workflow`, `SharedState`, `DecisionRecord`, `ToolCapability`, `TicketLink`)
-- Impact analysis, validation, progressive disclosure packs
+- Treat Markdown + YAML as a directed graph (absolute links + optional `links[].rel`)
+- **Validate** the bundle
+- Compute **impact** (blast radius) before structural edits
+- Emit **ContextPacks** — hop-capped, node-capped, outbound-only by default
+
+This plugin does **not** own domain nouns. It owns the envelope (`BaseConcept`) and two infrastructure types:
+
+| Noun | Role |
+|------|------|
+| `Catalog` | Directory index. Structural. Pack walks skip flooding through hub catalogs by using outbound-only BFS. |
+| `ContextPack` | Generated progressive-disclosure view of a ranked, hop-capped subgraph. |
+
+Domain types live in sibling plugins. Unknown `type` values fall back to `BaseConcept` (`type` + `title` only). Validators merge sibling `schemas/okf-concepts/` directories.
+
+| Plugin | Owns |
+|--------|------|
+| [PKC](https://github.com/SpillwaveSolutions/project-knowledge-capture) | Meeting, Experiment, Discovery, Assumption, Question, Feature, Requirement, Specification, Design, Release, CodeChange, Package, Risk, Acceptance, DecisionRecord, TicketLink, Epic, Story, Task, Subtask, Bug, Branch, Project, Playbook, Runbook, Reference |
+| [SAC](https://github.com/SpillwaveSolutions/system-architecture-capture) | System, Service, Component, and the rest of the architecture/runtime topology set |
+| [DEKC](https://github.com/SpillwaveSolutions/data-engineering-knowledge-capture) | Dataset, Table, View, Metric, lineage, lakes, marts, streams, jobs, semantic layer, glossary |
+| [AGER](https://github.com/SpillwaveSolutions/okf-agent-graph) | AgentNode, Workflow, Harness, SharedState, ToolCapability, loop/runtime/ops/eval types |
 
 ## Component map
 
 - **Skills** — `skills/*/SKILL.md` (core intelligence)
 - **Commands** — `commands/*.md` (slash entry points)
 - **Agent** — `agents/graph-engineer.md`
-- **Hooks** — `hooks/hooks.json` → `scripts/okf-curate.sh`
+- **Hooks** — `hooks/hooks.json` → `scripts/okf-hook-validate.sh` (fail-closed validate)
 - **CLI fallback** — `scripts/okf-graph.py`
-- **Sample dual graph** — `sample-okf/`
+- **Sample** — `sample-okf/` (Catalog + Knowledge about this engine; not an AGER graph)
 
 Plugin root variable in Claude/Grok plugin context: `${CLAUDE_PLUGIN_ROOT}`.
 
 ## Operating principles
 
 1. Prefer **okf / okfcli** for graph ops; fallback to `scripts/okf-graph.py`.
-2. Always consider **impact** before changing high-degree or harness concepts.
-3. Emit **minimal context packs** (2-hop default) for long runs.
+2. Always consider **impact** before changing high-degree or schema-declared high-impact concepts (`x-impact` on the owning plugin’s schema). Isolated, this plugin has no high-impact types.
+3. Emit **minimal context packs** (2-hop default, max 20 nodes, outbound-only) for long runs.
 4. Use **absolute** in-bundle Markdown links.
 5. Complete YAML frontmatter on every concept (`type`, `title`, `description`, `timestamp`).
 6. Do not fabricate graph edges.
 7. High-trust first: prefer `verified: true`, non-stale, `status: active|accepted`.
-8. Working in an isolated worktree: verify your base commit with
+8. Do not author domain nouns here. Hand `AgentNode` / `Workflow` to AGER, `TicketLink` / `DecisionRecord` to PKC, architecture types to SAC, data-plane types to DEKC.
+9. Working in an isolated worktree: verify your base commit with
    `git log --oneline -3` before writing code. A worktree may be cut from the
    repo default branch rather than the branch you were told to build on, so the
    commits you depend on can be missing. `git reset --hard <intended-branch>`
    while the tree is clean, then build.
-9. Merge PRs with `gh pr merge --merge`, never `--squash`. Frozen documents are
-   stamped with the commit they were written against and `worklog doc-verify`
-   resolves their code citations at that commit; a squash keeps that commit off
-   the default branch, so a fresh clone cannot resolve it.
+10. Merge PRs with `gh pr merge --merge`, never `--squash`. Frozen documents are
+    stamped with the commit they were written against and `worklog doc-verify`
+    resolves their code citations at that commit; a squash keeps that commit off
+    the default branch, so a fresh clone cannot resolve it.
 
 ## Skill routing (natural language)
 
 | User language | Skill |
 |---------------|--------|
 | scaffold / init OKF / graph eng setup | okf-init-graph |
-| document agent / workflow / metric / ADR | okf-author |
+| document Catalog / ContextPack / envelope | okf-author |
 | blast radius / what breaks / dependents | okf-impact |
 | context pack / multi-hop / neighborhood | okf-query |
 | curate / orphans / fix indexes / migrate | okf-maintain |
@@ -63,7 +81,7 @@ Plugin root variable in Claude/Grok plugin context: `${CLAUDE_PLUGIN_ROOT}`.
 
 ## Specialist agent
 
-Invoke **graph-engineer** for multi-step dual-graph work (impact + pack + curation in one arc).
+Invoke **graph-engineer** for multi-step graph work (impact + pack + curation in one arc). Pack-first. Impact-before-structure. No domain-noun authorship.
 
 ## Validation loop
 

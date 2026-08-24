@@ -1,4 +1,5 @@
 ---
+type: Catalog
 title: Agents catalog
 description: AgentNode concepts for the okf-graph-eng plugin harness.
 timestamp: 2026-07-29T00:00:00Z

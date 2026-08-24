@@ -15,9 +15,10 @@ Install and host notes for **okf-graph-eng**.
 | Field | Value |
 |-------|--------|
 | Name | `okf-graph-eng` |
-| Version | see `.claude-plugin/plugin.json` |
+| Version | see root `plugin.json` (0.8.0) |
 | Marketplace | `okf-plugin-marketplace` |
 | Repo | https://github.com/SpillwaveSolutions/okf-plugin |
+| Nouns | `Catalog`, `ContextPack` |
 
 ## Claude Code
 
@@ -37,10 +38,10 @@ Metadata: `.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json`.
 
 ### Components discovered automatically
 
-- **Skills** — `skills/*/SKILL.md`  
-- **Commands** — `commands/*.md` (`/okf-init`, `/okf-impact`, …)  
-- **Agent** — `agents/graph-engineer.md`  
-- **Hooks** — `hooks/hooks.json` → fail-closed `okf-hook-validate.sh` 
+- **Skills** — `skills/*/SKILL.md`
+- **Commands** — `commands/*.md` (`/okf-init`, `/okf-impact`, …)
+- **Agent** — `agents/graph-engineer.md`
+- **Hooks** — `hooks/hooks.json` → fail-closed `okf-hook-validate.sh`
 
 Use `${CLAUDE_PLUGIN_ROOT}` for script paths inside skills/hooks.
 
@@ -64,8 +65,8 @@ Do not add Grok-only features that break Claude Code.
 
 ## Specialist agent
 
-**graph-engineer** — dual-graph impact, packs, curation. Prefer for multi-step graph work.
+**graph-engineer** — pack-first, impact-before-structure. Prefer for multi-step graph work. Does not author domain nouns.
 
 ## Project management plugin
 
-Work tracking uses the separate **worklog** tooling vendored into this repo (`bin/worklog`, hooks). That is WikiTicket SDD, not part of the Claude skill pack itself. See [[Worklog-Spec]].
+Work tracking uses the separate **worklog** tooling vendored into this repo (`bin/worklog`, hooks). That is WikiTicket SDD, not part of the Claude skill pack itself. See [[Worklog-Spec]]. TicketLink emission lives in PKC (`pkc_ticket_link.py`).

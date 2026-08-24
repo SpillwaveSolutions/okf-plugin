@@ -1,5 +1,5 @@
 ---
-type: TicketLink
+type: Knowledge
 title: MVP plugin scaffold
 description: Track delivery of okf-graph-eng v0.1 skills, hooks, sample OKF, and dual-host docs.
 tags: [ticket, mvp, worklog]

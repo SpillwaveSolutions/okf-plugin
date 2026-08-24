@@ -44,7 +44,7 @@ Commits should reference a worklog ULID or `#issue`. Prefer feature branches (ho
 
 ### Bridge to OKF
 
-TicketLink concepts map worklog ULIDs / GitHub issues into the knowledge graph — see [[CLI-Reference]] (`okf-ticket-link.py`) and skill `okf-author` references.
+TicketLink concepts (a **PKC** noun) map worklog ULIDs / GitHub issues into the knowledge graph — see PKC `scripts/pkc_ticket_link.py`. `scripts/okf-ticket-link.py` in this repo is a stub as of 0.8.0.
 
 ## See also
 

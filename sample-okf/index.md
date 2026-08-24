@@ -1,4 +1,5 @@
 ---
+type: Catalog
 okf_version: "0.2"
 title: OKF Graph Engineering Plugin
 description: Self-describing OKF bundle that models the okf-graph-eng plugin as both a knowledge graph and an agent/harness graph.

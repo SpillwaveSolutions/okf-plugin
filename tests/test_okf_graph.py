@@ -121,27 +121,43 @@ def _concept(rel: str = "x.md", **kw):
 
 def test_criticality_escalates_unverified_medium():
     """Unverified escalates one level: medium→high, high→critical. Regression:
-    the medium arm assigned the variable to itself, so the tier was decorative."""
-    assert g.criticality_of(_concept(type="Dataset", verified=True)) == "medium"
-    assert g.criticality_of(_concept(type="Dataset", verified=False)) == "high"
-    assert g.criticality_of(_concept(type="Workflow", verified=True)) == "high"
-    assert g.criticality_of(_concept(type="Workflow", verified=False)) == "critical"
-    # low never escalates, verified or not
-    assert g.criticality_of(_concept(type="Reference", verified=False)) == "low"
+    the medium arm assigned the variable to itself, so the tier was decorative.
+
+    Tiers are domain-declared (`x-impact` on sibling schemas). Pin them here so
+    isolated CI (no PKC/DEKC/AGER checkout) behaves the same as a full family
+    workspace.
+    """
+    old_h, old_m = g.HIGH_IMPACT_TYPES, g.MEDIUM_IMPACT_TYPES
+    g.HIGH_IMPACT_TYPES = frozenset({"Workflow"})
+    g.MEDIUM_IMPACT_TYPES = frozenset({"Dataset"})
+    try:
+        assert g.criticality_of(_concept(type="Dataset", verified=True)) == "medium"
+        assert g.criticality_of(_concept(type="Dataset", verified=False)) == "high"
+        assert g.criticality_of(_concept(type="Workflow", verified=True)) == "high"
+        assert g.criticality_of(_concept(type="Workflow", verified=False)) == "critical"
+        assert g.criticality_of(_concept(type="Reference", verified=False)) == "low"
+    finally:
+        g.HIGH_IMPACT_TYPES, g.MEDIUM_IMPACT_TYPES = old_h, old_m
 
 
 def test_criticality_ordering_survives_escalation():
     """enrich_nodes is the only consumer that ranks on criticality; the
     escalated value must stay inside its {critical,high,medium,low} order map."""
-    concepts = {
-        "w.md": _concept(rel="w.md", title="Flow", type="Workflow", verified=False),
-        "d.md": _concept(rel="d.md", title="Data", type="Dataset", verified=False),
-        "r.md": _concept(rel="r.md", title="Ref", type="Reference", verified=True),
-    }
-    items = [{"id": r, "depth": 1} for r in ("r.md", "d.md", "w.md")]
-    ranked = g.enrich_nodes(concepts, items)
-    assert [x["id"] for x in ranked] == ["w.md", "d.md", "r.md"], ranked
-    assert [x["criticality"] for x in ranked] == ["critical", "high", "low"], ranked
+    old_h, old_m = g.HIGH_IMPACT_TYPES, g.MEDIUM_IMPACT_TYPES
+    g.HIGH_IMPACT_TYPES = frozenset({"Workflow"})
+    g.MEDIUM_IMPACT_TYPES = frozenset({"Dataset"})
+    try:
+        concepts = {
+            "w.md": _concept(rel="w.md", title="Flow", type="Workflow", verified=False),
+            "d.md": _concept(rel="d.md", title="Data", type="Dataset", verified=False),
+            "r.md": _concept(rel="r.md", title="Ref", type="Reference", verified=True),
+        }
+        items = [{"id": r, "depth": 1} for r in ("r.md", "d.md", "w.md")]
+        ranked = g.enrich_nodes(concepts, items)
+        assert [x["id"] for x in ranked] == ["w.md", "d.md", "r.md"], ranked
+        assert [x["criticality"] for x in ranked] == ["critical", "high", "low"], ranked
+    finally:
+        g.HIGH_IMPACT_TYPES, g.MEDIUM_IMPACT_TYPES = old_h, old_m
 
 
 def test_mermaid_ids_are_unique_per_path():

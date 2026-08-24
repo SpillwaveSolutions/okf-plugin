@@ -1,7 +1,7 @@
 {
   "name": "okf-graph-eng",
-  "version": "0.7.4",
-  "description": "Graph engineering for OKF repositories \u2014 impact analysis, progressive disclosure, typed edges, and fail-closed post-edit validate. Codex-compatible packaging for the same skills and hooks used by Claude Code and Grok Build.",
+  "version": "0.8.0",
+  "description": "OKF graph engine: validate, walk, pack, and impact-analyze Git-native knowledge graphs. Owns Catalog and ContextPack. Domain nouns live in PKC, SAC, DEKC, and AGER.",
   "author": {
     "name": "Rick Hightower",
     "url": "https://github.com/RichardHightower"
@@ -12,9 +12,19 @@
   "keywords": [
     "okf",
     "graph-engineering",
+    "knowledge-graph",
+    "context-pack",
+    "catalog",
+    "impact-analysis",
+    "isolation",
+    "agent-plugins",
+    "claude-code",
+    "grok-build",
     "codex",
-    "agent-skills",
-    "impact-analysis"
+    "deep-agents",
+    "grok-bot",
+    "cursor",
+    "agent-skills"
   ],
   "hooks": "./hooks/codex-hooks.json"
 }

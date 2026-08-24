@@ -1,5 +1,5 @@
 ---
-type: ToolCapability
+type: Knowledge
 title: okf-graph.py
 description: Bundled Python fallback for impact, subgraph, validate, and orphan detection when okfcli is unavailable.
 tags: [tool, cli, python]

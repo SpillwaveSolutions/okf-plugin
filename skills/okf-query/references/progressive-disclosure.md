@@ -1,13 +1,16 @@
 # Progressive disclosure defaults
 
-## Defaults (v0.2)
+## Defaults (v0.8)
 
 | Knob | Default | Rationale |
 |------|---------|-----------|
-| Hops | **2** | Enough for agent → tool → knowledge without hairballs |
+| Direction | **outbound-only** | Catalog indexes are hubs. Undirected walks dump the bundle. |
+| Hops | **2** | Enough for entry → collaborator → evidence without hairballs |
 | Max nodes | **20** | Fits long-running agent context budgets |
 | Trust bias | verified first | Prefer `verified: true` when trimming |
-| High-impact retention | always flag | Never silently drop unverified AgentNode/Workflow/SharedState |
+| High-impact retention | always flag | Never silently drop unverified nodes whose owning schema set `x-impact: high` |
+
+`--undirected` exists for “what would break?” neighborhood exploration. Prefer `impact` for that. Unlimited closure is `impact`, not `pack`.
 
 ## Pack command
 
@@ -26,15 +29,18 @@ JSON includes `markdown` (ready to paste), `included`, `excluded`, and typed `ed
 
 ## Read order inside packs
 
-1. Entry concept  
-2. High-impact harness types (`AgentNode`, `Workflow`, `SharedState`)  
-3. Supporting knowledge  
-4. Indexes last (usually excluded under max-nodes)
+1. Entry concept (always first, always included)
+2. Schema-declared high-impact types (`x-impact: high` on the owning plugin)
+3. Verified supporting knowledge
+4. Title
+5. Indexes last (usually excluded under max-nodes)
+
+Inclusion ranking decides *who makes the cut*. Read order is how the markdown is presented.
 
 ## Graph Engineer rule
 
 Default answer shape for exploration:
 
-1. 2-hop pack (markdown)  
-2. One sentence on excluded count  
-3. Offer impact analysis if structural change is next  
+1. 2-hop outbound pack (markdown)
+2. One sentence on excluded count
+3. Offer impact analysis if structural change is next

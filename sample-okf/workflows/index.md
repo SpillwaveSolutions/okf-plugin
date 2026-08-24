@@ -1,4 +1,5 @@
 ---
+type: Catalog
 title: Workflows catalog
 description: Harness workflows modeled for the okf-graph-eng plugin.
 timestamp: 2026-07-29T00:00:00Z

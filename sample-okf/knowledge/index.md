@@ -1,4 +1,5 @@
 ---
+type: Catalog
 title: Knowledge catalog
 description: Domain and plugin knowledge concepts for okf-graph-eng.
 timestamp: 2026-07-29T00:00:00Z

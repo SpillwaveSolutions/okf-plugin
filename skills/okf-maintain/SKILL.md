@@ -5,16 +5,16 @@ description: Curate OKF bundles — indexes, log.md, drift detection, broken lin
 
 # OKF Maintain / Curate
 
-Keep the dual knowledge + agent graph healthy and reviewable.
+Keep the knowledge graph healthy and reviewable. This plugin owns Catalog + ContextPack; do not invent domain nouns while curating.
 
 ## Maintenance checklist
 
 1. **Broken links** — every Markdown link to a `.md` target resolves inside the bundle.
 2. **Orphans** — concepts with no inbound or outbound edges (except intentional roots).
-3. **Index drift** — subdirectory `index.md` catalogs list actual children.
+3. **Index drift** — subdirectory `index.md` catalogs (`type: Catalog`) list actual children.
 4. **Log hygiene** — `log.md` has recent entries for structural changes.
-5. **Staleness** — nodes past `stale_after` or long-unchanged high-impact agents.
-6. **Trust gaps** — high-impact types (`AgentNode`, `Workflow`, `SharedState`) with `verified: false`.
+5. **Staleness** — nodes past `stale_after` or long-unchanged high-degree concepts.
+6. **Trust gaps** — schema-declared high-impact types (`x-impact: high` on the owning plugin) with `verified: false`.
 7. **Frontmatter completeness** — `type`, `title`, `description`, `timestamp`.
 8. **Migration** — if `okf_version` is missing or `0.1`, plan upgrade to `0.2`.
 
@@ -37,7 +37,8 @@ Keep the dual knowledge + agent graph healthy and reviewable.
 5. For migrations v0.1 → v0.2:
    - Set `okf_version: "0.2"` on root index
    - Ensure absolute-link convention is documented
-   - Add graph-eng directories (`agents/`, `workflows/`, …) only if missing
+   - Add `catalogs/`, `knowledge/`, `packs/` only if missing
+   - Do not seed AgentNode / Workflow / TicketLink catalogs (those belong to AGER / PKC)
    - Do not delete legacy concepts
 
 ## Report template

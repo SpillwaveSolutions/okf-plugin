@@ -22,9 +22,8 @@ Confirm the bundle is structurally sound (OKF-oriented conventions) and graph-qu
 
 - Broken Markdown links to missing `.md` targets (error)
 - Orphan concepts (info/warn)
-- High-impact unverified nodes: `AgentNode`, `Workflow`, `Harness`, `SharedState` with `verified: false` (warn)
+- Unverified high-impact nodes (`x-impact: high` from the owning plugin’s schema, `verified: false`) (warn). Isolated, this plugin declares no high-impact types.
 - Stale nodes past `stale_after` (warn)
-- Empty catalogs / empty agent graph when user expected harness modeling (info)
 
 ## Process
 
