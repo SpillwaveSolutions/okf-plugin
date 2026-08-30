@@ -8,7 +8,7 @@ Works in **Claude Code**, **Grok Build** (zero-config), **Cursor**, **Codex**, *
 |---|---|
 | **Plugin name** | `okf-graph-eng` |
 | **Repo** | [SpillwaveSolutions/okf-plugin](https://github.com/SpillwaveSolutions/okf-plugin) |
-| **Version** | 0.8.1 |
+| **Version** | 0.8.2 |
 | **License** | MIT |
 | **Nouns this plugin owns** | `Catalog`, `ContextPack` |
 

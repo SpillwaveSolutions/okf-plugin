@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.8.2 — 2026-08-30
+
 ### Added
 
 - **rg-backed `backlinks`**. `okf-graph.py backlinks` uses ripgrep (when on
