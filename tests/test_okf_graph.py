@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import os
 import re
 import subprocess
 import sys
@@ -714,6 +715,65 @@ def test_known_rels_covers_sibling_plugin_vocabularies():
             ("DEKC_RELS", g.DEKC_RELS),
         ):
             assert rels <= g.KNOWN_RELS, f"{name} is not a subset of KNOWN_RELS"
+
+
+FAKE_RG = REPO / "tests" / "fixtures" / "fake_rg.py"
+
+
+def test_backlinks_rg_matches_scan():
+    """rg prefilter must not change backlink identity vs a full load."""
+    FAKE_RG.chmod(0o755)
+    env = os.environ.copy()
+    env["OKF_RG_PATH"] = str(FAKE_RG)
+    target = "knowledge/okf-conventions.md"
+    scan = subprocess.run(
+        [sys.executable, str(SCRIPT), "backlinks", "sample-okf", target, "--no-rg"],
+        capture_output=True,
+        text=True,
+        cwd=REPO,
+        env=env,
+    )
+    accel = subprocess.run(
+        [sys.executable, str(SCRIPT), "backlinks", "sample-okf", target, "--rg"],
+        capture_output=True,
+        text=True,
+        cwd=REPO,
+        env=env,
+    )
+    assert scan.returncode == 0, scan.stderr
+    assert accel.returncode == 0, accel.stderr
+    s = json.loads(scan.stdout)
+    a = json.loads(accel.stdout)
+    assert s["engine"] == "scan", s
+    assert a["engine"] == "rg", a
+    assert s["target"] == a["target"] == target
+    sid = sorted(b["id"] for b in s["backlinks"])
+    aid = sorted(b["id"] for b in a["backlinks"])
+    assert sid == aid, (sid, aid)
+
+
+def test_backlinks_ambiguous_still_errors_with_rg():
+    """Path-fast-path must not swallow an ambiguous stem query."""
+    FAKE_RG.chmod(0o755)
+    env = os.environ.copy()
+    env["OKF_RG_PATH"] = str(FAKE_RG)
+    with tempfile.TemporaryDirectory() as td:
+        bundle = Path(td) / "b"
+        (bundle / "a").mkdir(parents=True)
+        (bundle / "b").mkdir()
+        (bundle / "index.md").write_text("---\ntitle: Root\n---\n[a](/a/page.md) [b](/b/page.md)\n")
+        (bundle / "a" / "page.md").write_text("---\ntitle: A\ntype: Reference\n---\n")
+        (bundle / "b" / "page.md").write_text("---\ntitle: B\ntype: Reference\n---\n")
+        proc = subprocess.run(
+            [sys.executable, str(SCRIPT), "backlinks", str(bundle), "page.md", "--rg"],
+            capture_output=True,
+            text=True,
+            cwd=REPO,
+            env=env,
+        )
+        assert proc.returncode == 1, proc.stdout
+        out = json.loads(proc.stdout)
+        assert "error" in out and out.get("candidates") == ["a/page.md", "b/page.md"], out
 
 
 def main() -> int:
