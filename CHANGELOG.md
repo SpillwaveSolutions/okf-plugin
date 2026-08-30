@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+### Added
+
+- **rg-backed `backlinks`**. `okf-graph.py backlinks` uses ripgrep (when on
+  PATH, or `OKF_RG_PATH` / `PKC_RG_PATH`) to find inbound files and parse only
+  those hits. Ranking/identity matches a full `load_bundle`. `--no-rg` forces
+  the previous scan. Ambiguous title/stem queries still load the bundle so they
+  keep erroring instead of silently picking a file.
+
 ## 0.8.1 — 2026-08-24
 
 - Noun-ownership migration guide for existing second brains:

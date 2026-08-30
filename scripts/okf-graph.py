@@ -18,7 +18,10 @@ from __future__ import annotations
 import argparse
 import html
 import json
+import os
 import re
+import shutil
+import subprocess
 import sys
 from collections import defaultdict, deque
 from dataclasses import dataclass, field
@@ -33,6 +36,54 @@ try:
     from okf_schema import load_default_registry  # type: ignore
 except ImportError:  # pragma: no cover — always present next to this file
     load_default_registry = None  # type: ignore
+
+
+def find_rg() -> str | None:
+    for var in ("OKF_RG_PATH", "PKC_RG_PATH", "SECOND_BRAIN_RG_PATH"):
+        override = (os.environ.get(var) or "").strip()
+        if not override:
+            continue
+        p = Path(override)
+        if p.is_file() and os.access(p, os.X_OK):
+            return str(p.resolve())
+        found = shutil.which(override)
+        if found:
+            return found
+    return shutil.which("rg")
+
+
+def rg_list_files(
+    root: Path,
+    pattern: str,
+    *,
+    fixed_string: bool = True,
+    ignore_case: bool = False,
+    timeout: float = 30.0,
+) -> list[Path] | None:
+    """`rg -l` for one pattern. None = rg missing/failed; [] = no hits."""
+    rg = find_rg()
+    if not rg or not pattern:
+        return None
+    cmd = [rg, "-l", "--no-messages", "--color", "never", "--glob", "*.md"]
+    if ignore_case:
+        cmd.append("-i")
+    if fixed_string:
+        cmd.append("-F")
+    cmd.extend(["--", pattern, str(root)])
+    try:
+        proc = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout, check=False)
+    except (OSError, subprocess.TimeoutExpired):
+        return None
+    if proc.returncode not in (0, 1):
+        return None
+    files: list[Path] = []
+    for line in proc.stdout.splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        p = Path(line)
+        files.append(p.resolve() if p.is_absolute() else (root / p).resolve())
+    return files
 
 
 FRONTMATTER_RE = re.compile(r"^---\s*\n(.*?)\n---\s*\n", re.DOTALL)
@@ -758,12 +809,38 @@ def cmd_impact(bundle: Path, concept: str) -> int:
     return 0
 
 
-def cmd_backlinks(bundle: Path, concept: str) -> int:
+def cmd_backlinks(bundle: Path, concept: str, *, use_rg: bool | None = None) -> int:
+    fast = _existing_rel(bundle, concept)
+    if use_rg is not False and fast and find_rg():
+        payload = _backlinks_via_rg(bundle, fast)
+        if payload is not None:
+            print(json.dumps(payload, indent=2))
+            return 0
     concepts = load_bundle(bundle)
     inbound_map = build_inbound(concepts)
     target = resolve_or_error(concepts, concept)
     if not target:
         return 1
+    print(json.dumps(_backlinks_from_graph(concepts, inbound_map, target), indent=2))
+    return 0
+
+
+def _existing_rel(bundle: Path, concept: str) -> str | None:
+    """Return a bundle-relative path only when `concept` already names a file.
+
+    Title/stem lookup stays on the full load so ambiguous `page.md` queries
+    still error instead of silently picking one file.
+    """
+    q = concept.strip().lstrip("/")
+    cand = bundle / q
+    if cand.is_file():
+        return cand.relative_to(bundle).as_posix()
+    return None
+
+
+def _backlinks_from_graph(
+    concepts: dict[str, Concept], inbound_map: dict[str, list[str]], target: str
+) -> dict[str, Any]:
     bl = []
     for i in inbound_map.get(target, []):
         rels = [e.rel for e in concepts[i].edges if e.target == target]
@@ -775,8 +852,54 @@ def cmd_backlinks(bundle: Path, concept: str) -> int:
                 "rels": rels or ["links_to"],
             }
         )
-    print(json.dumps({"target": target, "backlinks": bl}, indent=2))
-    return 0
+    return {"target": target, "backlinks": bl, "engine": "scan"}
+
+
+def _backlinks_via_rg(bundle: Path, target_rel: str) -> dict[str, Any] | None:
+    """Parse only files that mention the target path. None = fall back."""
+    needles = ["/" + target_rel, target_rel, Path(target_rel).name]
+    found: set[Path] = set()
+    any_run = False
+    for needle in needles:
+        hits = rg_list_files(bundle, needle, fixed_string=True, ignore_case=False)
+        if hits is None:
+            continue
+        any_run = True
+        found.update(hits)
+    if not any_run:
+        return None
+    bl: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    target_path = (bundle / target_rel).resolve()
+    for path in sorted(found):
+        if path.resolve() == target_path:
+            continue
+        try:
+            rel = path.relative_to(bundle).as_posix()
+        except ValueError:
+            continue
+        if any(part.startswith(".") for part in Path(rel).parts):
+            continue
+        text = path.read_text(encoding="utf-8", errors="replace")
+        meta = parse_frontmatter(text)
+        md_edges = extract_markdown_links(text, path, bundle)
+        fm_edges = extract_frontmatter_links(meta, path, bundle)
+        edges = merge_edges(md_edges, fm_edges)
+        rels = [e.rel for e in edges if e.target == target_rel]
+        if not rels:
+            continue
+        if rel in seen:
+            continue
+        seen.add(rel)
+        bl.append(
+            {
+                "id": rel,
+                "title": str(meta.get("title") or path.stem),
+                "type": str(meta.get("type") or ("Index" if path.name == "index.md" else "Unknown")),
+                "rels": rels,
+            }
+        )
+    return {"target": target_rel, "backlinks": bl, "engine": "rg"}
 
 
 def cmd_subgraph(bundle: Path, concept: str, hops: int) -> int:
@@ -1212,6 +1335,17 @@ def main() -> int:
         s = sub.add_parser(name)
         s.add_argument("bundle")
         s.add_argument("concept")
+        if name == "backlinks":
+            s.add_argument(
+                "--rg",
+                action="store_true",
+                help="Use ripgrep to find inbound files (default when rg is on PATH)",
+            )
+            s.add_argument(
+                "--no-rg",
+                action="store_true",
+                help="Disable ripgrep; load the whole bundle",
+            )
 
     s = sub.add_parser("subgraph")
     s.add_argument("bundle")
@@ -1280,7 +1414,17 @@ def main() -> int:
     if args.cmd == "impact":
         return cmd_impact(bundle, args.concept)
     if args.cmd == "backlinks":
-        return cmd_backlinks(bundle, args.concept)
+        if getattr(args, "rg", False) and getattr(args, "no_rg", False):
+            print(json.dumps({"error": "--rg and --no-rg are mutually exclusive"}))
+            return 2
+        use_rg: bool | None
+        if getattr(args, "no_rg", False):
+            use_rg = False
+        elif getattr(args, "rg", False):
+            use_rg = True
+        else:
+            use_rg = None
+        return cmd_backlinks(bundle, args.concept, use_rg=use_rg)
     if args.cmd == "subgraph":
         return cmd_subgraph(bundle, args.concept, args.hops)
     if args.cmd == "pack":
