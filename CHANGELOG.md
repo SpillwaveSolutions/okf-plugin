@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+## 0.8.3 — 2026-11-05
+
+### Fixed
+
+- **Lists of maps outside `links:`.** `parse_frontmatter` reads a block list
+  of maps under any key (for example `resources:` with `- url:` and an
+  indented `title:`). Before this fix, each item became a string and each
+  indented `key:` line became a top-level key, so a nested `title:`
+  overwrote the concept title. A `- https://x` item stays a string.
+- **Quoted commas in inline lists.** `["a, b", c]` now gives two items, not
+  three.
+
 ## 0.8.2 — 2026-08-30
 
 ### Added

@@ -400,7 +400,7 @@ class Concept:
 
 
 def parse_frontmatter(text: str) -> dict[str, Any]:
-    """Parse simple YAML frontmatter including optional typed `links:` lists."""
+    """Parse simple YAML frontmatter: scalars, inline and block lists, and lists of maps."""
     m = FRONTMATTER_RE.match(text)
     if not m:
         return {}
@@ -454,7 +454,19 @@ def parse_frontmatter(text: str) -> dict[str, Any]:
             if item:
                 if not isinstance(meta.get(pending_list_key), list):
                     meta[pending_list_key] = []
-                meta[pending_list_key].append(item.group(1).strip().strip('"').strip("'"))
+                rest = item.group(1).strip()
+                # `- key: val` starts a map item; `- https://x` stays a scalar
+                kv = re.match(r"^([\w.-]+):(?:\s+(.*))?$", rest)
+                if kv:
+                    meta[pending_list_key].append({kv.group(1): (kv.group(2) or "").strip().strip('"').strip("'")})
+                else:
+                    meta[pending_list_key].append(rest.strip('"').strip("'"))
+                continue
+            seq = meta.get(pending_list_key)
+            kv = re.match(r"^([\w.-]+):(?:\s+(.*))?$", stripped)
+            if kv and line[:1] in (" ", "\t") and isinstance(seq, list) and seq and isinstance(seq[-1], dict):
+                # indented continuation field of the current map item
+                seq[-1][kv.group(1)] = (kv.group(2) or "").strip().strip('"').strip("'")
                 continue
             # no list materialized; the bare key keeps its empty-string value
             pending_list_key = None
@@ -474,7 +486,10 @@ def parse_frontmatter(text: str) -> dict[str, Any]:
         elif val.startswith("[") and val.endswith("]"):
             inner = val[1:-1].strip()
             meta[key] = (
-                [x.strip().strip('"').strip("'") for x in inner.split(",") if x.strip()] if inner else []
+                # split on commas outside quotes: ["a, b", c] is two items
+                [x.strip().strip('"').strip("'") for x in re.findall(r'"[^"]*"|\'[^\']*\'|[^,]+', inner) if x.strip()]
+                if inner
+                else []
             )
         else:
             meta[key] = val

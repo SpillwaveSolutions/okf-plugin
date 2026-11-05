@@ -65,6 +65,27 @@ def test_frontmatter_block_sequence_then_links():
     assert meta["links"] == [{"rel": "uses", "target": "/b.md"}], meta
 
 
+def test_frontmatter_list_of_maps_outside_links():
+    """A block list of maps under any key parses as maps. Regression: the
+    indented `title:` lines became top-level keys and overwrote the title."""
+    meta = g.parse_frontmatter(
+        "---\ntitle: Real\nresources:\n  - url: https://a.example/x\n    title: A\n"
+        "  - url: https://b.example/y\n    ref: 2\n  - https://c.example/z\nstatus: draft\n---\n"
+    )
+    assert meta["title"] == "Real", meta
+    assert meta["resources"] == [
+        {"url": "https://a.example/x", "title": "A"},
+        {"url": "https://b.example/y", "ref": "2"},
+        "https://c.example/z",
+    ], meta
+    assert meta["status"] == "draft", meta
+
+
+def test_frontmatter_inline_list_keeps_quoted_commas():
+    meta = g.parse_frontmatter('---\naliases: ["a, b", c]\n---\n')
+    assert meta["aliases"] == ["a, b", "c"], meta
+
+
 def test_frontmatter_booleans_survive():
     meta = g.parse_frontmatter("---\nverified: true\ndraft: false\n---\n")
     assert meta["verified"] is True, meta
